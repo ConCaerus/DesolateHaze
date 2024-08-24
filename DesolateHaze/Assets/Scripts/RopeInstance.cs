@@ -68,7 +68,7 @@ public class RopeInstance : MonoBehaviour {
         if(waiter != null) return;
         //  sets can't collide with player
         foreach(var i in segRbs) {
-            i.excludeLayers = LayerMask.GetMask(new string[] { "Player", "Rope" });
+            i.excludeLayers = LayerMask.GetMask(new string[] { "Player", "Rope", "GroundCollider" });
         }
 
         prb = b;
@@ -78,13 +78,13 @@ public class RopeInstance : MonoBehaviour {
     public void dropPlayer() {
         if(waiter != null) return;
         waiter = StartCoroutine(dropWaiter());
-        //  sets can collide with player
-        foreach(var i in segRbs) {
-            i.excludeLayers = LayerMask.GetMask("Rope");
-        }
     }
     IEnumerator dropWaiter() {
         yield return new WaitForSeconds(2f);
+        //  sets can collide with player
+        foreach(var i in segRbs) {
+            i.excludeLayers = LayerMask.GetMask(new string[] { "Rope", "GroundCollider" });
+        }
         waiter = null;
     }
 

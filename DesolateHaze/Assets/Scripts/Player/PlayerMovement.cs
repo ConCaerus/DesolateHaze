@@ -7,7 +7,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
     [SerializeField] float speed, speedAccSpeed;
     [SerializeField] float jumpHeight, jumpAccSpeed;
-    [SerializeField] float bumpThresh;
     [SerializeField] float jumpDeathDist;
     [SerializeField] float ropeClimbSpeed;
 
@@ -119,19 +118,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region COLLISIONS
     private void OnCollisionEnter(Collision col) {
-        //  ground
-        if(col.gameObject.tag == "Ground") {
-            if(Mathf.Abs(col.impulse.x) >= bumpThresh) {
-                rb.linearVelocity = col.impulse * 1f;
-            }
-        }
-
         //  pushables / boxes
-        else if(col.gameObject.tag == "Box") {
-            if(!grounded && Mathf.Abs(col.impulse.x) >= bumpThresh) {
-                rb.linearVelocity = col.impulse * 1f;
-            }
-            else if(usedGround != col.collider) {
+        if(col.gameObject.tag == "Box") {
+            if(grounded && usedGround != col.collider) {
                 curPushing = col.gameObject.transform;
                 pushOffset = col.gameObject.transform.position - transform.position;
                 curState = pMovementState.Pushing;
@@ -155,7 +144,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnTriggerEnter(Collider col) {
         //  ledge climbing
-        if(!grounded && grabWaiter == null && col.gameObject.tag == "Ledge") {
+        if(grabWaiter == null && col.gameObject.tag == "Ledge") {
             var offset = col.transform.position - transform.position;
             if(offset.y > -1.25f && offset.x >= 0f == facingRight) {
                 curState = pMovementState.LedgeClimbing;
@@ -249,9 +238,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Falling:    //  give slight air control
-                    var mod = savedInput.x * speed * 3f * Time.fixedDeltaTime;
-                    if(Mathf.Abs(target.x + mod) < Mathf.Abs(target.x)) //  only can slow down jump
-                        target.x += mod;
+                    if(Mathf.Abs(rb.linearVelocity.x) > 0f) {
+                        var mod = savedInput.x * speed * 3f * Time.fixedDeltaTime;
+                        if(Mathf.Abs(target.x + mod) < Mathf.Abs(target.x)) //  only can slow down jump
+                            target.x += mod;
+                    }
+                    else target = Vector2.zero;
                     break;
 
                 case pMovementState.RopeClimbing:
@@ -307,7 +299,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(grounded)
             doJump();
         else if(curState == pMovementState.LadderClimbing || curState == pMovementState.RopeClimbing)
-            doJump(2f);
+            doJump(3f);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
@@ -329,7 +321,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     void doJump(float xMod = 1f) {
         curState = pMovementState.Falling;
         jumpHeld = false;
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x * xMod, jumpHeight * 100f * Time.fixedDeltaTime);
+        var target = new Vector3(savedInput.x * xMod, jumpHeight) * 100f * Time.fixedDeltaTime;
+        target += rb.linearVelocity;
+        rb.linearVelocity = target;
         StartCoroutine(jumpStateChecker());
         //  resets the jump canceler
         if(jumpCanceler != null)
