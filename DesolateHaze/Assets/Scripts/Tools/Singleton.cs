@@ -5,5 +5,10 @@ public abstract class Singleton<T> : MonoBehaviour where T : Object {
 
     protected void Awake() {
         I = FindObjectOfType<T>();
+        awake();
+    }
+
+    protected virtual void awake() {
+
     }
 }

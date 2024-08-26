@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour {
+public class CameraMovement : Singleton<CameraMovement> {
     [SerializeField] float speed;
     [SerializeField] float yOffset;
 
@@ -8,16 +8,20 @@ public class CameraMovement : MonoBehaviour {
 
     [HideInInspector] public bool canMove = true;
 
-    private void Start() {
-        playerTrans = PlayerMovement.I.transform;
-    }
-
     private void LateUpdate() {
         if(canMove)
             followPlayer();
     }
 
     void followPlayer() {
+        if(playerTrans == null) {
+            if(PlayerMovement.I == null) return;
+            playerTrans = PlayerMovement.I.transform;
+        }
         transform.position = Vector3.Lerp(transform.position, new Vector3(playerTrans.position.x, playerTrans.position.y + yOffset, transform.position.z), speed * Time.deltaTime);
+    }
+
+    public void snapToPosition(Vector3 pos) {
+        transform.position = new Vector3(pos.x, pos.y + yOffset, transform.position.z);
     }
 }

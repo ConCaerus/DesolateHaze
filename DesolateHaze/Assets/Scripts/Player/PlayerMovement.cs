@@ -21,6 +21,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     //  ground things
     Collider usedGround;
     float lastGroundedY;
+    [HideInInspector] public bool canTakeFallDamage = true;
+
 
     //  rope things
     RopeInstance hr = null;
@@ -67,7 +69,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             rb.linearVelocity += carryover;
         }
     }
-    bool cm = true;
+    bool cm = false;
     public bool canMove {
         get { return cm; }
         set {
@@ -84,9 +86,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             rb.angularDamping = g ? .05f : 0f;
             if(g) {
                 //  checks for fall damage
-                if(lastGroundedY - transform.position.y >= jumpDeathDist) {
+                if(canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist) {
                     Debug.Log("fall damage killed you");
-                    PlayerMovement.I.canMove = false;
+                    canMove = false;
                     TransitionCanvas.I.loadGameAfterDeath(2f);
                 }
 
@@ -189,10 +191,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         controls.Player.Jump.canceled += ctx => cancelJump();
 
         lastGroundedY = transform.position.y;
-
-        if(Saver.loadPlayer() != null) {
-            transform.position = Saver.loadPlayer().pos;
-        }
+        canMove = true;
     }
     private void FixedUpdate() {
         move();
