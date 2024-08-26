@@ -86,6 +86,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 //  checks for fall damage
                 if(lastGroundedY - transform.position.y >= jumpDeathDist) {
                     Debug.Log("fall damage killed you");
+                    PlayerMovement.I.canMove = false;
+                    TransitionCanvas.I.loadGameAfterDeath(2f);
                 }
 
                 //  ends coyote time
@@ -237,7 +239,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         curPushing.position = Vector3.MoveTowards(curPushing.transform.position, transform.position + pushOffset, (speed / 2f) * 100f * Time.fixedDeltaTime);
                     break;
 
-                case pMovementState.Falling:    //  give slight air control
+                case pMovementState.Falling:
+                    target = rb.linearVelocity;
+                    break;
+                    //  slight air control
+                    //  not used because it makes the player stick to slopes
                     if(Mathf.Abs(rb.linearVelocity.x) > 0f) {
                         var mod = savedInput.x * speed * 3f * Time.fixedDeltaTime;
                         if(Mathf.Abs(target.x + mod) < Mathf.Abs(target.x)) //  only can slow down jump

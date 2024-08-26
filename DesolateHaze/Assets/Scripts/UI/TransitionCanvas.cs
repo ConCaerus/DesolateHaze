@@ -25,6 +25,10 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
         waiter = StartCoroutine(loader("MainMenu"));
     }
 
+    public void loadGameAfterDeath(float time) {
+        Invoke("loadGame", time);
+    }
+
     IEnumerator loader(string sName) {
         background.gameObject.SetActive(true);
         background.color = Color.clear;

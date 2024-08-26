@@ -15,21 +15,18 @@ public class HazardInstance : MonoBehaviour {
         switch(hType) {
             case hazardType.BarbedWire:
                 pm.canMove = false;
-                StartCoroutine(deathWaiter(1.5f));
+                Debug.Log("Player Died to Hazard: " + hType.ToString() + " " + gameObject.name);
+                TransitionCanvas.I.loadGameAfterDeath(1.5f);
                 break;
 
             case hazardType.Landmine:
                 pm.canMove = false;
-                pm.rb.AddExplosionForce(1000f, transform.position, 3f);
-                StartCoroutine(deathWaiter(3f));
+                pm.rb.AddExplosionForce(1000f, transform.position + Vector3.down, 3f);
+                Debug.Log("Player Died to Hazard: " + hType.ToString() + " " + gameObject.name);
+                TransitionCanvas.I.loadGameAfterDeath(3f);
                 break;
         }
 
         triggerEvents.Invoke();
-    }
-
-    IEnumerator deathWaiter(float delay) {
-        yield return new WaitForSeconds(delay);
-        TransitionCanvas.I.loadGame();
     }
 }
