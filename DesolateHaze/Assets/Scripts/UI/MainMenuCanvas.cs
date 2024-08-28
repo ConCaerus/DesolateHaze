@@ -18,7 +18,11 @@ public class MainMenuCanvas : MonoBehaviour {
     }
 
     //  buttons
-    public void play() {
+    public void playNewGame() {
+        Saver.clearSave();
+        TransitionCanvas.I.loadGame();
+    }
+    public void playContinue() {
         TransitionCanvas.I.loadGame();
     }
     public void load() {

@@ -140,11 +140,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = Vector3.zero;
             }
         }
-
-        //  hazards
-        else if(col.gameObject.tag == "Hazard" && col.gameObject.TryGetComponent<HazardInstance>(out var hi)) {
-            hi.triggerHazard(this);
-        }
     }
     private void OnTriggerEnter(Collider col) {
         //  ledge climbing
@@ -160,11 +155,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else if(col.gameObject.tag == "Ladder") {
             if(!grounded)
                 curState = pMovementState.LadderClimbing;
-        }
-
-        //  hazards
-        else if(col.gameObject.tag == "Hazard" && col.gameObject.TryGetComponent<HazardInstance>(out var hi)) {
-            hi.triggerHazard(this);
         }
     }
     private void OnTriggerExit(Collider col) {
