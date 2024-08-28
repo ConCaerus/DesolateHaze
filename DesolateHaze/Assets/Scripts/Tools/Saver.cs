@@ -33,6 +33,20 @@ public static class Saver {
 
         storeSave(save);
     }
+    public static void untriggerLastCheckpoint(CheckpointManager cm) {
+        var save = getSave();
+
+        var pos = getLastCheckpointPos(cm);
+
+        for(int i = 0; i < save.data[(int)cm.aType - 1].Count; i++) {
+            if(save.data[(int)cm.aType - 1][i].pos == pos) {
+                if(i > 0) save.data[(int)cm.aType - 1][i].triggered = false;
+                break;
+            }
+        }
+
+        storeSave(save);
+    }
 
     public static Vector3 getLastCheckpointPos(CheckpointManager cm) {
         var save = getSave();
@@ -65,15 +79,23 @@ public static class Saver {
 
     //  returns false if save not setup, true if has save data
     static bool initCheck(ExtractedPlayerSaveData save, CheckpointManager cm) {
-        //  if new save, save all areas checkpoints into the save data
-        if(save.data[(int)cm.aType - 1].Count == 0) {
-            foreach(var i in cm.checkpoints) {
-                save.data[(int)cm.aType - 1].Add(new CheckpointSaveData(i.transform.position, false));
-            }
-            storeSave(save);
-            return false;
+        if(cm.initted) return true;
+        
+        //  resets position on all checkpoints
+        for(int i = 0; i < save.data[(int)cm.aType - 1].Count; i++) {
+            save.data[(int)cm.aType - 1][i].pos = cm.checkpoints[i].transform.position;
         }
-        return true;
+
+        //  sets if the checkpoints are triggered
+        if(save.data[(int)cm.aType - 1].Count != cm.checkpoints.Count) {
+            for(int i = save.data[(int)cm.aType - 1].Count; i < cm.checkpoints.Count; i++) {
+                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, false);
+                save.data[(int)cm.aType - 1].Add(csd);
+            }
+        }
+        storeSave(save);
+        cm.initted = true;
+        return false;
     }
 }
 

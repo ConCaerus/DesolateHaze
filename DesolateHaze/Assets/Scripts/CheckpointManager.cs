@@ -6,6 +6,8 @@ public class CheckpointManager : Singleton<CheckpointManager> {
     public Saver.areaType aType;
     public List<CheckpointInstance> checkpoints { get; private set; } = new List<CheckpointInstance>();
 
+    [HideInInspector] public bool initted = false;
+
     [SerializeField] GameObject playerPref;
 
     protected override void awake() {

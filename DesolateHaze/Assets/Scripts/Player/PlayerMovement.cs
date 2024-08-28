@@ -16,7 +16,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     Coroutine queuedJump = null;
     Coroutine coyoteTime = null;
     Coroutine jumpCanceler = null;
-    Coroutine grabWaiter = null;
 
     //  ground things
     Collider usedGround;
@@ -56,13 +55,20 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     pMovementState curState {
         get { return cs; }
         set {
+            //  before changing
             if(cs == value) return;
             Vector3 carryover = Vector2.zero;
             if(cs == pMovementState.RopeClimbing) {
                 carryover = heldRope.getExitVel();
+                lastGroundedY = transform.position.y;
                 heldRope = null;
             }
+            else if(cs == pMovementState.LadderClimbing)
+                lastGroundedY = transform.position.y;
+
             cs = value;
+
+            //  after changing
             rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing;
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
@@ -135,15 +141,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  ropes
         else if(curState != pMovementState.RopeClimbing && col.gameObject.tag == "Rope" && col.transform.parent.TryGetComponent<RopeInstance>(out var ri) && ri.canHold()) {
             if(!grounded) {
+                rb.linearVelocity = Vector3.zero;
                 curState = pMovementState.RopeClimbing;
                 heldRope = ri;
-                rb.linearVelocity = Vector3.zero;
             }
         }
     }
     private void OnTriggerEnter(Collider col) {
         //  ledge climbing
-        if(grabWaiter == null && col.gameObject.tag == "Ledge") {
+        if(curState != pMovementState.LedgeClimbing && col.gameObject.tag == "Ledge") {
             var offset = col.transform.position - transform.position;
             if(offset.y > -1.25f && offset.x >= 0f == facingRight) {
                 curState = pMovementState.LedgeClimbing;
@@ -157,9 +163,19 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 curState = pMovementState.LadderClimbing;
         }
     }
+    private void OnTriggerStay(Collider col) {
+        //  ledge climbing
+        if(curState != pMovementState.LedgeClimbing && col.gameObject.tag == "Ledge") {
+            var offset = col.transform.position - transform.position;
+            if(offset.y > -1.25f && offset.x >= 0f == facingRight) {
+                curState = pMovementState.LedgeClimbing;
+                transform.DOMove(col.gameObject.transform.GetChild(0).position, .5f).OnComplete(() => { curState = grounded ? pMovementState.Walking : pMovementState.Falling; });
+            }
+        }
+    }
     private void OnTriggerExit(Collider col) {
         //  pushables / boxes
-        if(col.gameObject.tag == "Box") {
+        if(col.gameObject.tag == "Box" && controls.Player.Interact.ReadValue<float>() == 0f) {
             curState = grounded ? pMovementState.Walking : pMovementState.Falling;
         }
 
@@ -223,9 +239,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Pushing:
-                    target.x = savedInput.x * (speed / 2f) * 100f * Time.fixedDeltaTime;
-                    if(controls.Player.Interact.ReadValue<float>() != 0f)
-                        curPushing.position = Vector3.MoveTowards(curPushing.transform.position, transform.position + pushOffset, (speed / 2f) * 100f * Time.fixedDeltaTime);
+                    target.x = savedInput.x * speed * 100f * Time.fixedDeltaTime;
+                    if(controls.Player.Interact.ReadValue<float>() != 0f) {
+                        target.x = savedInput.x * (speed / 2f) * 100f * Time.fixedDeltaTime;
+                        curPushing.position = Vector3.MoveTowards(curPushing.transform.position, transform.position + pushOffset, speed * 100f * Time.fixedDeltaTime);
+                    }
                     break;
 
                 case pMovementState.Falling:
@@ -247,8 +265,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     //  shimmies
                     if(savedInput.y > 0f)
                         heldRope.moveUp(ropeClimbSpeed * Time.fixedDeltaTime);
-                    else if(savedInput.y < 0f)
-                        heldRope.moveDown(ropeClimbSpeed * Time.fixedDeltaTime);
+                    else if(savedInput.y < 0f) {
+                        if(heldRope.moveDown(ropeClimbSpeed * Time.fixedDeltaTime)) {
+                            curState = pMovementState.Falling;
+                            return;
+                        }
+                    }
 
                     //  swings
                     transform.position = heldRope.getGrabbedPos();
@@ -294,7 +316,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(grounded)
             doJump();
         else if(curState == pMovementState.LadderClimbing || curState == pMovementState.RopeClimbing)
-            doJump(3f);
+            doJump(2f);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
@@ -316,7 +338,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     void doJump(float xMod = 1f) {
         curState = pMovementState.Falling;
         jumpHeld = false;
-        var target = new Vector3(savedInput.x * xMod, jumpHeight) * 100f * Time.fixedDeltaTime;
+        var target = new Vector3(savedInput.x > 0f ? 1f : -1f * xMod, jumpHeight) * 100f * Time.fixedDeltaTime;
         target += rb.linearVelocity;
         rb.linearVelocity = target;
         StartCoroutine(jumpStateChecker());
@@ -380,6 +402,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             //  start coyote time
             coyoteTime = StartCoroutine(coyoteWaiter());
         }
+    }
+    public void setFalling() {
+        grounded = false;
+        usedGround = null;
+        curState = pMovementState.Falling;
     }
     #endregion
 }

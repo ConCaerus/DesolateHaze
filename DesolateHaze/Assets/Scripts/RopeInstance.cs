@@ -52,16 +52,18 @@ public class RopeInstance : MonoBehaviour {
             curSegInd--;
         }
     }
-    public void moveDown(float speed) {
+    //  returns true if player needs to drop
+    public bool moveDown(float speed) {
         movePerc = Mathf.MoveTowards(movePerc, -1f, speed);
         if(movePerc <= -1f && curSegInd < segments.Count - 1) {
-            if(curSegInd == segments.Count - 1) {
+            if(curSegInd == segments.Count - 2) {   //  no idea why it has to be -2 but it does
                 movePerc = -1f;
-                return;
+                return true;
             }
             movePerc = 0f;
             curSegInd++;
         }
+        return false;
     }
 
     public void holdPlayer(Rigidbody b) {

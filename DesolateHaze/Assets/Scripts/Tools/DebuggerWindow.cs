@@ -14,6 +14,8 @@ public class DebuggerWindow : EditorWindow {
 
     private void OnGUI() {
         GUILayout.BeginHorizontal();
+        if(GUILayout.Button("Previous Checkpoint"))
+            Saver.untriggerLastCheckpoint(FindFirstObjectByType<CheckpointManager>());
         if(GUILayout.Button("Clear Save")) 
             Saver.clearSave();
         GUILayout.EndHorizontal();
