@@ -9,6 +9,8 @@ public class VineInstance : MonoBehaviour {
     [SerializeField] float windTime, strikeTime, returnTime;
     [SerializeField] Transform attVine, attVineRot;
     [SerializeField] List<Transform> repellants = new List<Transform>();
+    [SerializeField] bool hardTracking = true;
+    bool canTrack = true;
 
     bool r = false;
     bool repelled {
@@ -51,7 +53,7 @@ public class VineInstance : MonoBehaviour {
 
         var d = Mathf.Abs(playerTrans.position.x - attVineRot.position.x);
         //  checks if close enough to animate looking at the player
-        if(d < totalRange)
+        if(canTrack && d < totalRange)
             attVineRot.LookAt(playerTrans.position);
 
         //  checks if close enough to attack the player
@@ -79,6 +81,7 @@ public class VineInstance : MonoBehaviour {
 
         //  visually winds up for a strike
         attVine.DOLocalMoveZ(woundOffset, windTime);
+        canTrack = hardTracking;
         yield return new WaitForSeconds(windTime + .1f);
 
         //  strikes out towards the player's current location
@@ -89,6 +92,7 @@ public class VineInstance : MonoBehaviour {
         //  returns to rest
         attVine.DOLocalMoveZ(normOffset, returnTime);
         yield return new WaitForSeconds(returnTime + .1f);
+        canTrack = true;
         attacker = null;
     }
     IEnumerator killPlayerWaiter(Vector3 hitOffset) {

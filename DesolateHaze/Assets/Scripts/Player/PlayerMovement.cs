@@ -261,7 +261,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Pushing:
-                    target.x = savedInput.x * (speed / 2f) * 100f * Time.fixedDeltaTime;
+                    target.x = savedInput.x * (speed * .6f) * 100f * Time.fixedDeltaTime;
                     if(controls.Player.Interact.ReadValue<float>() != 0f) {
                         var speedMod = .75f;
                         if(savedInput.x < 0f && transform.position.x < curPushing.transform.position.x)
