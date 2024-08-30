@@ -9,7 +9,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float speed, speedAccSpeed;
     [SerializeField] float jumpHeight, jumpAccSpeed;
     [SerializeField] float jumpDeathDist;
-    [SerializeField] float ropeClimbSpeed;
+    [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
 
     [SerializeField] Collider mainCol;
     public Rigidbody rb;
@@ -77,13 +77,16 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 lastGroundedY = transform.position.y;
                 heldRope = null;
             }
-            else if(cs == pMovementState.LadderClimbing)
+            else if(cs == pMovementState.LadderClimbing) {
                 lastGroundedY = transform.position.y;
+            }
 
             cs = value;
 
             //  after changing
             rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing;
+            if(cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
             if(!rb.isKinematic)
@@ -161,9 +164,19 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             }
         }
     }
+    private void OnCollisionStay(Collision col) {
+        //  pushables / boxes
+        if(col.gameObject.tag == "Box") {
+            if(grounded && usedGround != col.collider) {
+                curPushing = col.gameObject.GetComponent<Rigidbody>();
+                curState = pMovementState.Pushing;
+                facePos(col.gameObject.transform.position.x);
+            }
+        }
+    }
     private void OnTriggerEnter(Collider col) {
         //  ledge climbing
-        if(curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
+        if(grounded && curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
             climbLedge(col);
         }
 
@@ -175,7 +188,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnTriggerStay(Collider col) {
         //  ledge climbing
-        if(curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
+        if(!grounded && curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
             climbLedge(col);
         }
     }
@@ -236,6 +249,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     void move() {
         if(rb.isKinematic) return;
         Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
+        float accTarget = speedAccSpeed;
 
         if(canMove) {
             switch(curState) {
@@ -273,6 +287,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 case pMovementState.RopeClimbing:
                     target = Vector3.zero;
+                    accTarget = 1f;
 
                     //  shimmies
                     if(savedInput.y > 0f)
@@ -295,17 +310,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.LadderClimbing:
-                    target = Vector2.right * savedInput.x * speed * 50f * Time.fixedDeltaTime;   //  rigid body x movement
-
-                    //  linear y movement
-                    var linearTarget = new Vector3(0f, savedInput.y * 100f);
-                    linearTarget += transform.position;
-                    transform.position = Vector3.MoveTowards(transform.position, linearTarget, speed * Time.fixedDeltaTime);
+                    target.x = savedInput.x * speed * 50f * Time.fixedDeltaTime;   //  rigid body x movement
+                    target.y = savedInput.y * ladderClimbSpeed * 100f * Time.fixedDeltaTime;   //  rigid body y movement
+                    accTarget = 1f;
                     break;
             }
         }
         //  does the thing
-        var temp = Vector2.MoveTowards(rb.linearVelocity, target, speedAccSpeed * 100f * Time.fixedDeltaTime);
+        var temp = Vector2.MoveTowards(rb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
         rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
     }
 
@@ -402,6 +414,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region LEDGE CLIMBING
     void climbLedge(Collider col) {
+        if(Mathf.Abs(transform.position.y - lastGroundedY) < 1f) return;    //  barely off the ground
         var offset = transform.position - col.gameObject.transform.position;
         if(curState == pMovementState.Falling && offset.y < 1.5f && offset.x < 0f == facingRight && savedInput.x != 0f) {
             curState = pMovementState.LedgeClimbing;

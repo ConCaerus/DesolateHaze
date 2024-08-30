@@ -20,7 +20,13 @@ public class PlayerPositionTrigger : MonoBehaviour {
         }
     }
 
-    public void pausePlayerFallDamage(float seconds) {
+    public void pauseFallDamage() {
+        PlayerMovement.I.canTakeFallDamage = false;
+    }
+    public void resumeFallDamage() {
+        PlayerMovement.I.canTakeFallDamage = true;
+    }
+    public void pauseFallDamageForTime(float seconds) {
         StartCoroutine(pauseFallDamage(seconds));
     }
     IEnumerator pauseFallDamage(float seconds) {
