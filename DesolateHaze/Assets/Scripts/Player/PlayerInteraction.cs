@@ -12,6 +12,9 @@ public class PlayerInteraction : Singleton<PlayerInteraction> {
         controls.Enable();
         controls.Player.Interact.performed += ctx => checkInteractions();
     }
+    private void OnDisable() {
+        interactables.Clear();
+    }
 
     void checkInteractions() {
         var curInteractable = getCurInteractable();

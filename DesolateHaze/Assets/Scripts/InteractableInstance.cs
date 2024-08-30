@@ -19,9 +19,8 @@ public class InteractableInstance : MonoBehaviour {
 
     public void trigger() {
         immediateSequence.Invoke();
-        for(int i = 0; i < delayedSequences.Count; i++) {
+        for(int i = 0; i < delayedSequences.Count; i++) 
             StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
-        }
     }
 
     public void test() {

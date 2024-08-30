@@ -98,12 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 051609d505ed88040b06e93e6acfcb67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  speed: 4.5
   speedAccSpeed: 0.35
   jumpHeight: 5
   jumpAccSpeed: 5
   jumpDeathDist: 15
   ropeClimbSpeed: 2.5
+  mainCol: {fileID: 5209831697231438111}
   rb: {fileID: 4188132916916667625}
   spriteTrans: {fileID: 8421557751034862052}
   canTakeFallDamage: 1

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -10,6 +11,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float jumpDeathDist;
     [SerializeField] float ropeClimbSpeed;
 
+    [SerializeField] Collider mainCol;
     public Rigidbody rb;
     [SerializeField] Transform spriteTrans;
 
@@ -38,8 +40,20 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     //  push things
-    Transform curPushing = null;
-    Vector3 pushOffset = Vector2.zero;
+    float prevPushingMass;
+    Rigidbody cp = null;
+    Rigidbody curPushing {
+        get { return cp; }
+        set {
+            if(cp != null)
+                cp.mass = prevPushingMass;
+            cp = value;
+            if(cp != null) {
+                prevPushingMass = cp.mass;
+                cp.mass = 0f;
+            }
+        }
+    }
 
     //  input things
     InputMaster controls;
@@ -72,7 +86,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing;
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
-            rb.linearVelocity += carryover;
+            if(!rb.isKinematic)
+                rb.linearVelocity += carryover;
         }
     }
     bool cm = false;
@@ -116,7 +131,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 lastGroundedY = transform.position.y;
 
             //  sets cur state
-            if(curState != pMovementState.LedgeClimbing && curState != pMovementState.LadderClimbing && curState != pMovementState.RopeClimbing)
+            if(curState != pMovementState.LadderClimbing && curState != pMovementState.RopeClimbing)
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
         }
     }
@@ -131,8 +146,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider) {
-                curPushing = col.gameObject.transform;
-                pushOffset = col.gameObject.transform.position - transform.position;
+                curPushing = col.gameObject.GetComponent<Rigidbody>();
                 curState = pMovementState.Pushing;
                 facePos(col.gameObject.transform.position.x);
             }
@@ -149,12 +163,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnTriggerEnter(Collider col) {
         //  ledge climbing
-        if(curState != pMovementState.LedgeClimbing && col.gameObject.tag == "Ledge") {
-            var offset = col.transform.position - transform.position;
-            if(offset.y > -1.25f && offset.x >= 0f == facingRight) {
-                curState = pMovementState.LedgeClimbing;
-                transform.DOMove(col.gameObject.transform.GetChild(0).position, .5f).OnComplete(() => { curState = grounded ? pMovementState.Walking : pMovementState.Falling; });
-            }
+        if(curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
+            climbLedge(col);
         }
 
         //  ladders
@@ -165,18 +175,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnTriggerStay(Collider col) {
         //  ledge climbing
-        if(curState != pMovementState.LedgeClimbing && col.gameObject.tag == "Ledge") {
-            var offset = col.transform.position - transform.position;
-            if(offset.y > -1.25f && offset.x >= 0f == facingRight) {
-                curState = pMovementState.LedgeClimbing;
-                transform.DOMove(col.gameObject.transform.GetChild(0).position, .5f).OnComplete(() => { curState = grounded ? pMovementState.Walking : pMovementState.Falling; });
-            }
+        if(curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
+            climbLedge(col);
         }
     }
     private void OnTriggerExit(Collider col) {
         //  pushables / boxes
-        if(col.gameObject.tag == "Box" && controls.Player.Interact.ReadValue<float>() == 0f) {
+        if(col.gameObject.tag == "Box") {
             curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+            curPushing = null;
         }
 
         //  ladders
@@ -214,7 +221,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void updateFaceDir() {
         if(PauseCanvas.I.paused) return;
-        if(curState != pMovementState.Falling && curState != pMovementState.Pushing && Mathf.Abs(savedInput.x) != 0f) {
+        if(curState != pMovementState.Pushing && Mathf.Abs(savedInput.x) != 0f) {
             facingRight = savedInput.x >= 0;
             //  flips character
             spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
@@ -227,6 +234,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
     }
     void move() {
+        if(rb.isKinematic) return;
         Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
 
         if(canMove) {
@@ -239,10 +247,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Pushing:
-                    target.x = savedInput.x * speed * 100f * Time.fixedDeltaTime;
+                    target.x = savedInput.x * (speed / 2f) * 100f * Time.fixedDeltaTime;
                     if(controls.Player.Interact.ReadValue<float>() != 0f) {
-                        target.x = savedInput.x * (speed / 2f) * 100f * Time.fixedDeltaTime;
-                        curPushing.position = Vector3.MoveTowards(curPushing.transform.position, transform.position + pushOffset, speed * 100f * Time.fixedDeltaTime);
+                        var speedMod = .75f;
+                        if(savedInput.x < 0f && transform.position.x < curPushing.transform.position.x)
+                            speedMod = 1.15f;
+                        else if(savedInput.x > 0f && transform.position.x > curPushing.transform.position.x)
+                            speedMod = 1.15f;
+                        curPushing.linearVelocity = new Vector3(rb.linearVelocity.x * speedMod, curPushing.linearVelocity.y);
                     }
                     break;
 
@@ -387,6 +399,34 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     #endregion
 
+
+    #region LEDGE CLIMBING
+    void climbLedge(Collider col) {
+        var offset = transform.position - col.gameObject.transform.position;
+        if(curState == pMovementState.Falling && offset.y < 1.5f && offset.x < 0f == facingRight && savedInput.x != 0f) {
+            curState = pMovementState.LedgeClimbing;
+            var tallestChild = col.gameObject.transform.GetChild(0);
+            foreach(var i in col.gameObject.transform.GetComponentsInChildren<Transform>()) {
+                if(i.position.y > tallestChild.position.y)
+                    tallestChild = i;
+            }
+            //  checks if facing end pos
+            var xOffset = tallestChild.position.x - transform.position.x;
+            if((xOffset < 0f && savedInput.x < 0f) || (xOffset > 0f && savedInput.x > 0f)) {
+                mainCol.isTrigger = true;
+                transform.DOKill();
+                transform.DOMove(tallestChild.position, .5f).OnComplete(() => { 
+                    curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                    mainCol.isTrigger = false;
+                    rb.linearVelocity = Vector3.zero;
+                });
+                Invoke("setFalling", .51f);
+            }
+        }
+    }
+    #endregion
+
+
     #region GROUND CHECKS
     public void touchedGround(Collider col) {
         if(col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") {
@@ -395,7 +435,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
     public void leftGround(Collider col) {
-        if((col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") && gameObject.activeInHierarchy) {
+        if((curState != pMovementState.Pushing || controls.Player.Interact.ReadValue<float>() == 0f) && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") && gameObject.activeInHierarchy) {
             grounded = false;
             usedGround = null;
 
