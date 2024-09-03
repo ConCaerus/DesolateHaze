@@ -20,6 +20,10 @@ public class PlayerPositionTrigger : MonoBehaviour {
         }
     }
 
+    public void setPlayerSpeedMod(float mod) {
+        PlayerMovement.I.setSpeedMod(mod);
+    }
+
     public void pauseFallDamage() {
         PlayerMovement.I.canTakeFallDamage = false;
     }

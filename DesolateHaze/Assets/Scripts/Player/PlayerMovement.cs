@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using static UnityEngine.GraphicsBuffer;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -10,6 +9,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float jumpHeight, jumpAccSpeed;
     [SerializeField] float jumpDeathDist;
     [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
+    float speedMod = 1f;
 
     [SerializeField] Collider mainCol;
     public Rigidbody rb;
@@ -257,18 +257,18 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Walking:    //  update x axis velocity
-                    target.x = savedInput.x * speed * 100f * Time.fixedDeltaTime;
+                    target.x = savedInput.x * speed * speedMod * 100f * Time.fixedDeltaTime;
                     break;
 
                 case pMovementState.Pushing:
-                    target.x = savedInput.x * (speed * .6f) * 100f * Time.fixedDeltaTime;
+                    target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
                     if(controls.Player.Interact.ReadValue<float>() != 0f) {
-                        var speedMod = .75f;
+                        var sMod = .75f;
                         if(savedInput.x < 0f && transform.position.x < curPushing.transform.position.x)
-                            speedMod = 1.15f;
+                            sMod = 1.15f;
                         else if(savedInput.x > 0f && transform.position.x > curPushing.transform.position.x)
-                            speedMod = 1.15f;
-                        curPushing.linearVelocity = new Vector3(rb.linearVelocity.x * speedMod, curPushing.linearVelocity.y);
+                            sMod = 1.15f;
+                        curPushing.linearVelocity = new Vector3(rb.linearVelocity.x * sMod, curPushing.linearVelocity.y);
                     }
                     break;
 
@@ -278,7 +278,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     //  slight air control
                     //  not used because it makes the player stick to slopes
                     if(Mathf.Abs(rb.linearVelocity.x) > 0f) {
-                        var mod = savedInput.x * speed * 3f * Time.fixedDeltaTime;
+                        var mod = savedInput.x * speed * speedMod * 3f * Time.fixedDeltaTime;
                         if(Mathf.Abs(target.x + mod) < Mathf.Abs(target.x)) //  only can slow down jump
                             target.x += mod;
                     }
@@ -302,7 +302,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     //  swings
                     transform.position = heldRope.getGrabbedPos();
                     if(savedInput != Vector2.zero)
-                        heldRope.addSwingForce(savedInput * speed * 100f * Time.fixedDeltaTime);
+                        heldRope.addSwingForce(savedInput * speed * speedMod * 100f * Time.fixedDeltaTime);
                     break;
 
                 case pMovementState.LedgeClimbing:  //  hold while character does the climbing animation
@@ -310,8 +310,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.LadderClimbing:
-                    target.x = savedInput.x * speed * 50f * Time.fixedDeltaTime;   //  rigid body x movement
-                    target.y = savedInput.y * ladderClimbSpeed * 100f * Time.fixedDeltaTime;   //  rigid body y movement
+                    target.x = savedInput.x * speed * speedMod * 50f * Time.fixedDeltaTime;   //  rigid body x movement
+                    target.y = savedInput.y * ladderClimbSpeed * speedMod * 100f * Time.fixedDeltaTime;   //  rigid body y movement
                     accTarget = 1f;
                     break;
             }
@@ -462,4 +462,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         curState = pMovementState.Falling;
     }
     #endregion
+
+    public void setSpeedMod(float mod) {
+        speedMod = mod;
+    }
 }

@@ -10,6 +10,7 @@ public class VineInstance : MonoBehaviour {
     [SerializeField] Transform attVine, attVineRot;
     [SerializeField] List<Transform> repellants = new List<Transform>();
     [SerializeField] bool hardTracking = true;
+    [SerializeField] bool singleShot = false;
     bool canTrack = true;
 
     bool r = false;
@@ -92,6 +93,8 @@ public class VineInstance : MonoBehaviour {
         //  returns to rest
         attVine.DOLocalMoveZ(normOffset, returnTime);
         yield return new WaitForSeconds(returnTime + .1f);
+        if(singleShot)
+            enabled = false;
         canTrack = true;
         attacker = null;
     }
