@@ -9,7 +9,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float jumpHeight, jumpAccSpeed;
     [SerializeField] float jumpDeathDist;
     [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
-    float speedMod = 1f;
+    [HideInInspector] public float speedMod = 1f;
 
     [SerializeField] Collider mainCol;
     public Rigidbody rb;
@@ -139,7 +139,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
 
-    enum pMovementState {
+    [System.Serializable]
+    public enum pMovementState {
         None, Walking, Falling, Pushing, LedgeClimbing, RopeClimbing, LadderClimbing
     }
     #endregion
@@ -320,6 +321,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         var temp = Vector2.MoveTowards(rb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
         rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
     }
+    public void setNewState(pMovementState newState) {
+        curState = newState;
+    }
 
     public void climbRope(RopeInstance r) {
         curState = pMovementState.RopeClimbing;
@@ -462,8 +466,4 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         curState = pMovementState.Falling;
     }
     #endregion
-
-    public void setSpeedMod(float mod) {
-        speedMod = mod;
-    }
 }

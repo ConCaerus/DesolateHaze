@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,6 +46,11 @@ public class SneakManagerInstance : MonoBehaviour {
         };
     }
 
+    private void OnDisable() {
+        if(waiter != null) StopCoroutine(waiter);
+        waiter = null;
+    }
+
     IEnumerator moving() {
         float st;
         while(true) {
@@ -58,7 +64,7 @@ public class SneakManagerInstance : MonoBehaviour {
         while(true) {
             st = Time.time;
             yield return new WaitForEndOfFrame();
-            curTime -= Time.time - st;
+            curTime -= (Time.time - st) * 2f;
         }
     }
 

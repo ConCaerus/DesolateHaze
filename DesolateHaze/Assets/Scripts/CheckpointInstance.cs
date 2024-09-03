@@ -14,6 +14,6 @@ public class CheckpointInstance : MonoBehaviour {
 
     private void OnTriggerEnter(Collider col) {
         triggered = true;
-        Saver.triggerCheckpoint(CheckpointManager.I, transform.position);
+        Saver.triggerCheckpoint(CheckpointManager.I, PlayerMovement.I, transform.position);
     }
 }

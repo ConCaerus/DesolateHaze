@@ -20,23 +20,24 @@ public static class Saver {
         SaveData.setString(playerTag, "");
     }
 
-    public static void triggerCheckpoint(CheckpointManager cm, Vector3 checkPointPos) {
+    public static void triggerCheckpoint(CheckpointManager cm, PlayerMovement pm, Vector3 checkPointPos) {
         var save = getSave();
-        initCheck(save, cm);
+        initCheck(save, cm, pm);
 
         foreach(var i in save.data[(int)cm.aType - 1]) {
             if(i.pos == checkPointPos) {
                 i.triggered = true;
+                i.playerSpeedMod = pm.speedMod;
                 break;
             }
         }
 
         storeSave(save);
     }
-    public static void untriggerLastCheckpoint(CheckpointManager cm) {
+    public static void untriggerLastCheckpoint(CheckpointManager cm, PlayerMovement pm) {
         var save = getSave();
 
-        var pos = getLastCheckpointPos(cm);
+        var pos = getLastCheckpoint(cm, pm).pos;
 
         for(int i = 0; i < save.data[(int)cm.aType - 1].Count; i++) {
             if(save.data[(int)cm.aType - 1][i].pos == pos) {
@@ -48,25 +49,25 @@ public static class Saver {
         storeSave(save);
     }
 
-    public static Vector3 getLastCheckpointPos(CheckpointManager cm) {
+    public static CheckpointSaveData getLastCheckpoint(CheckpointManager cm, PlayerMovement pm) {
         var save = getSave();
-        if(initCheck(save, cm)) {
+        if(initCheck(save, cm, pm)) {
             for(int i = save.data[(int)cm.aType - 1].Count - 1; i >= 0; i--) {
                 if(save.data[(int)cm.aType - 1][i].triggered) {
-                    return save.data[(int)cm.aType - 1][i].pos;
+                    return save.data[(int)cm.aType - 1][i];
                 }
             }
         }
-        return cm.checkpoints[0].transform.position;
+        return new CheckpointSaveData(cm.checkpoints[0], 1f);
     }
-    public static bool hasTriggeredCheckpoint(CheckpointManager cm, Vector3 pos) {
+    public static bool hasTriggeredCheckpoint(CheckpointManager cm, PlayerMovement pm, Vector3 pos) {
         if(cm.aType == areaType.None) {
             Debug.LogError("Set the area type of the checkpoint manager");
             return false;
         }
         var save = getSave();
 
-        if(!initCheck(save, cm)) return false;   //  checks for valid save
+        if(!initCheck(save, cm, pm)) return false;   //  checks for valid save
 
         //  if old save, check for seen checkpoints
         foreach(var i in save.data[(int)cm.aType - 1]) {
@@ -78,7 +79,7 @@ public static class Saver {
     }
 
     //  returns false if save not setup, true if has save data
-    static bool initCheck(ExtractedPlayerSaveData save, CheckpointManager cm) {
+    static bool initCheck(ExtractedPlayerSaveData save, CheckpointManager cm, PlayerMovement pm) {
         if(cm.initted) return true;
         
         //  resets position on all checkpoints
@@ -86,10 +87,10 @@ public static class Saver {
             save.data[(int)cm.aType - 1][i].pos = cm.checkpoints[i].transform.position;
         }
 
-        //  sets if the checkpoints are triggered
+        //  checks for newly created checkpoints
         if(save.data[(int)cm.aType - 1].Count != cm.checkpoints.Count) {
             for(int i = save.data[(int)cm.aType - 1].Count; i < cm.checkpoints.Count; i++) {
-                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, false);
+                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, pm.speedMod, false);
                 save.data[(int)cm.aType - 1].Add(csd);
             }
         }
@@ -149,10 +150,17 @@ public class ExtractedPlayerSaveData {
 [System.Serializable]
 public class CheckpointSaveData {
     public Vector3 pos;
+    public float playerSpeedMod;
     public bool triggered = false;
 
-    public CheckpointSaveData(Vector3 p, bool t) {
+    public CheckpointSaveData(Vector3 p, float sm, bool t) {
         pos = p;
+        playerSpeedMod = sm;
         triggered = t;
+    }
+    public CheckpointSaveData(CheckpointInstance ci, float sm) {
+        pos = ci.transform.position;
+        playerSpeedMod = sm;
+        triggered = ci.triggered;
     }
 }

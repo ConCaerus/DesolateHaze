@@ -15,19 +15,27 @@ public class CheckpointManager : Singleton<CheckpointManager> {
         foreach(var i in transform.GetComponentsInChildren<CheckpointInstance>()) {
             checkpoints.Add(i);
         }
-
-        //  sets already triggered checkpoints
-        foreach(var i in checkpoints) {
-            if(Saver.hasTriggeredCheckpoint(this, i.transform.position))
-                i.triggered = true;
-        }
-
         StartCoroutine(playerSpawner());
     }
 
     IEnumerator playerSpawner() {
+        Instantiate(playerPref);
+        int catcher = 10;
         yield return new WaitForFixedUpdate();
+        do {
+            yield return new WaitForFixedUpdate();
+            catcher--;
+        }
+        while((PlayerMovement.I == null || !Saver.getLastCheckpoint(this, PlayerMovement.I).triggered) && catcher > 0);
         //  spawns player at the last triggered checkpoint
-        CameraMovement.I.snapToPosition(Instantiate(playerPref).transform.position = Saver.getLastCheckpointPos(this));
+        var lastCheckpoint = Saver.getLastCheckpoint(this, PlayerMovement.I);
+        CameraMovement.I.snapToPosition(PlayerMovement.I.transform.position = lastCheckpoint.pos);
+        PlayerMovement.I.speedMod = lastCheckpoint.playerSpeedMod;
+
+        //  sets already triggered checkpoints
+        foreach(var i in checkpoints) {
+            if(Saver.hasTriggeredCheckpoint(this, PlayerMovement.I, i.transform.position))
+                i.triggered = true;
+        }
     }
 }

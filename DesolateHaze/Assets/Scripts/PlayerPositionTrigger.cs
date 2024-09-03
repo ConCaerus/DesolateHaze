@@ -21,7 +21,10 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
 
     public void setPlayerSpeedMod(float mod) {
-        PlayerMovement.I.setSpeedMod(mod);
+        PlayerMovement.I.speedMod = mod;
+    }
+    public void setPlayerFalling() {
+        PlayerMovement.I.setNewState(PlayerMovement.pMovementState.Falling);
     }
 
     public void pauseFallDamage() {
