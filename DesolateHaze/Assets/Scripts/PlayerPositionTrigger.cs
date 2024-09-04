@@ -45,4 +45,8 @@ public class PlayerPositionTrigger : MonoBehaviour {
         yield return new WaitForSeconds(s);
         e.Invoke();
     }
+
+    public void testWarn() {
+        Debug.Log("warn");
+    }
 }
