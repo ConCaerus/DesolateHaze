@@ -58,7 +58,9 @@ public static class Saver {
                 }
             }
         }
-        return new CheckpointSaveData(cm.checkpoints[0], 1f);
+        var temp = new CheckpointSaveData(cm.checkpoints[0], 1f);
+        temp.triggered = true;
+        return temp;
     }
     public static bool hasTriggeredCheckpoint(CheckpointManager cm, PlayerMovement pm, Vector3 pos) {
         if(cm.aType == areaType.None) {

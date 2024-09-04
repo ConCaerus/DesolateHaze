@@ -13,6 +13,7 @@ public class CheckpointInstance : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider col) {
+        if(col.gameObject.tag != "Player") return;
         triggered = true;
         Saver.triggerCheckpoint(CheckpointManager.I, PlayerMovement.I, transform.position);
     }

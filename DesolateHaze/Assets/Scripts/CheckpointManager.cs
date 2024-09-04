@@ -30,8 +30,8 @@ public class CheckpointManager : Singleton<CheckpointManager> {
         //  spawns player at the last triggered checkpoint
         var lastCheckpoint = Saver.getLastCheckpoint(this, PlayerMovement.I);
         CameraMovement.I.snapToPosition(PlayerMovement.I.transform.position = lastCheckpoint.pos);
+        PlayerMovement.I.rb.linearVelocity = Vector3.zero;
         PlayerMovement.I.speedMod = lastCheckpoint.playerSpeedMod;
-
         //  sets already triggered checkpoints
         foreach(var i in checkpoints) {
             if(Saver.hasTriggeredCheckpoint(this, PlayerMovement.I, i.transform.position))

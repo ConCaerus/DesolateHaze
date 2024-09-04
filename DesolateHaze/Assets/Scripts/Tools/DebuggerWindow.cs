@@ -16,8 +16,8 @@ public class DebuggerWindow : EditorWindow {
         GUILayout.BeginHorizontal();
         if(GUILayout.Button("Previous Checkpoint"))
             Saver.untriggerLastCheckpoint(FindFirstObjectByType<CheckpointManager>(), PlayerMovement.I);
-        if(GUILayout.Button("Clear Save")) 
-            Saver.clearSave();
+        if(GUILayout.Button("Clear Save"))
+            SaveData.wipe();
         GUILayout.EndHorizontal();
     }
 }
