@@ -507,7 +507,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &79786814
@@ -2405,7 +2405,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &272683579
@@ -2674,7 +2674,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &328383665
@@ -3313,7 +3313,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &413383743
@@ -4772,7 +4772,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &545603816
@@ -4935,7 +4935,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &546097388
@@ -5394,7 +5394,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &574113456
@@ -6215,7 +6215,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &625730075
@@ -6815,7 +6815,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &680935812
@@ -7301,7 +7301,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &727484145
@@ -9537,7 +9537,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &977858000
@@ -9752,7 +9752,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &982255420
@@ -9964,7 +9964,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &1018780160
@@ -11220,6 +11220,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2396870462418570501, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2717130690223767130, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773887894097679214, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950033907699964436, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694947411073851748, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7062777452519952475, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: segRbs.Array.size
       value: 12
@@ -11855,6 +11875,22 @@ PrefabInstance:
       propertyPath: m_IncludeLayers.m_Bits
       value: 1783
       objectReference: {fileID: 0}
+    - target: {fileID: 2396870462418570501, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2717130690223767130, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773887894097679214, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950033907699964436, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
     - target: {fileID: 3767165383659007773, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 256
@@ -11878,6 +11914,10 @@ PrefabInstance:
     - target: {fileID: 5314210705593346497, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
       value: 1783
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694947411073851748, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 7062777452519952475, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: segRbs.Array.size
@@ -13493,7 +13533,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &1353518528
@@ -14882,7 +14922,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &1520815382
@@ -19001,7 +19041,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &2057692141
@@ -19205,6 +19245,26 @@ PrefabInstance:
     - target: {fileID: 10171063899121788, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2396870462418570501, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2717130690223767130, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773887894097679214, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950033907699964436, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694947411073851748, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
+      propertyPath: m_Height
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 7062777452519952475, guid: 8bd12e2808832e74aaf98550e020a6d6, type: 3}
       propertyPath: segRbs.Array.size
@@ -19885,7 +19945,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &2103908821
@@ -20442,7 +20502,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &2137012269

@@ -128,7 +128,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 //  jumps if jumps
                 if(jumpHeld)
-                    doJump();
+                    doJump(true);
             }
             else
                 lastGroundedY = transform.position.y;
@@ -287,8 +287,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.RopeClimbing:
-                    target = Vector3.zero;
+                    rb.linearVelocity = (heldRope.getGrabbedPos() - transform.position) * 25f;
+                    target = rb.linearVelocity;
                     accTarget = 1f;
+                    rb.mass = 0f;
 
                     //  shimmies
                     if(savedInput.y > 0f)
@@ -301,7 +303,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     }
 
                     //  swings
-                    transform.position = heldRope.getGrabbedPos();
                     if(savedInput != Vector2.zero)
                         heldRope.addSwingForce(savedInput * speed * speedMod * 100f * Time.fixedDeltaTime);
                     break;
@@ -342,15 +343,17 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             return;
         //  if grounded, jump immedietely 
         if(grounded)
-            doJump();
-        else if(curState == pMovementState.LadderClimbing || curState == pMovementState.RopeClimbing)
-            doJump(2f);
+            doJump(true);
+        else if(curState == pMovementState.LadderClimbing)
+            doJump(false, 2f);
+        else if(curState == pMovementState.RopeClimbing)
+            doJump(true);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
             StopCoroutine(coyoteTime);
             coyoteTime = null;
-            doJump();
+            doJump(true);
         }
 
         //  queue up the jump
@@ -363,12 +366,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(jumpCanceler == null && !grounded)
             jumpCanceler = StartCoroutine(jumpCancelWaiter());
     }
-    void doJump(float xMod = 1f) {
+    void doJump(bool keepXVel, float xMod = 1f) {
         curState = pMovementState.Falling;
         jumpHeld = false;
-        var target = new Vector3(savedInput.x > 0f ? 1f : -1f * xMod, jumpHeight) * 100f * Time.fixedDeltaTime;
-        target += rb.linearVelocity;
-        rb.linearVelocity = target;
+        Vector2 target;
+        target.x = (keepXVel ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
+        target.y = jumpHeight * 100f * Time.fixedDeltaTime;
+        rb.linearVelocity = new Vector2(Mathf.Clamp(target.x, -maxVelocity, maxVelocity), target.y);
         StartCoroutine(jumpStateChecker());
         //  resets the jump canceler
         if(jumpCanceler != null)
@@ -397,7 +401,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  does the jump if can do the jump
         if(allowedTime > 0f)
-            doJump();
+            doJump(true);
         queuedJump = null;
     }   //  for queuing up a jump before the player is back on the ground
     IEnumerator coyoteWaiter() {
