@@ -370,7 +370,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         curState = pMovementState.Falling;
         jumpHeld = false;
         Vector2 target;
-        target.x = (keepXVel ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
+        target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
         target.y = jumpHeight * 100f * Time.fixedDeltaTime;
         rb.linearVelocity = new Vector2(Mathf.Clamp(target.x, -maxVelocity, maxVelocity), target.y);
         StartCoroutine(jumpStateChecker());
