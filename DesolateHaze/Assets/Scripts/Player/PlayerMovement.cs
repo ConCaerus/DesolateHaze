@@ -347,7 +347,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else if(curState == pMovementState.LadderClimbing)
             doJump(false, 2f);
         else if(curState == pMovementState.RopeClimbing)
-            doJump(true);
+            doJump(true, 5f, 5f);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
@@ -366,11 +366,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(jumpCanceler == null && !grounded)
             jumpCanceler = StartCoroutine(jumpCancelWaiter());
     }
-    void doJump(bool keepXVel, float xMod = 1f) {
+    void doJump(bool keepXVel, float xMod = 1f, float minX = 0f) {
         curState = pMovementState.Falling;
         jumpHeld = false;
         Vector2 target;
-        target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
+        //target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
+        target.x = (savedInput.x < 0f ? Mathf.Min(rb.linearVelocity.x, savedInput.x) : Mathf.Max(rb.linearVelocity.x, savedInput.x)) * xMod;
+        target.x = target.x < 0f ? target.x = Mathf.Min(target.x, minX) : Mathf.Max(target.x, minX);
         target.y = jumpHeight * 100f * Time.fixedDeltaTime;
         rb.linearVelocity = new Vector2(Mathf.Clamp(target.x, -maxVelocity, maxVelocity), target.y);
         StartCoroutine(jumpStateChecker());
