@@ -33,22 +33,28 @@ public class SneakManagerInstance : MonoBehaviour {
     InputMaster controls;
     Coroutine waiter = null;
 
-    private void Start() {
+    private void OnEnable() {
         controls = new InputMaster();
         controls.Enable();
-        controls.Player.Move.performed += ctx => {
-            if(waiter != null) StopCoroutine(waiter);
-            waiter = StartCoroutine(moving());
-        };
-        controls.Player.Move.canceled += ctx => {
-            if(waiter != null) StopCoroutine(waiter);
-            waiter = StartCoroutine(notMoving());
-        };
+        controls.Player.Move.performed += ctx => stopMoving();
+        controls.Player.Move.canceled += ctx => startMoving();
     }
 
     private void OnDisable() {
+        controls.Disable();
         if(waiter != null) StopCoroutine(waiter);
         waiter = null;
+    }
+
+    void startMoving() {
+        if(!gameObject.activeInHierarchy) return;
+        if(waiter != null) StopCoroutine(waiter);
+        waiter = StartCoroutine(moving());
+    }
+    void stopMoving() {
+        if(!gameObject.activeInHierarchy) return;
+        if(waiter != null) StopCoroutine(waiter);
+        waiter = StartCoroutine(notMoving());
     }
 
     IEnumerator moving() {

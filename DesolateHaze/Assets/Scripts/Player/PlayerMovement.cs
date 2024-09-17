@@ -183,7 +183,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  ladders
         else if(col.gameObject.tag == "Ladder") {
-            if(!grounded)
+            if(savedInput.y > 0f)
                 curState = pMovementState.LadderClimbing;
         }
     }
@@ -191,6 +191,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  ledge climbing
         if(!grounded && curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
             climbLedge(col);
+        }
+
+        //  ladders
+        else if(col.gameObject.tag == "Ladder") {
+            if(savedInput.y > 0f)
+                curState = pMovementState.LadderClimbing;
         }
     }
     private void OnTriggerExit(Collider col) {
@@ -347,7 +353,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else if(curState == pMovementState.LadderClimbing)
             doJump(false, 2f);
         else if(curState == pMovementState.RopeClimbing)
-            doJump(true, 5f, 5f);
+            doJump(true, 1f, 5f);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
