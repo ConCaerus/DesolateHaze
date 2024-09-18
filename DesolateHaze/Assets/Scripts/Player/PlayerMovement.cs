@@ -84,9 +84,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             cs = value;
 
             //  after changing
-            rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing;
+            rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing && cs != pMovementState.LedgeClimbing;
             if(cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
+            else if(cs == pMovementState.LedgeClimbing)
+                rb.linearVelocity = Vector3.zero;
+
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
             if(!rb.isKinematic)
@@ -314,7 +317,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.LedgeClimbing:  //  hold while character does the climbing animation
-                    target = Vector2.zero;
+                    target = rb.linearVelocity;
                     break;
 
                 case pMovementState.LadderClimbing:
@@ -433,23 +436,31 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(Mathf.Abs(transform.position.y - lastGroundedY) < 1f) return;    //  barely off the ground
         var offset = transform.position - col.gameObject.transform.position;
         if(curState == pMovementState.Falling && offset.y < 1.5f && offset.x < 0f == facingRight && savedInput.x != 0f) {
-            curState = pMovementState.LedgeClimbing;
             var tallestChild = col.gameObject.transform.GetChild(0);
             foreach(var i in col.gameObject.transform.GetComponentsInChildren<Transform>()) {
                 if(i.position.y > tallestChild.position.y)
                     tallestChild = i;
             }
+
+            //  checks if already on tallest child
+            if(tallestChild.position.y - transform.position.y < 1f) return;
+
             //  checks if facing end pos
             var xOffset = tallestChild.position.x - transform.position.x;
             if((xOffset < 0f && savedInput.x < 0f) || (xOffset > 0f && savedInput.x > 0f)) {
+                curState = pMovementState.LedgeClimbing;
+                rb.isKinematic = true;
                 mainCol.isTrigger = true;
+                canMove = false;
+                rb.linearVelocity = Vector3.zero;
                 transform.DOKill();
-                transform.DOMove(tallestChild.position, .5f).OnComplete(() => { 
-                    curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                transform.DOMove(tallestChild.position, .5f).OnComplete(() => {
                     mainCol.isTrigger = false;
+                    canMove = true;
                     rb.linearVelocity = Vector3.zero;
+                    curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                    rb.isKinematic = false;
                 });
-                Invoke("setFalling", .51f);
             }
         }
     }
