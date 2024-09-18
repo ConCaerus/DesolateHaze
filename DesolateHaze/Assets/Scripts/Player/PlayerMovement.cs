@@ -50,7 +50,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             cp = value;
             if(cp != null) {
                 prevPushingMass = cp.mass;
-                cp.mass = 0f;
             }
         }
     }
@@ -272,13 +271,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 case pMovementState.Pushing:
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
-                    if(controls.Player.Interact.ReadValue<float>() != 0f) {
-                        var sMod = .75f;
+                    var xOffset = curPushing.transform.position.x - transform.position.x;
+                    if(controls.Player.Interact.ReadValue<float>() != 0f || (savedInput.x > 0f == xOffset > 0f)) {
+                        var sMod = .9f;
                         if(savedInput.x < 0f && transform.position.x < curPushing.transform.position.x)
-                            sMod = 1.15f;
+                            sMod = 1.1f;
                         else if(savedInput.x > 0f && transform.position.x > curPushing.transform.position.x)
-                            sMod = 1.15f;
-                        curPushing.linearVelocity = new Vector3(rb.linearVelocity.x * sMod, curPushing.linearVelocity.y);
+                            sMod = 1.1f;
+                        curPushing.linearVelocity = new Vector3(target.x * sMod, curPushing.linearVelocity.y);
                     }
                     break;
 
