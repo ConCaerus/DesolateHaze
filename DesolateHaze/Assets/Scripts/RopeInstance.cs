@@ -82,7 +82,7 @@ public class RopeInstance : MonoBehaviour {
         waiter = StartCoroutine(dropWaiter());
     }
     IEnumerator dropWaiter() {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         //  sets can collide with player
         foreach(var i in segRbs) {
             i.excludeLayers = LayerMask.GetMask(new string[] { "Rope", "GroundCollider" });

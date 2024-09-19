@@ -40,17 +40,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     //  push things
-    float prevPushingMass;
+    bool touchingCurPushing = false;
     Rigidbody cp = null;
     Rigidbody curPushing {
         get { return cp; }
         set {
-            if(cp != null)
-                cp.mass = prevPushingMass;
             cp = value;
-            if(cp != null) {
-                prevPushingMass = cp.mass;
-            }
         }
     }
 
@@ -152,6 +147,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider) {
+                touchingCurPushing = true;
                 curPushing = col.gameObject.GetComponent<Rigidbody>();
                 curState = pMovementState.Pushing;
                 facePos(col.gameObject.transform.position.x);
@@ -168,12 +164,19 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
     private void OnCollisionStay(Collision col) {
+        if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing)
+            touchingCurPushing = true;
+    }
+    private void OnCollisionExit(Collision col) {
         //  pushables / boxes
-        if(col.gameObject.tag == "Box") {
-            if(grounded && usedGround != col.collider) {
-                curPushing = col.gameObject.GetComponent<Rigidbody>();
-                curState = pMovementState.Pushing;
-                facePos(col.gameObject.transform.position.x);
+        if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing) {
+            if(!col.collider.isTrigger) {
+                touchingCurPushing = false;
+            }
+            else {
+                curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                curPushing = null;
+                touchingCurPushing = false;
             }
         }
     }
@@ -206,6 +209,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(col.gameObject.tag == "Box") {
             curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             curPushing = null;
+            touchingCurPushing = false;
         }
 
         //  ladders
@@ -273,12 +277,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
                     var xOffset = curPushing.transform.position.x - transform.position.x;
                     if(controls.Player.Interact.ReadValue<float>() != 0f || (savedInput.x > 0f == xOffset > 0f)) {
-                        var sMod = .9f;
-                        if(savedInput.x < 0f && transform.position.x < curPushing.transform.position.x)
-                            sMod = 1.1f;
-                        else if(savedInput.x > 0f && transform.position.x > curPushing.transform.position.x)
-                            sMod = 1.1f;
-                        curPushing.linearVelocity = new Vector3(target.x * sMod, curPushing.linearVelocity.y);
+                        if(touchingCurPushing) {
+                            var sMod = savedInput.x > 0f == xOffset > 0f ? .9f : 1.15f;
+                            curPushing.linearVelocity = new Vector3(target.x * sMod, curPushing.linearVelocity.y);
+                        }
+                        else
+                            curPushing.linearVelocity = new Vector3(rb.linearVelocity.x, curPushing.linearVelocity.y);
                     }
                     break;
 
@@ -381,7 +385,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         Vector2 target;
         //target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
         target.x = (savedInput.x < 0f ? Mathf.Min(rb.linearVelocity.x, savedInput.x) : Mathf.Max(rb.linearVelocity.x, savedInput.x)) * xMod;
-        target.x = target.x < 0f ? target.x = Mathf.Min(target.x, minX) : Mathf.Max(target.x, minX);
+        target.x = target.x < 0f ? target.x = Mathf.Min(target.x, -minX) : Mathf.Max(target.x, minX);
         target.y = jumpHeight * 100f * Time.fixedDeltaTime;
         rb.linearVelocity = new Vector2(Mathf.Clamp(target.x, -maxVelocity, maxVelocity), target.y);
         StartCoroutine(jumpStateChecker());

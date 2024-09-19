@@ -36,8 +36,8 @@ public class SneakManagerInstance : MonoBehaviour {
     private void OnEnable() {
         controls = new InputMaster();
         controls.Enable();
-        controls.Player.Move.performed += ctx => stopMoving();
-        controls.Player.Move.canceled += ctx => startMoving();
+        controls.Player.Move.performed += ctx => startMoving();
+        controls.Player.Move.canceled += ctx => stopMoving();
     }
 
     private void OnDisable() {
