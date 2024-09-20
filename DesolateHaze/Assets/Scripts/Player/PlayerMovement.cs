@@ -397,7 +397,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  coroutines
     IEnumerator jumpCancelWaiter() {
-        float endY = (-jumpHeight) * 100f * Time.deltaTime;
+        float endY = (-jumpHeight);
         while(rb.linearVelocity.y > endY && !grounded) {
             rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(rb.linearVelocity.x, endY), jumpAccSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();

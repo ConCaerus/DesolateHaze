@@ -10,6 +10,7 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
     Coroutine waiter = null;
 
     private void Start() {
+        Time.timeScale = 1.0f;
         DOTween.Init();
         background.gameObject.SetActive(true);
         background.color = Color.black;
@@ -32,8 +33,18 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
     IEnumerator loader(string sName) {
         background.gameObject.SetActive(true);
         background.color = Color.clear;
-        background.DOColor(Color.black, .35f);
-        yield return new WaitForSeconds(.35f);
+        float blackTime = .35f;
+        float elapsedTime = 0f;
+        float startTime = Time.realtimeSinceStartup;
+        while(elapsedTime < blackTime) {
+            float perc = elapsedTime / blackTime;
+            background.color = Color.black * perc;
+            yield return new WaitForEndOfFrame();
+            elapsedTime += Time.realtimeSinceStartup - startTime;
+            startTime = Time.realtimeSinceStartup;
+        }
+        background.color = Color.black;
+        yield return new WaitForEndOfFrame();
         SceneManager.LoadScene(sName);
     }
 }
