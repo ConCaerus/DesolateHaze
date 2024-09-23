@@ -376,6 +376,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void cancelJump() {
         jumpHeld = false;
+        if(queuedJump != null) {
+            StopCoroutine(queuedJump);
+            queuedJump = null;
+        }
         if(jumpCanceler == null && !grounded)
             jumpCanceler = StartCoroutine(jumpCancelWaiter());
     }
