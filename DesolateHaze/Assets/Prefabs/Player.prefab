@@ -202,9 +202,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4022803799653459134}
-  - component: {fileID: 5862650236300205367}
   - component: {fileID: 1176544904104123055}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ViewRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,32 +220,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 150, y: 150, z: 150}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6908545544353151602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5862650236300205367
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597397071534205134}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 4096
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 4087
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1176544904104123055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafe15e51d11a7646bf9c0179515ba26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewRange: 150
 --- !u!1 &9060519582868545928
 GameObject:
   m_ObjectHideFlags: 0
