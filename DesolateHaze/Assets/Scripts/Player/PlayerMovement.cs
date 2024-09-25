@@ -333,6 +333,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
         //  does the thing
         var temp = Vector2.MoveTowards(rb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
+        if(grounded && savedInput.x != 0f) 
+            temp.y = rb.linearVelocity.y;
         rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
     }
     public void setNewState(pMovementState newState) {
