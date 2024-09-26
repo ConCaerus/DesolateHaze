@@ -54,6 +54,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     Vector2 savedInput;
     public bool facingRight { get; private set; } = true;
     float maxVelocity = 50f;
+    Rigidbody inheritRb = null;
 
     //  jump things
     bool jumpHeld = false;
@@ -333,12 +334,23 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
         //  does the thing
         var temp = Vector2.MoveTowards(rb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
-        if(grounded && savedInput.x != 0f) 
+        if(grounded && savedInput.x != 0f)
             temp.y = rb.linearVelocity.y;
-        rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
+
+        if(savedInput.magnitude == 0f && inheritRb != null)
+            rb.linearVelocity = inheritRb.linearVelocity;
+        else
+            rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
     }
     public void setNewState(pMovementState newState) {
         curState = newState;
+    }
+
+    public void setInheritRb(Rigidbody r) {
+        inheritRb = r;
+    }
+    public Rigidbody getInheritRb() {
+        return inheritRb;
     }
 
     public void climbRope(RopeInstance r) {

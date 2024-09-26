@@ -30,7 +30,7 @@ public class ChaserInstance : MonoBehaviour {
             StopCoroutine(endWaiter);
             endWaiter = null;
         }
-        if(chaseWaiter != null) return;
+        if(chaseWaiter != null || !gameObject.activeInHierarchy) return;
         chaseWaiter = StartCoroutine(chaseSequence());
     }
     public void endChase(bool halt) {
