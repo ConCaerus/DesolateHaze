@@ -498,5 +498,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         usedGround = null;
         curState = pMovementState.Falling;
     }
+    public Collider getUsedGround() {
+        return usedGround;
+    }
     #endregion
 }
