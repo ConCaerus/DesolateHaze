@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor.Experimental.GraphView;
+using Unity.VisualScripting;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -40,6 +42,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     //  push things
+    float touchOffset;
     bool touchingCurPushing = false;
     Rigidbody cp = null;
     Rigidbody curPushing {
@@ -148,6 +151,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider) {
+                touchOffset = col.transform.position.x - transform.position.x;
                 touchingCurPushing = true;
                 curPushing = col.gameObject.GetComponent<Rigidbody>();
                 curState = pMovementState.Pushing;
@@ -165,8 +169,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
     private void OnCollisionStay(Collision col) {
-        if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing)
-            touchingCurPushing = true;
+        if(col.gameObject.tag == "Box") {
+            if(grounded && usedGround != col.collider) {
+                touchingCurPushing = true;
+                touchOffset = col.transform.position.x - transform.position.x;
+                curState = pMovementState.Pushing;
+                facePos(col.gameObject.transform.position.x);
+            }
+        }
     }
     private void OnCollisionExit(Collision col) {
         //  pushables / boxes
@@ -264,6 +274,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(rb.isKinematic) return;
         Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
         float accTarget = speedAccSpeed;
+        bool pushing = false;
 
         if(canMove) {
             switch(curState) {
@@ -275,8 +286,17 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Pushing:
+                    pushing = true;
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
-                    var xOffset = curPushing.transform.position.x - transform.position.x;
+                    //  inputted pushing / pulling
+                    if(controls.Player.Interact.ReadValue<float>() == 0f) {
+                        //  checks for physics based pushing / pulling
+                        var xOffset = curPushing.transform.position.x - transform.position.x;
+                        if((savedInput.x > 0f) != (xOffset > 0f)) {
+                            pushing = false;
+                        }
+                    }
+                    /* old shit
                     if(controls.Player.Interact.ReadValue<float>() != 0f || (savedInput.x > 0f == xOffset > 0f)) {
                         if(touchingCurPushing) {
                             var sMod = savedInput.x > 0f == xOffset > 0f ? .9f : 1.15f;
@@ -284,7 +304,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         }
                         else
                             curPushing.linearVelocity = new Vector3(rb.linearVelocity.x, curPushing.linearVelocity.y);
-                    }
+                    }*/
                     break;
 
                 case pMovementState.Falling:
@@ -341,6 +361,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             rb.linearVelocity = inheritRb.linearVelocity;
         else
             rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
+        if(curPushing != null && pushing) {
+            var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
+            perc *= 1.1f;
+            var t = curPushing.linearVelocity;
+            t.x = rb.linearVelocity.x * perc;
+            curPushing.linearVelocity = rb.linearVelocity * perc;
+        }
     }
     public void setNewState(pMovementState newState) {
         curState = newState;
