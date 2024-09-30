@@ -43,7 +43,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  push things
     float touchOffset;
-    bool touchingCurPushing = false;
     Rigidbody cp = null;
     Rigidbody curPushing {
         get { return cp; }
@@ -137,6 +136,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             //  sets cur state
             if(curState != pMovementState.LadderClimbing && curState != pMovementState.RopeClimbing)
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+            //  checks for standing on pushing
+            if(usedGround != null && usedGround.gameObject.tag == "Box" && usedGround.TryGetComponent<Rigidbody>(out var asdf) && asdf == curPushing) {
+                curPushing = null;
+                curState = pMovementState.Walking;
+            }
         }
     }
 
@@ -152,7 +156,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider) {
                 touchOffset = col.transform.position.x - transform.position.x;
-                touchingCurPushing = true;
                 curPushing = col.gameObject.GetComponent<Rigidbody>();
                 curState = pMovementState.Pushing;
                 facePos(col.gameObject.transform.position.x);
@@ -171,7 +174,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnCollisionStay(Collision col) {
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider) {
-                touchingCurPushing = true;
                 touchOffset = col.transform.position.x - transform.position.x;
                 curState = pMovementState.Pushing;
                 facePos(col.gameObject.transform.position.x);
@@ -181,13 +183,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnCollisionExit(Collision col) {
         //  pushables / boxes
         if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing) {
-            if(!col.collider.isTrigger) {
-                touchingCurPushing = false;
-            }
-            else {
+            if(col.collider.isTrigger) {
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                 curPushing = null;
-                touchingCurPushing = false;
             }
         }
     }
@@ -220,7 +218,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(col.gameObject.tag == "Box") {
             curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             curPushing = null;
-            touchingCurPushing = false;
         }
 
         //  ladders
@@ -286,6 +283,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Pushing:
+                    if(curPushing == null) {
+                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                        return;
+                    }
                     pushing = true;
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
                     //  inputted pushing / pulling
@@ -362,11 +363,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else
             rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
         if(curPushing != null && pushing) {
-            var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
+            var perc = (curPushing.transform.position.x - transform.position.x) / touchOffset;
             perc *= 1.1f;
             var t = curPushing.linearVelocity;
             t.x = rb.linearVelocity.x * perc;
-            curPushing.linearVelocity = rb.linearVelocity * perc;
+            curPushing.linearVelocity = t;
         }
     }
     public void setNewState(pMovementState newState) {

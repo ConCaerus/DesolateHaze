@@ -16,8 +16,10 @@ public class BusEyeFollow : MonoBehaviour {
     }
 
     void followPlayer() {
-        var offset = transform.position.x - pTrans.position.x;
-        var target = Mathf.Clamp(offset * speed, -maxOffset, maxOffset);
-        eyes.localPosition = Vector3.right * target;
+        Vector2 offset = transform.position - pTrans.position;
+        if(offset.magnitude > maxOffset)
+            offset = offset.normalized * maxOffset;
+        offset.y *= -1f;
+        eyes.localPosition = offset * speed;
     }
 }
