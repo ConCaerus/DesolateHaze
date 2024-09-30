@@ -363,7 +363,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else
             rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
         if(curPushing != null && pushing) {
-            var perc = (curPushing.transform.position.x - transform.position.x) / touchOffset;
+            var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
             perc *= 1.1f;
             var t = curPushing.linearVelocity;
             t.x = rb.linearVelocity.x * perc;
