@@ -1,0 +1,4 @@
+In order for this shader to work:
+- Create a global volume with bloom enabled. 
+- Additionally, the 2 radiation colors you choose must have an intensity greater than 1. If they have different intensities you might get a strange ring effect.
+- Don't forget to apply the shader to a material first, then apply the material to the object.
