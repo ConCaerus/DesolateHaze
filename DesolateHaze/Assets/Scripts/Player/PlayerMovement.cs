@@ -250,7 +250,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     #region INPUT LOGIC
     void updateInput(Vector2 dir) {
         if(!canMove || PauseCanvas.I.paused) return;
-        savedInput = dir.normalized;
+        if(Mathf.Abs(dir.y) < .1f) dir.y = 0f;
+        if(Mathf.Abs(dir.x) < .1f) dir.x = 0f;
+        dir.Normalize();
+        savedInput = dir;
         updateFaceDir();
     }
     void updateFaceDir() {
