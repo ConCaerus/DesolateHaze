@@ -366,7 +366,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(curPushing != null && pushing) {
             var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
             perc *= 1.1f;
-            Debug.Log(perc);
             var t = curPushing.linearVelocity;
             t.x = rb.linearVelocity.x * perc;
             curPushing.linearVelocity = t;
