@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEditor.Experimental.GraphView;
-using Unity.VisualScripting;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -48,6 +46,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         get { return cp; }
         set {
             cp = value;
+            if(!cp && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+            else if(cp && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
     }
 
@@ -157,7 +157,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(grounded && usedGround != col.collider) {
                 touchOffset = col.transform.position.x - transform.position.x;
                 curPushing = col.gameObject.GetComponent<Rigidbody>();
-                curState = pMovementState.Pushing;
                 facePos(col.gameObject.transform.position.x);
             }
         }
@@ -173,9 +172,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnCollisionStay(Collision col) {
         if(col.gameObject.tag == "Box") {
-            if(grounded && usedGround != col.collider) {
+            if(grounded && usedGround != col.collider && curPushing != col.gameObject.TryGetComponent<Rigidbody>(out var cprb)) {
                 touchOffset = col.transform.position.x - transform.position.x;
-                curState = pMovementState.Pushing;
+                curPushing = cprb;
                 facePos(col.gameObject.transform.position.x);
             }
         }
@@ -216,7 +215,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnTriggerExit(Collider col) {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
-            curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             curPushing = null;
         }
 
@@ -368,6 +366,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(curPushing != null && pushing) {
             var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
             perc *= 1.1f;
+            Debug.Log(perc);
             var t = curPushing.linearVelocity;
             t.x = rb.linearVelocity.x * perc;
             curPushing.linearVelocity = t;
