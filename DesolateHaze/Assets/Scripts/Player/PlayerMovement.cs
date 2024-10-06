@@ -13,6 +13,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     [SerializeField] Collider mainCol;
     public Rigidbody rb;
+    [SerializeField] Rigidbody pushingRb;
     [SerializeField] Transform spriteTrans;
 
     Coroutine queuedJump = null;
@@ -40,14 +41,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     //  push things
-    float touchOffset;
+    Vector2 pushOffset;
     Rigidbody cp = null;
     Rigidbody curPushing {
         get { return cp; }
         set {
             cp = value;
-            if(!cp && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
-            else if(cp && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
+            if(cp == null && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+            else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
     }
 
@@ -86,6 +87,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             else if(cs == pMovementState.LedgeClimbing)
                 rb.linearVelocity = Vector3.zero;
+            if(cs != pMovementState.Pushing && curPushing != null)
+                curPushing = null;
 
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
@@ -154,9 +157,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnCollisionEnter(Collision col) {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
-            if(grounded && usedGround != col.collider) {
-                touchOffset = col.transform.position.x - transform.position.x;
-                curPushing = col.gameObject.GetComponent<Rigidbody>();
+            if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
+                StartCoroutine(fucker(colRb));
                 facePos(col.gameObject.transform.position.x);
             }
         }
@@ -172,17 +174,23 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnCollisionStay(Collision col) {
         if(col.gameObject.tag == "Box") {
-            if(grounded && usedGround != col.collider && curPushing != col.gameObject.TryGetComponent<Rigidbody>(out var cprb)) {
-                touchOffset = col.transform.position.x - transform.position.x;
-                curPushing = cprb;
+            if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
+                StartCoroutine(fucker(colRb));
                 facePos(col.gameObject.transform.position.x);
             }
         }
     }
+    IEnumerator fucker(Rigidbody cprb) {
+        yield return new WaitForFixedUpdate();
+        curPushing = cprb;
+        pushOffset = cprb.transform.position - transform.position;
+        pushOffset *= 1.1f;
+    }
     private void OnCollisionExit(Collision col) {
         //  pushables / boxes
+        return;
         if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing) {
-            if(col.collider.isTrigger) {
+            if(controls.Player.Interact.ReadValue<float>() != 0f) {
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                 curPushing = null;
             }
@@ -215,7 +223,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnTriggerExit(Collider col) {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
-            curPushing = null;
+            //curPushing = null;
         }
 
         //  ladders
@@ -272,7 +280,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(rb.isKinematic) return;
         Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
         float accTarget = speedAccSpeed;
-        bool pushing = false;
 
         if(canMove) {
             switch(curState) {
@@ -288,8 +295,19 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                         return;
                     }
-                    pushing = true;
+                    //  checks if moving away while not holding push button
+                    if(controls.Player.Interact.ReadValue<float>() == 0f && ((savedInput.x > 0f) != (pushOffset.x > 0f))) {
+                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                        return;
+                    }
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
+                    Vector2 pOffset = curPushing.transform.position - transform.position;
+                    var pTarget = pushOffset - pOffset;
+                    pTarget = Vector2.right * pTarget.x * 50f;
+                    pTarget.y = curPushing.linearVelocity.y;
+                    curPushing.linearVelocity = pTarget;
+                    /*
+                    pushing = true;
                     //  inputted pushing / pulling
                     if(controls.Player.Interact.ReadValue<float>() == 0f) {
                         //  checks for physics based pushing / pulling
@@ -363,13 +381,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             rb.linearVelocity = inheritRb.linearVelocity;
         else
             rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
-        if(curPushing != null && pushing) {
-            var perc = touchOffset / (curPushing.transform.position.x - transform.position.x);
-            perc *= 1.1f;
-            var t = curPushing.linearVelocity;
-            t.x = rb.linearVelocity.x * perc;
-            curPushing.linearVelocity = t;
-        }
     }
     public void setNewState(pMovementState newState) {
         curState = newState;
@@ -462,7 +473,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
 
         //  does the jump if can do the jump
-        if(allowedTime > 0f)
+        if(canMove && allowedTime > 0f)
             doJump(true);
         queuedJump = null;
     }   //  for queuing up a jump before the player is back on the ground

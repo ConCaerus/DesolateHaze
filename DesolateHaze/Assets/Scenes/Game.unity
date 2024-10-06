@@ -3259,7 +3259,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 882897942747829563, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_AngularDrag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 882897942747829563, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 882897942747829563, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsKinematic
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2849742410310133404, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3752047862148685376, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_IsActive
@@ -3343,19 +3355,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7136967250271950227, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_Size.x
-      value: 2.9
+      value: 3.24
       objectReference: {fileID: 0}
     - target: {fileID: 7136967250271950227, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_Size.y
-      value: 2
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: 7136967250271950227, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_Size.z
-      value: 2
+      value: 2.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7606595352751785745, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_BreakForce
+      value: Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7606595352751785745, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_BreakTorque
+      value: Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7606595352751785745, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_ConnectedBody
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7606595352751785745, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_EnableCollision
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8430263380434503548, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_Name
       value: TutorialBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 9018593191334332604, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 136196488675773320, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
@@ -6862,6 +6894,10 @@ PrefabInstance:
     - target: {fileID: 8906178340460223659, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9018593191334332604, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10375,6 +10411,10 @@ PrefabInstance:
     - target: {fileID: 8430263380434503548, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 9018593191334332604, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -15146,6 +15186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Landmine (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1126733319703223226, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4203544600097651976, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_LocalPosition.x
       value: -127.22998
@@ -19354,6 +19398,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 9018593191334332604, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3752047862148685376, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
@@ -19424,6 +19472,10 @@ PrefabInstance:
     - target: {fileID: 1050227838638646685, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_Size.z
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126733319703223226, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4203544600097651976, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20381,6 +20433,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Landmine (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1126733319703223226, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4203544600097651976, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_LocalPosition.x
       value: -121.08002
@@ -20512,6 +20568,10 @@ PrefabInstance:
     - target: {fileID: 133482620943371990, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_Name
       value: Landmine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126733319703223226, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4203544600097651976, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21501,6 +21561,10 @@ PrefabInstance:
     - target: {fileID: 133482620943371990, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_Name
       value: BearKillingLandmine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126733319703223226, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4203544600097651976, guid: bf68fc2ea99c1674eb9269426f48f092, type: 3}
       propertyPath: m_LocalPosition.x
