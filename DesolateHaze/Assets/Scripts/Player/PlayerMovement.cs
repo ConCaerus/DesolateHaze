@@ -42,6 +42,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  push things
     Vector2 pushOffset;
+    Rigidbody prevPushing;
     Rigidbody cp = null;
     Rigidbody curPushing {
         get { return cp; }
@@ -87,8 +88,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             else if(cs == pMovementState.LedgeClimbing)
                 rb.linearVelocity = Vector3.zero;
-            if(cs != pMovementState.Pushing && curPushing != null)
+            if(cs != pMovementState.Pushing && curPushing != null) {
+                prevPushing = curPushing;
                 curPushing = null;
+            }
 
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
@@ -158,7 +161,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
-                StartCoroutine(fucker(colRb));
+                StartCoroutine(curPushInitter(colRb));
                 facePos(col.gameObject.transform.position.x);
             }
         }
@@ -175,16 +178,16 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     private void OnCollisionStay(Collision col) {
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
-                StartCoroutine(fucker(colRb));
+                StartCoroutine(curPushInitter(colRb));
                 facePos(col.gameObject.transform.position.x);
             }
         }
     }
-    IEnumerator fucker(Rigidbody cprb) {
+    IEnumerator curPushInitter(Rigidbody cprb) {
         yield return new WaitForFixedUpdate();
         curPushing = cprb;
         pushOffset = cprb.transform.position - transform.position;
-        pushOffset *= 1.1f;
+        pushOffset.x += pushOffset.x > 0f ? 1f : -1f;
     }
     private void OnCollisionExit(Collision col) {
         //  pushables / boxes
@@ -300,10 +303,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                         return;
                     }
-                    target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
+                    //  checks if pushing obj too far away
                     Vector2 pOffset = curPushing.transform.position - transform.position;
+                    if(controls.Player.Interact.ReadValue<float>() != 0f && pOffset.magnitude > pushOffset.magnitude + 1f) {
+                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                        return;
+                    }
+                    target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
                     var pTarget = pushOffset - pOffset;
-                    pTarget = Vector2.right * pTarget.x * 50f;
+                    pTarget = Vector2.right * pTarget.x * 10f;
                     pTarget.y = curPushing.linearVelocity.y;
                     curPushing.linearVelocity = pTarget;
                     /*

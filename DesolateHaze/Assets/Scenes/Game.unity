@@ -1254,7 +1254,7 @@ GameObject:
   - component: {fileID: 110218400}
   m_Layer: 0
   m_Name: tree
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3262,6 +3262,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 882897942747829563, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+      propertyPath: m_Constraints
+      value: 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 882897942747829563, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
       propertyPath: m_Interpolate
       value: 1
       objectReference: {fileID: 0}
@@ -3448,7 +3452,7 @@ GameObject:
   - component: {fileID: 368583396}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7821,7 +7825,7 @@ GameObject:
   - component: {fileID: 668253555}
   m_Layer: 0
   m_Name: Sniper'sNext
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11345,6 +11349,10 @@ PrefabInstance:
     - target: {fileID: 9189460217107842036, guid: 17c5b6e80a09cd045a8f7ed713e6ba8d, type: 3}
       propertyPath: m_Name
       value: Bus
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189460217107842036, guid: 17c5b6e80a09cd045a8f7ed713e6ba8d, type: 3}
+      propertyPath: m_TagString
+      value: Environment
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18964,6 +18972,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bridge
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 632cf5c4b134dcd48a8cf021bfd87b64, type: 3}
+      propertyPath: m_TagString
+      value: Environment
+      objectReference: {fileID: 0}
     - target: {fileID: 1065704732087666119, guid: 632cf5c4b134dcd48a8cf021bfd87b64, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -19538,7 +19550,7 @@ GameObject:
   - component: {fileID: 1732228889}
   m_Layer: 0
   m_Name: Vines
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21495,7 +21507,7 @@ GameObject:
   - component: {fileID: 1975125672}
   m_Layer: 0
   m_Name: EndVines
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22258,7 +22270,7 @@ GameObject:
   - component: {fileID: 2062844855}
   m_Layer: 0
   m_Name: Bushes
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
