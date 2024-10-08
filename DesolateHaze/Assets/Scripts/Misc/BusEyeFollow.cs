@@ -19,7 +19,7 @@ public class BusEyeFollow : MonoBehaviour {
         Vector2 offset = transform.position - pTrans.position;
         if(offset.magnitude > maxOffset)
             offset = offset.normalized * maxOffset;
-        offset.y *= -1f;
+        offset.y *= 0.5f;
         eyes.localPosition = offset * speed;
     }
 }
