@@ -5,20 +5,25 @@ using UnityEngine.Events;
 
 
 public class InteractableInstance : MonoBehaviour {
-    [SerializeField] UnityEvent immediateSequence = new UnityEvent();
+    [SerializeField] List<UnityEvent> immediateSequence = new List<UnityEvent>();
     [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>();
     [SerializeField] List<float> secondsDelays = new List<float>();
 
-    private void OnEnable() {
-        StartCoroutine(adder());
+    int seqInd = 0;
+
+    private void OnTriggerEnter(Collider col) {
+        if(col.gameObject.tag == "Player")
+            col.gameObject.GetComponent<PlayerInteraction>().setCurInteractable(this);
     }
-    private void OnDisable() {
-        if(PlayerInteraction.I != null && PlayerInteraction.I.interactables.Contains(this))
-            PlayerInteraction.I.interactables.Remove(this);
+    private void OnTriggerExit(Collider col) {
+        if(col.gameObject.tag == "Player")
+            col.gameObject.GetComponent<PlayerInteraction>().setCurInteractable(null);
     }
 
     public void trigger() {
-        immediateSequence.Invoke();
+        immediateSequence[seqInd++].Invoke();
+        if(seqInd >= immediateSequence.Count)
+            seqInd = 0;
         for(int i = 0; i < delayedSequences.Count; i++) 
             StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
     }
@@ -29,11 +34,11 @@ public class InteractableInstance : MonoBehaviour {
     public void dropPlayer() {
         PlayerMovement.I.setFalling();
     }
-
-    IEnumerator adder() {
-        do yield return new WaitForEndOfFrame();
-        while(PlayerInteraction.I == null);
-        PlayerInteraction.I.interactables.Add(this);
+    public void stopPlayerMovement() {
+        PlayerMovement.I.canMove = false;
+    }
+    public void startPlayerMovement() {
+        PlayerMovement.I.canMove = true;
     }
     IEnumerator delay(UnityEvent e, float s) {
         yield return new WaitForSeconds(s);
