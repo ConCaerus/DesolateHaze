@@ -11,7 +11,7 @@ public class RandomTranslate : MonoBehaviour
     [SerializeField]
     private List<Transform> Groupign;
     [SerializeField]
-    private bool Parent;
+    private bool IsParent;
     [SerializeField]
     private bool LockPosX, LockPosY, LockPosZ;
     [SerializeField]
@@ -28,7 +28,7 @@ public class RandomTranslate : MonoBehaviour
 
         timer = Random.Range(4, 20);
 
-        if (Parent)
+        if (IsParent)
             PRando();
         else
             RANDO();
@@ -84,7 +84,7 @@ public class RandomTranslate : MonoBehaviour
 
         timer = Random.Range(4, 20);
 
-        if (Parent)
+        if (IsParent)
             PRoto();
         else
             ROTO();
@@ -98,7 +98,7 @@ public class RandomTranslate : MonoBehaviour
 
             for (int i = 0; i < timer; i++)
             {
-                Rototo = Vector3.zero;
+                Rototo = t.rotation.eulerAngles;
 
                 if (!LockRotX)
                     Rototo.x = Random.Range(Min, Max);
@@ -122,7 +122,7 @@ public class RandomTranslate : MonoBehaviour
 
         for (int i = 0; i < timer; i++)
         {
-            Rototo = Vector3.zero;
+            Rototo = transform.rotation.eulerAngles;
 
             if(!LockRotX)
                 Rototo.x = Random.Range(Min, Max);
