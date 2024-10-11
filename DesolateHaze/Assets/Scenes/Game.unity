@@ -21290,7 +21290,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 66c71924df8f1d74bba1b66d5be0499d, type: 2}
-  m_TreeDistance: 536
+  m_TreeDistance: 45
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -29484,6 +29484,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 398677251}
     m_Modifications:
+    - target: {fileID: 1877154428670996997, guid: d95502fb8c3d8374d8690387611be941, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.2533116
+      objectReference: {fileID: 0}
     - target: {fileID: 3908005788300389488, guid: d95502fb8c3d8374d8690387611be941, type: 3}
       propertyPath: m_Name
       value: Spruce_Tree_V5 (6)
