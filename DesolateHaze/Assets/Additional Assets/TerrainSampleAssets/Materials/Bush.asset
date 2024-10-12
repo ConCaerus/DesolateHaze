@@ -23,13 +23,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Bush
-  m_Shader: {fileID: 4800000, guid: e4468eb8a8320f7488ddbb0e591f9fbc, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: dfa3b96612ed4df4a97b7fd06217ba23, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _EMISSIVE_SIMPLE
-  - _OUTLINE_NML
-  m_InvalidKeywords:
   - _ALPHATEST_ON
   - _BUILTIN_ALPHATEST_ON
   - _BUILTIN_AlphaClip
@@ -38,12 +35,20 @@ Material:
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
   - _MATERIAL_FEATURE_TRANSMISSION
+  m_InvalidKeywords:
+  - _EMISSIVE_SIMPLE
+  - _IS_ANGELRING_OFF
+  - _IS_CLIPPING_OFF
+  - _IS_OUTLINE_CLIPPING_NO
+  - _OUTLINE_NML
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
+    IgnoreProjection: False
     MotionVector: User
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
   - TransparentDepthPrepass
@@ -55,22 +60,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Base_Map:
-        m_Texture: {fileID: 2800000, guid: eb04da16cbc16c9488332336fb11b965, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Mask_Map:
-        m_Texture: {fileID: 2800000, guid: 0e1771a5cd057014db71494d5a458d40, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Normal_Map:
-        m_Texture: {fileID: 2800000, guid: e1ef57925b58e624bb0ddcc506f28e94, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Terrain_Splatmap_0:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - Texture2D_8713F080:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -239,10 +228,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Thickness_Map:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _TransmittanceColorMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -261,23 +246,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - AO_Scale: 0.5
-    - Alpha_Clip_Threshold: 0.871
-    - Animation_Cutoff: 20
-    - Distance_Fade_End: 600
-    - Distance_Fade_Start: 500
-    - Dither_Scale: 1.5
-    - Enable_Blend_Terrain_Color: 0
-    - Normal_Scale: 1
-    - Smothness_Scale: 0.5
-    - Terrain_Blend_A: 0
-    - Terrain_Blend_B: 0
-    - Terrain_Blend_G: 0
-    - Terrain_Blend_R: 0
+    - Animation_Cutoff: 100
+    - Distance_Fade_End: 150
+    - Distance_Fade_Start: 40
     - Vector1_593c5cea6c4a42e993ed03ced4685732: 0.5
     - Vector1_8651797e3e304e108dbd25f9d5a426ba: 0.5
-    - Vector1_a5b8b09028ce49a39f4d090894c89e22: 0.5
-    - Vector1_a6983181c8dc4691ba6a28a34c4223a6: 0.94
+    - Vector1_a5b8b09028ce49a39f4d090894c89e22: 0.433
+    - Vector1_a6983181c8dc4691ba6a28a34c4223a6: 1.08
     - Wind_Blast: 0.05
     - Wind_Intensity: 0.1
     - Wind_Ripples: 0.05
@@ -299,7 +274,6 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _Add_Antipodean_RimLight: 0
     - _AlbedoAffectEmissive: 0
-    - _AlphaClip: 1
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
@@ -309,8 +283,6 @@ Material:
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
-    - _AlphaToMask: 0
-    - _AlphaToMaskInspectorValue: 0
     - _AngelRing: 0
     - _AngelRingOverridden: 0
     - _AngelRingVisible: 1
@@ -320,9 +292,9 @@ Material:
     - _AutoRenderQueue: 1
     - _BUILTIN_AlphaClip: 1
     - _BUILTIN_Blend: 0
-    - _BUILTIN_CullMode: 0
+    - _BUILTIN_CullMode: 2
     - _BUILTIN_DstBlend: 0
-    - _BUILTIN_QueueControl: 1
+    - _BUILTIN_QueueControl: -1
     - _BUILTIN_QueueOffset: 0
     - _BUILTIN_SrcBlend: 1
     - _BUILTIN_Surface: 0
@@ -334,14 +306,12 @@ Material:
     - _BaseColor_Step: 0.5
     - _BaseShade_Feather: 0.0001
     - _Base_Speed: 0
-    - _Blend: 0
     - _BlendMode: 0
     - _BlurLevelMatcap: 0
     - _BlurLevelSGM: 0
     - _BumpScale: 1
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
-    - _CastShadows: 1
     - _ClippingMatteMode: 0
     - _ClippingMode: 0
     - _Clipping_Level: 0
@@ -349,7 +319,6 @@ Material:
     - _ColorShift_Speed: 0
     - _ComposerMaskMode: 0
     - _ConservativeDepthOffsetEnable: 0
-    - _Cull: 0
     - _CullMode: 0
     - _CullModeForward: 0
     - _Cutoff: 0.5
@@ -392,7 +361,6 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
-    - _FadeBias: 1
     - _Farthest_Distance: 100
     - _FirstShadeOverridden: 0
     - _FirstShadeVisible: 1
@@ -471,10 +439,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
-    - _QueueControl: 1
-    - _QueueOffset: 0
     - _RayTracing: 0
-    - _ReceiveShadows: 1
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
@@ -505,7 +470,7 @@ Material:
     - _SpecularAAThreshold: 0.2
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilComp: 8
+    - _StencilComp: 0
     - _StencilMode: 0
     - _StencilNo: 1
     - _StencilOpFail: 0
@@ -523,7 +488,6 @@ Material:
     - _StepOffset: 0
     - _SubsurfaceMask: 1
     - _SupportDecals: 0
-    - _Surface: 0
     - _SurfaceType: 0
     - _TessEdgeLength: 5
     - _TessExtrusionAmount: 0
@@ -567,15 +531,12 @@ Material:
     - _UseShadowThreshold: 0
     - _Use_1stAs2nd: 0
     - _Use_BaseAs1st: 0
-    - _WorkflowMode: 1
     - _ZOverDrawMode: 0
-    - _ZTest: 4
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 8
     - _ZTestTransparent: 4
     - _ZWrite: 1
-    - _ZWriteControl: 0
     - _ZWriteMode: 1
     - _isUnityToonshader: 1
     - _simpleUI: 0
@@ -585,12 +546,6 @@ Material:
     - _utsVersionZ: 2
     m_Colors:
     - Fade_Color: {r: 0, g: 0, b: 0, a: 0}
-    - SplatA: {r: 0, g: 0, b: 0, a: 0}
-    - SplatB: {r: 0, g: 0, b: 0, a: 0}
-    - SplatG: {r: 0, g: 0, b: 0, a: 0}
-    - SplatR: {r: 0, g: 0, b: 0, a: 0}
-    - Terrain_Origin: {r: 0, g: 0, b: 0, a: 0}
-    - Terrain_Scale: {r: 0, g: 0, b: 0, a: 0}
     - _1st_ShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _2nd_ShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
@@ -618,7 +573,6 @@ Material:
     - _Outline_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightMaskColor: {r: 1, g: 0, b: 1, a: 1}
-    - _SSSColor: {r: 1, g: 1, b: 1, a: 0}
     - _SecondShadeMaskColor: {r: 0, g: 0, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _Subsurface_Scattering_Color: {r: 1, g: 1, b: 1, a: 0}
