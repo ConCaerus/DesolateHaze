@@ -19,7 +19,8 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
 
     public void loadGame() {
         if(waiter != null) return;
-        waiter = StartCoroutine(loader("Game"));
+        
+        waiter = StartCoroutine(loader(SceneManager.GetActiveScene().name == "MainMenu" ? "Game" : SceneManager.GetActiveScene().name));
     }
     public void loadMainMenu() {
         if(waiter != null) return;

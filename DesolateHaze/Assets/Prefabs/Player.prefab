@@ -101,8 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4.5
   speedAccSpeed: 0.35
-  jumpHeight: 5
-  jumpAccSpeed: 5
+  jumpHeight: 6
+  jumpAccSpeed: 3
   jumpDeathDist: 15
   ropeClimbSpeed: 2.5
   ladderClimbSpeed: 2.5
@@ -124,7 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8ba8499e76f7049a784155acdd9b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactables: []
   interactDist: 2
 --- !u!1 &4037805005805438302
 GameObject:

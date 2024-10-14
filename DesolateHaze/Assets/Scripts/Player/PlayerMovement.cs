@@ -266,18 +266,16 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         updateFaceDir();
     }
     void updateFaceDir() {
-        if(PauseCanvas.I.paused) return;
-        if(curState != pMovementState.Pushing && Mathf.Abs(savedInput.x) != 0f) {
-            facingRight = savedInput.x >= 0;
-            //  flips character
-            spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
-        }
+        facePos(savedInput.x);
     }
     void facePos(float x) {
         if(PauseCanvas.I.paused) return;
-        facingRight = x >= transform.position.x;
-        //  flips character
-        spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
+        if(curState == pMovementState.Falling) return;
+        if(curState != pMovementState.Pushing && Mathf.Abs(savedInput.x) != 0f) {
+            facingRight = x >= 0;
+            //  flips character
+            spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
+        }
     }
     void move() {
         if(rb.isKinematic) return;
@@ -337,15 +335,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 case pMovementState.Falling:
                     target = rb.linearVelocity;
-                    break;
                     //  slight air control
                     //  not used because it makes the player stick to slopes
-                    if(Mathf.Abs(rb.linearVelocity.x) > 0f) {
-                        var mod = savedInput.x * speed * speedMod * 3f * Time.fixedDeltaTime;
-                        if(Mathf.Abs(target.x + mod) < Mathf.Abs(target.x)) //  only can slow down jump
-                            target.x += mod;
-                    }
-                    else target = Vector2.zero;
+                    var max = speed * speedMod * 100f * Time.fixedDeltaTime;
+                    var mod = savedInput.x * speed * speedMod * 3f * Time.fixedDeltaTime;
+                    var modPerc = Mathf.Clamp01(Mathf.Abs(rb.linearVelocity.x) / max);
+                    target.x = Mathf.Clamp(target.x + mod * modPerc, -max, max);
                     break;
 
                 case pMovementState.RopeClimbing:

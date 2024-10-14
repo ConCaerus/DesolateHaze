@@ -19,7 +19,7 @@ public class BoatInstance : MonoBehaviour {
             //  starts moving
             Vector3 target = Vector3.up * rb.linearVelocity.y;
             if(PlayerMovement.I.getUsedGround() == mainCol) {
-                target = Vector3.Lerp(rb.linearVelocity, Vector3.right * speed * (moveRight ? 1f : -1f), accSpeed * Time.fixedDeltaTime);
+                target = Vector3.right * speed * (moveRight ? 1f : -1f);
                 rb.freezeRotation = true;
                 if(PlayerMovement.I.getInheritRb() != rb)
                     PlayerMovement.I.setInheritRb(rb);
@@ -28,11 +28,13 @@ public class BoatInstance : MonoBehaviour {
                 if(PlayerMovement.I.getInheritRb() == rb)
                     PlayerMovement.I.setInheritRb(null);
             }
-            rb.linearVelocity = target;
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, target, accSpeed * Time.fixedDeltaTime);
 
             //  rotates into boatable
-            target = Vector3.forward * boatRot;
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(target), accSpeed * Time.fixedDeltaTime);
+            if(rb.linearVelocity.y > 0f) {
+                target = Vector3.forward * boatRot;
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(target), accSpeed * Time.fixedDeltaTime);
+            }
         }
     }
 }
