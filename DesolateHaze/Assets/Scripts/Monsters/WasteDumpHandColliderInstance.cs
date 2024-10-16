@@ -6,7 +6,7 @@ public class WasteDumpHandColliderInstance : MonoBehaviour {
     private void OnTriggerEnter(Collider col) {
         if(col.gameObject.tag == "Box")
             canKill = false;
-        else if(col.gameObject.tag == "Player" && canKill) {
+        if(col.gameObject.tag == "Player" && canKill) {
             PlayerMovement.I.canMove = false;
             TransitionCanvas.I.loadGameAfterDeath(1.5f);
         }
@@ -14,6 +14,10 @@ public class WasteDumpHandColliderInstance : MonoBehaviour {
     private void OnTriggerStay(Collider col) {
         if(col.gameObject.tag == "Box")
             canKill = false;
+        if(col.gameObject.tag == "Player" && canKill) {
+            PlayerMovement.I.canMove = false;
+            TransitionCanvas.I.loadGameAfterDeath(1.5f);
+        }
     }
     private void OnTriggerExit(Collider col) {
         if(col.gameObject.tag == "Box")
