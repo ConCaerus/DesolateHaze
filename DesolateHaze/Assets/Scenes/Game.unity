@@ -3322,7 +3322,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 329771659}
-  - {fileID: 297874813}
+  - {fileID: 1429931131}
   m_Father: {fileID: 1000715173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &190432341 stripped
@@ -4934,200 +4934,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8725098495667106557, guid: 52a27ef9bf7d7f0418c2b04f9cdf9c6d, type: 3}
   m_PrefabInstance: {fileID: 438552202}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &297874812
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 297874813}
-  - component: {fileID: 297874814}
-  m_Layer: 0
-  m_Name: EndLake
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &297874813
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297874812}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1538.5, y: 9.7, z: 42.9}
-  m_LocalScale: {x: 612.8132, y: 302.96906, z: 483.39752}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 189541339}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &297874814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297874812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8f6fd535518f5540b4bcc3099582f77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  decalLayerMask: 1
-  lightLayerMask: 1
-  largeBand0FadeToggle: 1
-  largeBand1FadeToggle: 1
-  ripplesFadeToggle: 1
-  surfaceType: 0
-  geometryType: 0
-  meshRenderers: []
-  timeMultiplier: 0.46
-  scriptInteractions: 1
-  cpuEvaluateRipples: 0
-  customMaterial: {fileID: 0}
-  startSmoothness: 0.95
-  endSmoothness: 0.85
-  smoothnessFadeStart: 100
-  smoothnessFadeDistance: 500
-  tessellation: 1
-  maxTessellationFactor: 2.7
-  tessellationFactorFadeStart: 150
-  tessellationFactorFadeRange: 1850
-  refractionColor: {r: 0, g: 0, b: 0, a: 1}
-  maxRefractionDistance: 0
-  absorptionDistance: 0.001
-  scatteringColor: {r: 0, g: 0.13286833, b: 0.13286833, a: 1}
-  ambientScattering: 0.234
-  heightScattering: 0.2
-  displacementScattering: 0.1
-  directLightTipScattering: 0.6
-  directLightBodyScattering: 0.5
-  maximumHeightOverride: 0
-  caustics: 0
-  causticsIntensity: 0.5
-  causticsPlaneBlendDistance: 1
-  causticsResolution: 256
-  causticsBand: 2
-  virtualPlaneDistance: 4
-  causticsTilingFactor: 1
-  causticsDirectionalShadow: 0
-  causticsDirectionalShadowDimmer: 0.25
-  renderingLayerMask: 1
-  debugMode: 0
-  waterMaskDebugMode: 0
-  waterCurrentDebugMode: 0
-  currentDebugMultiplier: 1
-  waterFoamDebugMode: 0
-  underWater: 0
-  volumeBounds: {fileID: 0}
-  volumeDepth: 50
-  volumeHeight: 0
-  volumePrority: 0
-  absorptionDistanceMultiplier: 1
-  underWaterAmbientProbeContribution: 1
-  underWaterScatteringColorMode: 0
-  underWaterScatteringColor: {r: 0, g: 0.27, b: 0.23, a: 1}
-  underWaterRefraction: 0
-  largeCurrentSpeedValue: 2.81
-  largeCurrentMap: {fileID: 0}
-  largeCurrentRegionExtent: {x: 100, y: 100}
-  largeCurrentRegionOffset: {x: 0, y: 0}
-  largeCurrentMapInfluence: 1
-  ripplesCurrentSpeedValue: 0
-  ripplesCurrentMap: {fileID: 0}
-  ripplesCurrentRegionExtent: {x: 100, y: 100}
-  ripplesCurrentRegionOffset: {x: 0, y: 0}
-  ripplesCurrentMapInfluence: 1
-  deformation: 0
-  deformationRes: 512
-  deformationAreaSize: {x: 200, y: 200}
-  deformationAreaOffset: {x: 0, y: 0}
-  foam: 1
-  foamResolution: 512
-  foamAreaSize: {x: 200, y: 200}
-  foamAreaOffset: {x: 0, y: 0}
-  foamPersistenceMultiplier: 0.5
-  foamCurrentInfluence: 0.6
-  foamColor: {r: 1, g: 1, b: 1, a: 1}
-  foamTextureTiling: 0.15
-  foamSmoothness: 1
-  simulationFoam: 1
-  simulationFoamAmount: 0.2
-  simulationFoamMask: {fileID: 0}
-  simulationFoamMaskExtent: {x: 100, y: 100}
-  simulationFoamMaskOffset: {x: 0, y: 0}
-  simulationFoamWindCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.2
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  repetitionSize: 1317
-  largeOrientationValue: 0.17
-  largeWindSpeed: 8
-  largeChaos: 1
-  largeBand0Multiplier: 1
-  largeBand0FadeMode: 1
-  largeBand0FadeStart: 1500
-  largeBand0FadeDistance: 3000
-  largeBand1Multiplier: 1
-  largeBand1FadeMode: 1
-  largeBand1FadeStart: 300
-  largeBand1FadeDistance: 800
-  ripples: 1
-  ripplesMotionMode: 0
-  ripplesOrientationValue: 0
-  ripplesWindSpeed: 7.66
-  ripplesChaos: 0
-  ripplesFadeMode: 1
-  ripplesFadeStart: 50
-  ripplesFadeDistance: 200
-  waterMask: {fileID: 0}
-  waterMaskRemap: {x: 0, y: 1}
-  waterMaskExtent: {x: 100, y: 100}
-  waterMaskOffset: {x: 0, y: 0}
 --- !u!1001 &298637907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5756,8 +5562,8 @@ Transform:
   m_GameObject: {fileID: 329771658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 671, y: 2.5, z: 134.5}
-  m_LocalScale: {x: 537.125, y: 302.96906, z: 299.31735}
+  m_LocalPosition: {x: 671, y: 2.5, z: 134.7}
+  m_LocalScale: {x: 386.63254, y: 115.516045, z: 216.3319}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 189541339}
@@ -5787,8 +5593,8 @@ MonoBehaviour:
   scriptInteractions: 1
   cpuEvaluateRipples: 0
   customMaterial: {fileID: 0}
-  startSmoothness: 0.95
-  endSmoothness: 0.85
+  startSmoothness: 0.75627774
+  endSmoothness: 0.6203841
   smoothnessFadeStart: 100
   smoothnessFadeDistance: 500
   tessellation: 1
@@ -5798,9 +5604,9 @@ MonoBehaviour:
   refractionColor: {r: 0, g: 0, b: 0, a: 1}
   maxRefractionDistance: 0
   absorptionDistance: 0.001
-  scatteringColor: {r: 0, g: 0.13286833, b: 0.13286833, a: 1}
-  ambientScattering: 0.234
-  heightScattering: 0.2
+  scatteringColor: {r: 0, g: 0, b: 0, a: 1}
+  ambientScattering: 0.28
+  heightScattering: 0.163
   displacementScattering: 0.1
   directLightTipScattering: 0.6
   directLightBodyScattering: 0.5
@@ -5844,7 +5650,7 @@ MonoBehaviour:
   deformationRes: 512
   deformationAreaSize: {x: 200, y: 200}
   deformationAreaOffset: {x: 0, y: 0}
-  foam: 1
+  foam: 0
   foamResolution: 512
   foamAreaSize: {x: 200, y: 200}
   foamAreaOffset: {x: 0, y: 0}
@@ -5900,22 +5706,22 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  repetitionSize: 1317
+  repetitionSize: 1339
   largeOrientationValue: 0.17
-  largeWindSpeed: 8
-  largeChaos: 1
-  largeBand0Multiplier: 1
+  largeWindSpeed: 12
+  largeChaos: 0
+  largeBand0Multiplier: 0.747
   largeBand0FadeMode: 1
   largeBand0FadeStart: 1500
   largeBand0FadeDistance: 3000
-  largeBand1Multiplier: 1
+  largeBand1Multiplier: 0.219
   largeBand1FadeMode: 1
   largeBand1FadeStart: 300
   largeBand1FadeDistance: 800
   ripples: 1
   ripplesMotionMode: 0
   ripplesOrientationValue: 0
-  ripplesWindSpeed: 7.66
+  ripplesWindSpeed: 0
   ripplesChaos: 0
   ripplesFadeMode: 1
   ripplesFadeStart: 50
@@ -25574,6 +25380,200 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425750774}
   m_Mesh: {fileID: -1157620896975231226, guid: 632cf5c4b134dcd48a8cf021bfd87b64, type: 3}
+--- !u!1 &1429931130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429931131}
+  - component: {fileID: 1429931132}
+  m_Layer: 0
+  m_Name: EndLake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1429931131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429931130}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1536.5, y: 9.6, z: 120.8}
+  m_LocalScale: {x: 539.3741, y: 115.516045, z: 334.31293}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 189541339}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1429931132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429931130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f6fd535518f5540b4bcc3099582f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  decalLayerMask: 1
+  lightLayerMask: 1
+  largeBand0FadeToggle: 1
+  largeBand1FadeToggle: 1
+  ripplesFadeToggle: 1
+  surfaceType: 0
+  geometryType: 0
+  meshRenderers: []
+  timeMultiplier: 0.46
+  scriptInteractions: 1
+  cpuEvaluateRipples: 0
+  customMaterial: {fileID: 0}
+  startSmoothness: 0.75627774
+  endSmoothness: 0.6203841
+  smoothnessFadeStart: 100
+  smoothnessFadeDistance: 500
+  tessellation: 1
+  maxTessellationFactor: 2.7
+  tessellationFactorFadeStart: 150
+  tessellationFactorFadeRange: 1850
+  refractionColor: {r: 0, g: 0, b: 0, a: 1}
+  maxRefractionDistance: 0
+  absorptionDistance: 0.001
+  scatteringColor: {r: 0, g: 0, b: 0, a: 1}
+  ambientScattering: 0.28
+  heightScattering: 0.163
+  displacementScattering: 0.1
+  directLightTipScattering: 0.6
+  directLightBodyScattering: 0.5
+  maximumHeightOverride: 0
+  caustics: 0
+  causticsIntensity: 0.5
+  causticsPlaneBlendDistance: 1
+  causticsResolution: 256
+  causticsBand: 2
+  virtualPlaneDistance: 4
+  causticsTilingFactor: 1
+  causticsDirectionalShadow: 0
+  causticsDirectionalShadowDimmer: 0.25
+  renderingLayerMask: 1
+  debugMode: 0
+  waterMaskDebugMode: 0
+  waterCurrentDebugMode: 0
+  currentDebugMultiplier: 1
+  waterFoamDebugMode: 0
+  underWater: 0
+  volumeBounds: {fileID: 0}
+  volumeDepth: 50
+  volumeHeight: 0
+  volumePrority: 0
+  absorptionDistanceMultiplier: 1
+  underWaterAmbientProbeContribution: 1
+  underWaterScatteringColorMode: 0
+  underWaterScatteringColor: {r: 0, g: 0.27, b: 0.23, a: 1}
+  underWaterRefraction: 0
+  largeCurrentSpeedValue: 2.81
+  largeCurrentMap: {fileID: 0}
+  largeCurrentRegionExtent: {x: 100, y: 100}
+  largeCurrentRegionOffset: {x: 0, y: 0}
+  largeCurrentMapInfluence: 1
+  ripplesCurrentSpeedValue: 0
+  ripplesCurrentMap: {fileID: 0}
+  ripplesCurrentRegionExtent: {x: 100, y: 100}
+  ripplesCurrentRegionOffset: {x: 0, y: 0}
+  ripplesCurrentMapInfluence: 1
+  deformation: 0
+  deformationRes: 512
+  deformationAreaSize: {x: 200, y: 200}
+  deformationAreaOffset: {x: 0, y: 0}
+  foam: 0
+  foamResolution: 512
+  foamAreaSize: {x: 200, y: 200}
+  foamAreaOffset: {x: 0, y: 0}
+  foamPersistenceMultiplier: 0.5
+  foamCurrentInfluence: 0.6
+  foamColor: {r: 1, g: 1, b: 1, a: 1}
+  foamTextureTiling: 0.15
+  foamSmoothness: 1
+  simulationFoam: 1
+  simulationFoamAmount: 0.2
+  simulationFoamMask: {fileID: 0}
+  simulationFoamMaskExtent: {x: 100, y: 100}
+  simulationFoamMaskOffset: {x: 0, y: 0}
+  simulationFoamWindCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  repetitionSize: 1339
+  largeOrientationValue: 0.17
+  largeWindSpeed: 12
+  largeChaos: 0
+  largeBand0Multiplier: 0.747
+  largeBand0FadeMode: 1
+  largeBand0FadeStart: 1500
+  largeBand0FadeDistance: 3000
+  largeBand1Multiplier: 0.219
+  largeBand1FadeMode: 1
+  largeBand1FadeStart: 300
+  largeBand1FadeDistance: 800
+  ripples: 1
+  ripplesMotionMode: 0
+  ripplesOrientationValue: 0
+  ripplesWindSpeed: 0
+  ripplesChaos: 0
+  ripplesFadeMode: 1
+  ripplesFadeStart: 50
+  ripplesFadeDistance: 200
+  waterMask: {fileID: 0}
+  waterMaskRemap: {x: 0, y: 1}
+  waterMaskExtent: {x: 100, y: 100}
+  waterMaskOffset: {x: 0, y: 0}
 --- !u!1 &1432390506 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6692417809550016995, guid: 632cf5c4b134dcd48a8cf021bfd87b64, type: 3}
