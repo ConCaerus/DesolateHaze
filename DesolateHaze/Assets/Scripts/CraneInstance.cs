@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public class CraneInstance : MonoBehaviour {
-    [SerializeField] Transform p1, p2;
+    [SerializeField] Transform body;
     [SerializeField] float speed;
+    [SerializeField] bool xAxis = true, yAxis = true;
 
     bool active = false;
 
@@ -39,13 +40,6 @@ public class CraneInstance : MonoBehaviour {
     }
 
     void move() {
-        if(savedDir.x > 0) {
-            p1.localEulerAngles += Vector3.forward * speed * 10f * Time.deltaTime;
-            p2.localEulerAngles += Vector3.forward * speed * 10f * Time.deltaTime;
-        }
-        else if(savedDir.x < 0) {
-            p1.localEulerAngles -= Vector3.forward * speed * 10f * Time.deltaTime;
-            p2.localEulerAngles -= Vector3.forward * speed * 10f * Time.deltaTime;
-        }
+        body.transform.position += new Vector3(xAxis ? savedDir.x : 0f, yAxis ? savedDir.y : 0f, 0f) * speed * 10f * Time.deltaTime;
     }
 }

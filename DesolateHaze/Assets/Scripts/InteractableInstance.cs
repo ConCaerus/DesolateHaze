@@ -7,7 +7,10 @@ using UnityEngine.Events;
 public class InteractableInstance : MonoBehaviour {
     [SerializeField] List<UnityEvent> immediateSequence = new List<UnityEvent>();
     [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>();
+    [SerializeField] List<UnityEvent> exitSequences = new List<UnityEvent>();
     [SerializeField] List<float> secondsDelays = new List<float>();
+
+    List<Coroutine> runners = new List<Coroutine>();
 
     int seqInd = 0;
 
@@ -25,7 +28,14 @@ public class InteractableInstance : MonoBehaviour {
         if(seqInd >= immediateSequence.Count)
             seqInd = 0;
         for(int i = 0; i < delayedSequences.Count; i++) 
-            StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
+            runners.Add(StartCoroutine(delay(delayedSequences[i], secondsDelays[i])));
+    }
+    public void detrigger() {
+        seqInd = 0;
+        foreach(var i in runners)
+            StopCoroutine(i);
+        foreach(var i in exitSequences)
+            i.Invoke();
     }
 
     public void test() {
@@ -41,7 +51,9 @@ public class InteractableInstance : MonoBehaviour {
         PlayerMovement.I.canMove = true;
     }
     IEnumerator delay(UnityEvent e, float s) {
+        var rRef = runners[runners.Count - 1];
         yield return new WaitForSeconds(s);
         e.Invoke();
+        runners.Remove(rRef);
     }
 }

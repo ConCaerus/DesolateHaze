@@ -382,8 +382,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         if(savedInput.magnitude == 0f && inheritRb != null)
             rb.linearVelocity = inheritRb.linearVelocity;
-        else
-            rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, -maxVelocity, maxVelocity), Mathf.Clamp(temp.y, -maxVelocity, maxVelocity));
+        else {
+            var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
+            rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
+        }
     }
     public void setNewState(pMovementState newState) {
         curState = newState;
