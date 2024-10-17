@@ -87,10 +87,10 @@ MonoBehaviour:
     m_Value: 103.21
   upperHemisphereLuxValue:
     m_OverrideState: 1
-    m_Value: 2.9926238
+    m_Value: 0.48928922
   upperHemisphereLuxColor:
     m_OverrideState: 1
-    m_Value: {x: 0.5, y: 0.3266321, z: 0.21960527}
+    m_Value: {x: 0.5, y: 0.4263832, z: 0.32229704}
   desiredLuxValue:
     m_OverrideState: 1
     m_Value: 19976.13
@@ -105,10 +105,10 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: c9bc6cdb7a2e78b4c85ae74715b0a355, type: 3}
+    m_Value: {fileID: 8900000, guid: 12c15a8e5a294be45819b1dd4b9b08d3, type: 3}
   distortionMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   flowmap:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -116,25 +116,25 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   scrollOrientation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
-      mode: 1
+      mode: 0
       customValue: 0
       additiveValue: 0
       multiplyValue: 1
   scrollSpeed:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
-      mode: 1
+      mode: 2
       customValue: 100
-      additiveValue: 0
+      additiveValue: 150
       multiplyValue: 1
   sunInitialRotation:
     m_OverrideState: 0
-    m_Value: -Infinity
+    m_Value: -280.50876
   lockSun:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   enableBackplate:
     m_OverrideState: 0
     m_Value: 0
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   quality:
     m_OverrideState: 0
     m_Value: 1
@@ -232,10 +232,10 @@ MonoBehaviour:
     m_Value: -5
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 150
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 90
   enableVolumetricFog:
     m_OverrideState: 0
     m_Value: 1
