@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public static class Saver {
     static string playerTag = "PlayerSaveData";
@@ -42,6 +43,20 @@ public static class Saver {
         for(int i = 0; i < save.data[(int)cm.aType - 1].Count; i++) {
             if(save.data[(int)cm.aType - 1][i].pos == pos) {
                 if(i > 0) save.data[(int)cm.aType - 1][i].triggered = false;
+                break;
+            }
+        }
+
+        storeSave(save);
+    }
+    public static void triggerNextCheckpoint(CheckpointManager cm, PlayerMovement pm) {
+        var save = getSave();
+
+        var pos = getLastCheckpoint(cm, pm).pos;
+
+        for(int i = 0; i < save.data[(int)cm.aType - 1].Count - 1; i++) {
+            if(save.data[(int)cm.aType - 1][i].pos == pos) {
+                save.data[(int)cm.aType - 1][i + 1].triggered = true;
                 break;
             }
         }

@@ -9,7 +9,8 @@ public class WagonInstance : MonoBehaviour {
 
 
     private void FixedUpdate() {
-        beBoat();
+        if(!rb.isKinematic)
+            beBoat();
     }
 
     void beBoat() {
