@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerPositionTrigger : MonoBehaviour {
     [SerializeField] UnityEvent events;
@@ -25,6 +26,9 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
     public void setPlayerFalling() {
         PlayerMovement.I.setNewState(PlayerMovement.pMovementState.Falling);
+    }
+    public void loadLevel2() {
+        SceneManager.LoadScene("Onsite");
     }
 
     public void pauseFallDamage() {
