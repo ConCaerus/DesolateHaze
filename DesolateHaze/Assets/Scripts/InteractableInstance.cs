@@ -51,6 +51,7 @@ public class InteractableInstance : MonoBehaviour {
         PlayerMovement.I.canMove = true;
     }
     IEnumerator delay(UnityEvent e, float s) {
+        yield return new WaitForEndOfFrame();
         var rRef = runners[runners.Count - 1];
         yield return new WaitForSeconds(s);
         e.Invoke();
