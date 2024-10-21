@@ -45687,13 +45687,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5c61eae69f96b4a952a3aabfcb0cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onWater: 0
   boatRot: 0
   speed: 5
   accSpeed: 0.5
   moveRight: 1
   rb: {fileID: 1719034470}
-  mainCol: {fileID: 0}
+  mainCol: {fileID: 1719034474}
+--- !u!65 &1719034474 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 6720611408934614795, guid: 127bc5b236ede5c4295896d8a7ec090c, type: 3}
+  m_PrefabInstance: {fileID: 1719034468}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1719826182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8725098495667106557, guid: 52a27ef9bf7d7f0418c2b04f9cdf9c6d, type: 3}

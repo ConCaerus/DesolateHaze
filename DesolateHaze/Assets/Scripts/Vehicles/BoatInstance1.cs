@@ -1,7 +1,15 @@
 using UnityEngine;
 
 public class BoatInstance : MonoBehaviour {
-    public bool onWater = false;
+    bool ow = false;
+    public bool onWater {
+        get { return ow; }
+        set { 
+            ow = value;
+            if(ow)
+                Invoke("startRotating", .5f);
+        }
+    }
     [SerializeField] float boatRot;
     [SerializeField] float speed, accSpeed;
     [SerializeField] bool moveRight;
@@ -9,9 +17,15 @@ public class BoatInstance : MonoBehaviour {
     [SerializeField] Rigidbody rb;
     [SerializeField] Collider mainCol;
 
+    bool rotate = false;
+
 
     private void FixedUpdate() {
         beBoat();
+    }
+
+    void startRotating() {
+        rotate = true;
     }
 
     void beBoat() {
@@ -31,7 +45,7 @@ public class BoatInstance : MonoBehaviour {
             rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, target, accSpeed * Time.fixedDeltaTime);
 
             //  rotates into boatable
-            if(rb.linearVelocity.y > 0f) {
+            if(rotate) {
                 target = Vector3.forward * boatRot;
                 transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(target), accSpeed * Time.fixedDeltaTime);
             }
