@@ -312,7 +312,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     pTarget = Vector2.right * pTarget.x * 10f;
                     pTarget.y = curPushing.linearVelocity.y;
                     curPushing.linearVelocity = pTarget;
-                    /*
+                    /*  OLD SHIT
                     pushing = true;
                     //  inputted pushing / pulling
                     if(controls.Player.Interact.ReadValue<float>() == 0f) {
@@ -336,10 +336,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 case pMovementState.Falling:
                     target = rb.linearVelocity;
                     //  slight air control
-                    //  not used because it makes the player stick to slopes
                     var max = speed * speedMod * 100f * Time.fixedDeltaTime;
                     var mod = savedInput.x * speed * speedMod * 3f * Time.fixedDeltaTime;
-                    var modPerc = Mathf.Clamp01(Mathf.Abs(rb.linearVelocity.x) / max);
+                    var modPerc = Mathf.Clamp01(Mathf.Abs(rb.linearVelocity.magnitude) / max);
                     target.x = Mathf.Clamp(target.x + mod * modPerc, -max, max);
                     break;
 
