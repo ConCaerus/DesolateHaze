@@ -7,17 +7,26 @@ public class AudioManager : Singleton<AudioManager> {
     [SerializeField] float introMuteTime;
     [SerializeField] GameObject sourcePref;
     [SerializeField] List<AudioPoolInfo> poolInfo = new List<AudioPoolInfo>();
+    Dictionary<audioTitle, AudioPoolInfo> dicPoolInfo = new Dictionary<audioTitle, AudioPoolInfo>();
 
-    List<List<ASourceInstance>> poolSources = new List<List<ASourceInstance>>();
+    Dictionary<audioTitle, List<ASourceInstance>> poolSources = new Dictionary<audioTitle, List<ASourceInstance>>();
+
+    [System.Serializable]
+    public enum audioTitle {
+        None, Explosion
+    }
 
     bool mute = true;
 
     private void Start() {
+        foreach(var i in poolInfo) {
+            dicPoolInfo.Add(i.title, i);
+        }
         for(int p = 0; p < poolInfo.Count; p++) {
-            poolSources.Add(new List<ASourceInstance>());
+            poolSources.Add(poolInfo[p].title, new List<ASourceInstance>());
             for(int i = 0; i < poolInfo[p].poolCount; i++) {
                 var a = Instantiate(sourcePref, transform);
-                poolSources[p].Add(a.GetComponent<ASourceInstance>());
+                poolSources[poolInfo[p].title].Add(a.GetComponent<ASourceInstance>());
             }
         }
 
@@ -28,27 +37,27 @@ public class AudioManager : Singleton<AudioManager> {
         mute = false;
     }
 
-    public void playSound(Vector3 point, int poolIndex, float volMod) {
-        if(poolIndex < 0 || poolIndex >= poolInfo.Count) return;
-        if(poolSources[poolIndex].Count == 0 || mute) return;
-        var asi = poolSources[poolIndex][0];
-        poolSources[poolIndex].RemoveAt(0);
+    public void playSound(Vector3 point, audioTitle title, float volMod) {
+        if(title == audioTitle.None) return;
+        if(poolSources[title].Count == 0 || mute) return;
+        var asi = poolSources[title][0];
+        poolSources[title].RemoveAt(0);
         asi.transform.position = point;
-        var clip = poolInfo[poolIndex].clips[Random.Range(0, poolInfo[poolIndex].clips.Count)];
+        var clip = dicPoolInfo[title].clips[Random.Range(0, dicPoolInfo[title].clips.Count)];
         asi.playSound(clip, false, true, volMod);
-        StartCoroutine(repoolSource(asi, clip.length, poolIndex, null));
+        StartCoroutine(repoolSource(asi, clip.length, title, null));
     }
-    public void playFollowingSound(Transform trans, int poolIndex, float volMod) {
-        if(poolIndex < 0 || poolIndex >= poolInfo.Count) return;
-        if(poolSources[poolIndex].Count == 0 || mute) return;
-        var asi = poolSources[poolIndex][0];
-        poolSources[poolIndex].RemoveAt(0);
-        var clip = poolInfo[poolIndex].clips[Random.Range(0, poolInfo[poolIndex].clips.Count)];
+    public void playFollowingSound(Transform trans, audioTitle title, float volMod) {
+        if(title == audioTitle.None) return;
+        if(poolSources[title].Count == 0 || mute) return;
+        var asi = poolSources[title][0];
+        poolSources[title].RemoveAt(0);
+        var clip = dicPoolInfo[title].clips[Random.Range(0, dicPoolInfo[title].clips.Count)];
         asi.playSound(clip, false, true, volMod);
-        StartCoroutine(repoolSource(asi, clip.length, poolIndex, trans));
+        StartCoroutine(repoolSource(asi, clip.length, title, trans));
     }
 
-    IEnumerator repoolSource(ASourceInstance asi, float length, int poolIndex, Transform followTrans) {
+    IEnumerator repoolSource(ASourceInstance asi, float length, audioTitle title, Transform followTrans) {
         if(followTrans == null)
             yield return new WaitForSeconds(length);
         else {
@@ -60,7 +69,7 @@ public class AudioManager : Singleton<AudioManager> {
                 startTime = Time.time;
             }
         }
-        poolSources[poolIndex].Add(asi);
+        poolSources[title].Add(asi);
     }
 
     public AudioClip getClip(int poolIndex) {
@@ -75,5 +84,6 @@ public class AudioManager : Singleton<AudioManager> {
 [System.Serializable] 
 public class AudioPoolInfo {
     public int poolCount;
+    public AudioManager.audioTitle title;
     public List<AudioClip> clips = new List<AudioClip>();
 }
