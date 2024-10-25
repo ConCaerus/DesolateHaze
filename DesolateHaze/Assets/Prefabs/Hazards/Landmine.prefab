@@ -234,7 +234,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   triggeredByMonsters: 0
-  hazardSound: 1
+  hazardSound:
+    title: Explosion
+    poolCount: 5
+    clips:
+    - {fileID: 8300000, guid: f169e0132dacc5d43a764d3ef434eb93, type: 3}
 --- !u!1001 &729738053859143786
 PrefabInstance:
   m_ObjectHideFlags: 0

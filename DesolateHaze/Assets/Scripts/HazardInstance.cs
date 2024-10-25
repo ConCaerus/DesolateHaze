@@ -7,7 +7,7 @@ public class HazardInstance : MonoBehaviour {
     public hazardType hType;
     [SerializeField] UnityEvent triggerEvents;
     [SerializeField] bool triggeredByMonsters = false;
-    [SerializeField] AudioManager.audioTitle hazardSound;
+    [SerializeField] AudioPoolInfo hazardSound;
 
     public enum hazardType {
         None, BarbedWire, Landmine
@@ -50,6 +50,7 @@ public class HazardInstance : MonoBehaviour {
     }
 
     public void playHazardSound() {
-        AudioManager.I.playSound(transform.position, hazardSound, 1f);
+        Debug.Log("here");
+        AudioManager.I.playSound(hazardSound, transform.position, 1f);
     }
 }
