@@ -63,6 +63,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     //  jump things
     bool jumpHeld = false;
 
+    //  elliot's animation things
+    private Animator animator;
+    private string currentAnimation = "";
+
     //  specials
     pMovementState cs = pMovementState.None;
     pMovementState curState {
@@ -248,6 +252,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         lastGroundedY = transform.position.y;
         canMove = true;
+
+        //elliot's animation stuff
+        animator = GetComponent<Animator>();
+        ChangeAnimation("Idle");
     }
     private void FixedUpdate() {
         move();
@@ -557,5 +565,20 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     public Collider getUsedGround() {
         return usedGround;
     }
+    #endregion
+
+    #region ANIMATION LOGIC
+
+    private void ChangeAnimation(string animation, float crossfade = 0.2f)
+    {
+        if(currentAnimation != animation)
+        {
+            currentAnimation = animation;
+            animator.CrossFade(animation, crossfade);
+        }
+    }
+
+
+
     #endregion
 }
