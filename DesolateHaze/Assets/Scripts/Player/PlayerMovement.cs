@@ -66,6 +66,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     //  elliot's animation things
     private Animator animator;
     private string currentAnimation = "";
+    private Vector2 movement = Vector2.zero;
 
     //  specials
     pMovementState cs = pMovementState.None;
@@ -259,6 +260,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void FixedUpdate() {
         move();
+
+        //elliot's animation stuff
+        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        CheckAnimation();
     }
     private void OnDisable() {
         controls.Disable();
@@ -569,16 +574,24 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region ANIMATION LOGIC
 
-    private void ChangeAnimation(string animation, float crossfade = 0.2f)
-    {
+    private void CheckAnimation() {
+        if(movement.y == 1 || movement.y == -1)
+        {
+            ChangeAnimation("Walk");
+            Debug.Log("Walking!!");
+        } else
+        {
+            ChangeAnimation("Idle");
+        }
+    }
+    private void ChangeAnimation(string animation, float crossfade = 0.2f) {
         if(currentAnimation != animation)
         {
             currentAnimation = animation;
             animator.CrossFade(animation, crossfade);
+            Debug.Log("Animation change!");
         }
     }
-
-
 
     #endregion
 }

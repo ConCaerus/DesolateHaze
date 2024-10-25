@@ -290,13 +290,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: walkCycle(Clone)
+    - name: player_rig(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RL_BoneRoot
-      parentName: walkCycle(Clone)
+      parentName: player_rig(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
@@ -651,7 +651,7 @@ ModelImporter:
       rotation: {x: -0.0000064844808, y: 0.0000042328093, z: -0.000054691714, w: 1}
       scale: {x: 1.0000008, y: 1.0000008, z: 1.0000001}
     - name: lArm_shoulder
-      parentName: walkCycle(Clone)
+      parentName: player_rig(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
@@ -667,11 +667,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 94cce56eb47c6304dad860f7bbb4713f, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 1
