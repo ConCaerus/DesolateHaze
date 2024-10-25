@@ -108,7 +108,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.66
+  m_Radius: 0.56
   m_Height: 3.72
   m_Direction: 0
   m_Center: {x: 0, y: 0.5, z: 0}
@@ -152,3 +152,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   triggeredByMonsters: 0
+  hazardSound:
+    title: 
+    poolCount: 0
+    clips: []

@@ -6,6 +6,7 @@ public class MainMenuCanvas : MonoBehaviour {
 
     private void Start() {
         DOTween.Init();
+        Time.timeScale = 1f;
     }
 
     public void grow(Transform t) {

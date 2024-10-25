@@ -14,7 +14,7 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
         DOTween.Init();
         background.gameObject.SetActive(true);
         background.color = Color.black;
-        background.DOColor(Color.clear, .25f).OnComplete(() => { background.gameObject.SetActive(false); });
+        StartCoroutine(unloader());
     }
 
     public void loadGame() {
@@ -45,7 +45,25 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
             startTime = Time.realtimeSinceStartup;
         }
         background.color = Color.black;
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
         SceneManager.LoadScene(sName);
+    }
+    IEnumerator unloader() {
+        background.gameObject.SetActive(true);
+        background.color = Color.black;
+        float blackTime = .75f;
+        float elapsedTime = 0f;
+        float startTime = Time.realtimeSinceStartup;
+        while(elapsedTime < blackTime) {
+            float perc = elapsedTime / blackTime;
+            background.color = new Color(0f, 0f, 0f, (1f - perc));
+            yield return new WaitForEndOfFrame();
+            elapsedTime += Time.realtimeSinceStartup - startTime;
+            startTime = Time.realtimeSinceStartup;
+        }
+        background.color = Color.clear;
+        yield return new WaitForEndOfFrame();
+        background.gameObject.SetActive(false);
     }
 }
