@@ -25,7 +25,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     float lastGroundedY;
     [HideInInspector] public bool canTakeFallDamage = true;
 
-
     //  rope things
     RopeInstance hr = null;
     RopeInstance heldRope {
@@ -62,11 +61,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  jump things
     bool jumpHeld = false;
-
-    //  elliot's animation things
-    private Animator animator;
-    private string currentAnimation = "";
-    private Vector2 movement = Vector2.zero;
 
     //  specials
     pMovementState cs = pMovementState.None;
@@ -253,17 +247,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         lastGroundedY = transform.position.y;
         canMove = true;
-
-        //elliot's animation stuff
-        animator = GetComponent<Animator>();
-        ChangeAnimation("Idle");
     }
     private void FixedUpdate() {
         move();
-
-        //elliot's animation stuff
-        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        CheckAnimation();
     }
     private void OnDisable() {
         controls.Disable();
@@ -572,26 +558,4 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     #endregion
 
-    #region ANIMATION LOGIC
-
-    private void CheckAnimation() {
-        if(movement.y == 1 || movement.y == -1)
-        {
-            ChangeAnimation("Walk");
-            Debug.Log("Walking!!");
-        } else
-        {
-            ChangeAnimation("Idle");
-        }
-    }
-    private void ChangeAnimation(string animation, float crossfade = 0.2f) {
-        if(currentAnimation != animation)
-        {
-            currentAnimation = animation;
-            animator.CrossFade(animation, crossfade);
-            Debug.Log("Animation change!");
-        }
-    }
-
-    #endregion
 }
