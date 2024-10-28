@@ -92,6 +92,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 curPushing = null;
             }
 
+            if(cs != pMovementState.Walking) PlayerAudioManager.I.stopWalking();
+
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
             if(!rb.isKinematic)
@@ -262,6 +264,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(Mathf.Abs(dir.x) < .15f) dir.x = 0f;
         dir.Normalize();
         savedInput = dir;
+        if(Mathf.Abs(savedInput.x) > 0f)
+            PlayerAudioManager.I.startWalking(.5f);
+        else PlayerAudioManager.I.stopWalking();
         updateFaceDir();
     }
     void updateFaceDir() {
@@ -270,7 +275,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     void facePos(float x) {
         if(PauseCanvas.I.paused) return;
         if(curState == pMovementState.Falling) return;
-        if(curState != pMovementState.Pushing && Mathf.Abs(savedInput.x) != 0f) {
+        if(curState == pMovementState.Pushing) {
+            facingRight = curPushing.position.x >= transform.position.x;
+            spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
+        }
+        else if(Mathf.Abs(savedInput.x) != 0f) {
             facingRight = x >= 0;
             //  flips character
             spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
@@ -311,6 +320,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     pTarget = Vector2.right * pTarget.x * 10f;
                     pTarget.y = curPushing.linearVelocity.y;
                     curPushing.linearVelocity = pTarget;
+                    //  checks facing dir
+                    if(curPushing.position.x < transform.position.x && !facingRight)
+                        facePos(curPushing.position.x);
+                    else if(curPushing.position.x > transform.position.x && facingRight)
+                        facePos(curPushing.position.x);
                     /*  OLD SHIT
                     pushing = true;
                     //  inputted pushing / pulling

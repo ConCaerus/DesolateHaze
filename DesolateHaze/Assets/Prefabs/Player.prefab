@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4188132916916667625}
   - component: {fileID: 6976024381483503657}
   - component: {fileID: 2445624396566840757}
+  - component: {fileID: 1377122611236420317}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -125,6 +126,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDist: 2
+--- !u!114 &1377122611236420317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3293564536650127051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 529c5b86a0c1a1242935b2336dc15412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSound:
+    title: PlayerWalkSound
+    poolCount: 5
+    clips:
+    - {fileID: 8300000, guid: ab045f552d9a198459a2e215702d3fb5, type: 3}
+    - {fileID: 8300000, guid: 0367448a6f49b2b45a932b5f9d047d5b, type: 3}
+    - {fileID: 8300000, guid: 6f35d8fbf5a9a764884716c85c12c122, type: 3}
+    - {fileID: 8300000, guid: 0f4a0325508e26c498690fb03730b451, type: 3}
 --- !u!1 &4037805005805438302
 GameObject:
   m_ObjectHideFlags: 0
