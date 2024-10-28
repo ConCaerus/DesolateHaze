@@ -42,7 +42,7 @@ public class AudioManager : Singleton<AudioManager> {
         StartCoroutine(repoolSource(asi, clip.length, info.title, point));
     }
 
-    void initSound(AudioPoolInfo info) {
+    public void initSound(AudioPoolInfo info) {
         if(poolInfo.ContainsKey(info.title)) return;
         poolInfo.Add(info.title, info);
         poolSources.Add(info.title, new List<ASourceInstance>());

@@ -32,6 +32,10 @@ public class HazardInstance : MonoBehaviour {
             triggerEvents.Invoke();
     }
 
+    private void Start() {
+        AudioManager.I.initSound(hazardSound);
+    }
+
     public void hazardPlayerInteraction() {
         switch(hType) {
             case hazardType.BarbedWire:
@@ -50,7 +54,6 @@ public class HazardInstance : MonoBehaviour {
     }
 
     public void playHazardSound() {
-        Debug.Log("here");
         AudioManager.I.playSound(hazardSound, transform.position, 1f);
     }
 }
