@@ -21,12 +21,12 @@ public class AnimationManager : MonoBehaviour
 
     private void CheckAnimation()
     {
-        if (movement.y == 1 || movement.y == -1)
+        if (movement.x == 1 || movement.x == -1)
         {
             ChangeAnimation("Walk", 0.2f);
             Debug.Log("Walking!!");
         }
-        else
+        else if (currentAnimation != "Idle")
         {
             ChangeAnimation("Idle", 0.2f);
         }
