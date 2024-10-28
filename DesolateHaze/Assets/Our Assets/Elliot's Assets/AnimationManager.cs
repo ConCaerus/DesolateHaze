@@ -21,7 +21,7 @@ public class AnimationManager : MonoBehaviour
 
     private void CheckAnimation()
     {
-        if (movement.x == 1 || movement.x == -1)
+        if (movement.x == .5 || movement.x == -.5)
         {
             ChangeAnimation("Walk", 0.2f);
             Debug.Log("Walking!!");
