@@ -24,12 +24,12 @@ public class AnimationManager : MonoBehaviour
         if (movement.x == 1 || movement.x == -1)
         {
             ChangeAnimation("Walk", 0.2f);
-            Debug.Log("Walking!!");
+            //Debug.Log("Walking!!");
         }
         else if (currentAnimation != "Idle")
         {
             ChangeAnimation("Idle", 0.2f);
-            Debug.Log("Idling!!");
+            //Debug.Log("Idling!!");
         }
     }
     private void ChangeAnimation(string animation, float crossfade = 0.2f)
@@ -38,7 +38,7 @@ public class AnimationManager : MonoBehaviour
         {
             currentAnimation = animation;
             animator.CrossFade(animation, crossfade);
-            Debug.Log("Animation change!");
+            //Debug.Log("Animation change!");
         }
     }
 }
