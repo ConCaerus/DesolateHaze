@@ -21,7 +21,7 @@ public class AnimationManager : MonoBehaviour
 
     private void CheckAnimation()
     {
-        if (movement.x == .5 || movement.x == -.5)
+        if (movement.x == 1 || movement.x == -1)
         {
             ChangeAnimation("Walk", 0.2f);
             Debug.Log("Walking!!");
@@ -29,6 +29,7 @@ public class AnimationManager : MonoBehaviour
         else if (currentAnimation != "Idle")
         {
             ChangeAnimation("Idle", 0.2f);
+            Debug.Log("Idling!!");
         }
     }
     private void ChangeAnimation(string animation, float crossfade = 0.2f)
