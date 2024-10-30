@@ -64,9 +64,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  specials
     pMovementState cs = pMovementState.None;
-    pMovementState curState {
+    public pMovementState curState {
         get { return cs; }
-        set {
+        private set {
             //  before changing
             if(cs == value) return;
             Vector3 carryover = Vector2.zero;
@@ -572,4 +572,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     #endregion
 
+    public Rigidbody getCurPushing() {
+        return curPushing;
+    }
 }
