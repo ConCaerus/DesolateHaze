@@ -5,9 +5,12 @@ public class BoatInstance : MonoBehaviour {
     public bool onWater {
         get { return ow; }
         set { 
+            if(ow == value) return;
             ow = value;
-            if(ow)
+            if(ow) {
                 Invoke("startRotating", .5f);
+                asi.playSound(splash, false, true, 1f);
+            }
         }
     }
     [SerializeField] float boatRot;
@@ -16,6 +19,9 @@ public class BoatInstance : MonoBehaviour {
 
     [SerializeField] Rigidbody rb;
     [SerializeField] Collider mainCol;
+
+    [SerializeField] ASourceInstance asi;
+    [SerializeField] AudioClip splash;
 
     bool rotate = false;
 
