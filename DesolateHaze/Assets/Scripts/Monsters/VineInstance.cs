@@ -13,6 +13,8 @@ public class VineInstance : MonoBehaviour {
     [SerializeField] bool singleShot = false;
     bool canTrack = true;
 
+    [SerializeField] AudioPoolInfo attackSound;
+
     bool r = false;
     bool repelled {
         get { return r; }
@@ -26,6 +28,10 @@ public class VineInstance : MonoBehaviour {
 
     Transform playerTrans = null;
     Coroutine attacker = null;
+
+    private void Start() {
+        AudioManager.I.initSound(attackSound);
+    }
 
     private void LateUpdate() {
         attackCheck();
@@ -86,6 +92,7 @@ public class VineInstance : MonoBehaviour {
         yield return new WaitForSeconds(windTime + .1f);
 
         //  strikes out towards the player's current location
+        AudioManager.I.playSound(attackSound, transform.position, 1f);
         var attOffset = Vector3.Distance(playerTrans.position, attVineRot.position);
         attVine.DOLocalMoveZ(attOffset, strikeTime);
         yield return new WaitForSeconds(strikeTime + .1f);

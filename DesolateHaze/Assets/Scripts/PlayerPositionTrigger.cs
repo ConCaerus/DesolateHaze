@@ -10,6 +10,12 @@ public class PlayerPositionTrigger : MonoBehaviour {
     [SerializeField] List<float> secondsDelays = new List<float>();
     [SerializeField] bool singleUse = true;
 
+    [SerializeField] AudioPoolInfo sound;
+
+    private void Start() {
+        AudioManager.I.initSound(sound);
+    }
+
     private void OnTriggerEnter(Collider col) {
         if(col.gameObject.tag == "Player") {
             events.Invoke();
@@ -29,6 +35,10 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
     public void loadLevel2() {
         SceneManager.LoadScene("Onsite");
+    }
+
+    public void playSound(Transform origin) {
+        AudioManager.I.playSound(sound, origin.position, 1f);
     }
 
     public void pauseFallDamage() {

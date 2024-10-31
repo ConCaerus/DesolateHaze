@@ -1,27 +1,18 @@
 using UnityEngine;
 
-public class AnimationManager : MonoBehaviour
+public class AnimationManager : Singleton<AnimationManager>
 {
-    private Animator animator;
+    [SerializeField] Animator animator;
     private string currentAnimation = "";
-    private Vector2 movement = Vector2.zero;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
         ChangeAnimation("Idle");
     }
 
-    
-    private void FixedUpdate()
+    public void CheckAnimation(float movement, bool falling)
     {
-        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        CheckAnimation();
-    }
-
-    private void CheckAnimation()
-    {
-        if (movement.x == 1 || movement.x == -1)
+        if (!falling && Mathf.Abs(movement) > 0f)
         {
             ChangeAnimation("Walk", 0.2f);
             //Debug.Log("Walking!!");

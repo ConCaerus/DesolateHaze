@@ -61,6 +61,11 @@ MonoBehaviour:
   - {fileID: 0}
   hardTracking: 1
   singleShot: 0
+  attackSound:
+    title: VineAttackWhoosh
+    poolCount: 7
+    clips:
+    - {fileID: 8300000, guid: 526e38f42dedaaf479e3dcf8e060005e, type: 3}
 --- !u!1 &1947018499099128740
 GameObject:
   m_ObjectHideFlags: 0

@@ -478,6 +478,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1798492556673859738}
   m_SourcePrefab: {fileID: 100100000, guid: 94cce56eb47c6304dad860f7bbb4713f, type: 3}
+--- !u!95 &4311710108215251692 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 94cce56eb47c6304dad860f7bbb4713f, type: 3}
+  m_PrefabInstance: {fileID: 1163884119007728780}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6150868973219299222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 94cce56eb47c6304dad860f7bbb4713f, type: 3}
@@ -500,3 +505,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3ee07eb01b2f2438f60e791fbf7a2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 4311710108215251692}
