@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -11,7 +12,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
     [HideInInspector] public float speedMod = 1f;
 
-    [SerializeField] Collider mainCol;
+    [SerializeField] Collider mainCol, groundCol;
     public Rigidbody rb;
     [SerializeField] Rigidbody pushingRb;
     [SerializeField] Transform spriteTrans;
@@ -41,12 +42,20 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  push things
     Vector2 pushOffset;
-    Rigidbody prevPushing;
     Rigidbody cp = null;
     Rigidbody curPushing {
         get { return cp; }
         set {
+            if(cp == value) return;
+            if(cp != null) {
+                Physics.IgnoreCollision(cp.GetComponent<Collider>(), mainCol, false);
+                Physics.IgnoreCollision(cp.GetComponent<Collider>(), groundCol, false);
+            }
             cp = value;
+            if(cp != null) {
+                Physics.IgnoreCollision(cp.GetComponent<Collider>(), mainCol, true);
+                Physics.IgnoreCollision(cp.GetComponent<Collider>(), groundCol, true);
+            }
             if(cp == null && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
@@ -88,7 +97,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             else if(cs == pMovementState.LedgeClimbing)
                 rb.linearVelocity = Vector3.zero;
             if(cs != pMovementState.Pushing && curPushing != null) {
-                prevPushing = curPushing;
                 curPushing = null;
             }
 
@@ -162,7 +170,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
-                StartCoroutine(curPushInitter(colRb));
+                curPushing = colRb;
+                pushOffset = curPushing.transform.position - transform.position;
                 facePos(col.gameObject.transform.position.x);
             }
         }
@@ -173,30 +182,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = Vector3.zero;
                 curState = pMovementState.RopeClimbing;
                 heldRope = ri;
-            }
-        }
-    }
-    private void OnCollisionStay(Collision col) {
-        if(col.gameObject.tag == "Box") {
-            if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
-                StartCoroutine(curPushInitter(colRb));
-                facePos(col.gameObject.transform.position.x);
-            }
-        }
-    }
-    IEnumerator curPushInitter(Rigidbody cprb) {
-        yield return new WaitForFixedUpdate();
-        curPushing = cprb;
-        pushOffset = cprb.transform.position - transform.position;
-        pushOffset.x += pushOffset.x > 0f ? 1f : -1f;
-    }
-    private void OnCollisionExit(Collision col) {
-        //  pushables / boxes
-        return;
-        if(col.gameObject.tag == "Box" && col.gameObject.GetComponent<Rigidbody>() == curPushing) {
-            if(controls.Player.Interact.ReadValue<float>() != 0f) {
-                curState = grounded ? pMovementState.Walking : pMovementState.Falling;
-                curPushing = null;
             }
         }
     }
@@ -225,15 +210,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
     private void OnTriggerExit(Collider col) {
-        //  pushables / boxes
-        if(col.gameObject.tag == "Box") {
-            //curPushing = null;
-        }
-
         //  ladders
-        else if(col.gameObject.tag == "Ladder") {
+        if(col.gameObject.tag == "Ladder") {
             curState = grounded ? pMovementState.Walking : pMovementState.Falling;
         }
+
+        else if(col.gameObject.tag == "BoxExitCol" && curPushing != null && curPushing == col.transform.parent.GetComponent<Rigidbody>())
+            curPushing = null;
     }
     #endregion
 
@@ -316,15 +299,14 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         return;
                     }
                     target.x = savedInput.x * (speed * .6f) * speedMod * 100f * Time.fixedDeltaTime;
-                    var pTarget = pushOffset - pOffset;
-                    pTarget = Vector2.right * pTarget.x * 10f;
-                    pTarget.y = curPushing.linearVelocity.y;
-                    curPushing.linearVelocity = pTarget;
                     //  checks facing dir
                     if(curPushing.position.x < transform.position.x && !facingRight)
                         facePos(curPushing.position.x);
                     else if(curPushing.position.x > transform.position.x && facingRight)
                         facePos(curPushing.position.x);
+                    var pTarget = transform.position;
+                    transform.position = new Vector3(curPushing.transform.position.x - pushOffset.x, pTarget.y, 0f);
+                    /*  NEW OLD SHIT
                     /*  OLD SHIT
                     pushing = true;
                     //  inputted pushing / pulling
@@ -387,16 +369,18 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
             }
         }
+
+        var movingRb = curState == pMovementState.Pushing ? curPushing : rb;
         //  does the thing
-        var temp = Vector2.MoveTowards(rb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
+        var temp = Vector2.MoveTowards(movingRb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
         if(grounded && savedInput.x != 0f)
-            temp.y = rb.linearVelocity.y;
+            temp.y = movingRb.linearVelocity.y;
 
         if(savedInput.magnitude == 0f && inheritRb != null)
-            rb.linearVelocity = inheritRb.linearVelocity;
+            movingRb.linearVelocity = inheritRb.linearVelocity;
         else {
             var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
-            rb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
+            movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
         AnimationManager.I.CheckAnimation(savedInput.x, !grounded);
     }

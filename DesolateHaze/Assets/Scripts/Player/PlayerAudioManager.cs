@@ -23,7 +23,8 @@ public class PlayerAudioManager : Singleton<PlayerAudioManager> {
 
     IEnumerator walkerWaiter(float timeBtwSteps) {
         while(true) {
-            AudioManager.I.playSound(walkSound, transform.position, 1f);
+            if(PlayerMovement.I.grounded)
+                AudioManager.I.playSound(walkSound, transform.position, 1f);
             yield return new WaitForSeconds(timeBtwSteps);
         }
     }

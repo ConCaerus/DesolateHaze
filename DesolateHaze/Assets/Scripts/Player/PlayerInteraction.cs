@@ -26,4 +26,7 @@ public class PlayerInteraction : Singleton<PlayerInteraction> {
     public void setCurInteractable(InteractableInstance ii) {
         curInteractable = ii;
     }
+    public InteractableInstance getCurInteractable() {
+        return curInteractable;
+    }
 }

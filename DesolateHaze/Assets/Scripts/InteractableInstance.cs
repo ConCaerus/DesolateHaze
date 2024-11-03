@@ -16,18 +16,26 @@ public class InteractableInstance : MonoBehaviour {
 
     private void OnTriggerEnter(Collider col) {
         if(col.gameObject.tag == "Player")
-            col.gameObject.GetComponent<PlayerInteraction>().setCurInteractable(this);
+            PlayerInteraction.I.setCurInteractable(this);
     }
     private void OnTriggerExit(Collider col) {
-        if(col.gameObject.tag == "Player")
-            col.gameObject.GetComponent<PlayerInteraction>().setCurInteractable(null);
+        if(col.gameObject.tag == "Player") {
+            if(PlayerInteraction.I.getCurInteractable() == this)
+                PlayerInteraction.I.setCurInteractable(null);
+        }
+    }
+
+    private void OnDisable() {
+        if(PlayerInteraction.I.getCurInteractable() == this)
+            PlayerInteraction.I.setCurInteractable(null);
     }
 
     public void trigger() {
+        if(!enabled) return;
         immediateSequence[seqInd++].Invoke();
         if(seqInd >= immediateSequence.Count)
             seqInd = 0;
-        for(int i = 0; i < delayedSequences.Count; i++) 
+        for(int i = 0; i < delayedSequences.Count; i++)
             runners.Add(StartCoroutine(delay(delayedSequences[i], secondsDelays[i])));
     }
     public void detrigger() {
