@@ -496,6 +496,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region LEDGE CLIMBING
     void climbLedge(Collider col) {
+        if(curState == pMovementState.LedgeClimbing) return;    //  already climbing
         if(Mathf.Abs(transform.position.y - lastGroundedY) < 1f) return;    //  barely off the ground
         var offset = transform.position - col.gameObject.transform.position;
         if(curState == pMovementState.Falling && offset.y < 1.5f && offset.x < 0f == facingRight && savedInput.x != 0f) {
