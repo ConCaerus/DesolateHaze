@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
