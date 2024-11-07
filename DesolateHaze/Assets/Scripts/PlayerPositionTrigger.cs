@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -35,6 +36,10 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
     public void loadLevel2() {
         SceneManager.LoadScene("Onsite");
+    }
+    public void killPlayer(float waitTime) {
+        PlayerMovement.I.canMove = false;
+        TransitionCanvas.I.loadGameAfterDeath(waitTime);
     }
 
     public void playSound(Transform origin) {
