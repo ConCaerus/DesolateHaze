@@ -5,10 +5,10 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -21,8 +21,24 @@ ModelImporter:
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'CC_Base_R_Calf' has translation animation
       that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftLowerLeg
+      average position error 592.8 mm and maximum position error 593.0 mm at time
+      1:50 (61.1%) Frame 110\n\tLeftFoot average position error 886.9 mm and maximum
+      position error 889.9 mm at time 0: 0 (0.0%) Frame 0\n\tRightLowerLeg average
+      position error 587.5 mm and maximum position error 587.8 mm at time 0:37 (20.6%)
+      Frame 37\n\tRightFoot average position error 881.5 mm and maximum position
+      error 886.6 mm at time 0: 0 (0.0%) Frame 0\n\tLeftUpperArm average position
+      error 610.1 mm and maximum position error 610.1 mm at time 0: 0 (0.0%) Frame
+      0\n\tLeftLowerArm average position error 479.1 mm and maximum position error
+      480.7 mm at time 1:50 (61.1%) Frame 110\n\tLeftHand average position error
+      497.4 mm and maximum position error 498.8 mm at time 0: 0 (0.0%) Frame 0\n\tRightUpperArm
+      average position error 607.4 mm and maximum position error 607.4 mm at time
+      0: 0 (0.0%) Frame 0\n\tRightLowerArm average position error 495.6 mm and maximum
+      position error 498.3 mm at time 0:12 (6.7%) Frame 12\n\tRightHand average position
+      error 513.1 mm and maximum position error 515.8 mm at time 0:12 (6.7%) Frame
+      12\n\tHead average position error 902.8 mm and maximum position error 906.2
+      mm at time 1:30 (50.0%) Frame 90\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
@@ -62,19 +78,19 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.5
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -89,7 +105,7 @@ ModelImporter:
     minBoneWeight: 0.001
     optimizeBones: 1
     meshOptimizationFlags: -1
-    indexFormat: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -102,9 +118,9 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
-    normalCalculationMode: 4
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
@@ -120,7 +136,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.5
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
@@ -131,7 +147,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 1
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
