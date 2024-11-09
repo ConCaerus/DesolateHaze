@@ -60,6 +60,29 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
 
+    //  driving things
+    VehicleInstance cd = null;
+    VehicleInstance curDriving {
+        get { return cd; }
+        set {
+            if(cd == value) return;
+            if(cd != null) {
+                cd.playerExit();
+                transform.parent = null;
+                curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                rb.isKinematic = false;
+            }
+            cd = value;
+            if(cd != null) {
+                cd.playerEnter();
+                transform.position = cd.seatPos.position;
+                transform.parent = cd.transform;
+                curState = pMovementState.Driving;
+                rb.isKinematic = true;
+            }
+        }
+    }
+
     //  input things
     InputMaster controls;
     Vector2 savedInput;
@@ -160,7 +183,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     [System.Serializable]
     public enum pMovementState {
-        None, Walking, Falling, Pushing, LedgeClimbing, RopeClimbing, LadderClimbing
+        None, Walking, Falling, Pushing, LedgeClimbing, RopeClimbing, LadderClimbing, Driving
     }
     #endregion
 
@@ -268,7 +291,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
     }
     void move() {
-        if(rb.isKinematic) return;
+        if(rb.isKinematic && curState != pMovementState.Driving) return;
         Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
         float accTarget = speedAccSpeed;
 
@@ -366,10 +389,18 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     target.y = savedInput.y * ladderClimbSpeed * speedMod * 100f * Time.fixedDeltaTime;   //  rigid body y movement
                     accTarget = 1f;
                     break;
+                case pMovementState.Driving:
+                    if(curDriving == null) {
+                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                        return;
+                    }
+                    transform.position = curDriving.seatPos.position;
+                    target.x = savedInput.x * curDriving.speed * 100f * Time.fixedDeltaTime;
+                    break;
             }
         }
 
-        var movingRb = curState == pMovementState.Pushing ? curPushing : rb;
+        var movingRb = curState == pMovementState.Pushing ? curPushing : curState == pMovementState.Driving ? curDriving.rb : rb;
         //  does the thing
         var temp = Vector2.MoveTowards(movingRb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
         if(grounded && savedInput.x != 0f)
@@ -407,7 +438,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     #region JUMP LOGIC
     void jump() {
         jumpHeld = true;
-        if(!canMove)
+        if(!canMove || curState == pMovementState.Driving)
             return;
         //  if grounded, jump immedietely 
         if(grounded)
@@ -493,6 +524,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     #endregion
 
+    #region DRIVING LOGIC
+    public void setCurDriving(VehicleInstance vi) {
+        curDriving = vi;
+    }
+    #endregion
+
 
     #region LEDGE CLIMBING
     void climbLedge(Collider col) {
@@ -533,13 +570,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region GROUND CHECKS
     public void touchedGround(Collider col) {
-        if(col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") {
+        if(curState != pMovementState.Driving && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box")) {
             usedGround = col;
             grounded = true;
         }
     }
     public void leftGround(Collider col) {
-        if((curState != pMovementState.Pushing || controls.Player.Interact.ReadValue<float>() == 0f) && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") && gameObject.activeInHierarchy) {
+        if(((curState != pMovementState.Pushing && curState != pMovementState.Driving) || controls.Player.Interact.ReadValue<float>() == 0f) && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") && gameObject.activeInHierarchy) {
             grounded = false;
             usedGround = null;
 
