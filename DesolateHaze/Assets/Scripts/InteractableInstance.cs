@@ -14,7 +14,7 @@ public class InteractableInstance : MonoBehaviour {
 
     int seqInd = 0;
 
-    private void OnTriggerEnter(Collider col) {
+    private void OnTriggerStay(Collider col) {
         if(col.gameObject.tag == "Player")
             PlayerInteraction.I.setCurInteractable(this);
     }

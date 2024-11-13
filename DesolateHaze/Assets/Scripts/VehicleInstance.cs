@@ -21,12 +21,14 @@ public class VehicleInstance : MonoBehaviour {
     }
 
     public void playerEnter() {
+        return;
         foreach(var i in toggledCols) {
             i.excludeLayers = inUseExclude;
             i.includeLayers = inUseInclude;
         }
     }
     public void playerExit() {
+        return;
         for(int i = 0; i < toggledCols.Count; i++) {
             toggledCols[i].includeLayers = prevIncludes[i];
             toggledCols[i].excludeLayers = prevExcludes[i];
