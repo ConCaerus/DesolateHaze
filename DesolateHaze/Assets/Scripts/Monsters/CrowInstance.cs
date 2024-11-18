@@ -23,7 +23,6 @@ public class CrowInstance : MonoBehaviour {
     {
         if (BOn == true)
         {
-            Debug.Log("SCAW");
             time += Time.deltaTime;
             CrowAnim.SetFloat("Blend", time);
         }
