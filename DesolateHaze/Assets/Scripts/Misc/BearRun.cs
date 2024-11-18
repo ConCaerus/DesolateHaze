@@ -4,12 +4,17 @@ public class BearRun : MonoBehaviour
 {
     [SerializeField] Animator BearAnim;
     [SerializeField] float time;
-    public bool BStop = false;
+    [SerializeField] bool BStop = false;
 
     public void RunOff()
     {
         time = 1f;
         BearAnim.SetFloat("Blend", time);
+    }
+
+    public void BoolOn()
+    {
+        BStop = true;
     }
 
     public void Update()
