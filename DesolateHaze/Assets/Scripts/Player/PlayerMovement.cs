@@ -412,7 +412,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
             movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
-        AnimationManager.I.CheckAnimation(savedInput.x, !grounded, curState);
+        AnimationManager.I.CheckAnimation(savedInput, !grounded, curState);
     }
     public void setNewState(pMovementState newState) {
         curState = newState;

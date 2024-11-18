@@ -4,35 +4,41 @@ public class AnimationManager : Singleton<AnimationManager>
 {
     [SerializeField] Animator animator;
     private string currentAnimation = "";
-    //PlayerMovement.pMovementState action;
 
     private void Start()
     {
-        ChangeAnimation("Idle");
+        ChangeAnimation("Idle", 0.1f);
     }
 
-    public void CheckAnimation(float movement, bool falling, PlayerMovement.pMovementState action)
+    public void CheckAnimation(Vector2 movement, bool falling, PlayerMovement.pMovementState action)
     {
-        if (action == PlayerMovement.pMovementState.RopeClimbing)
+        if (action == PlayerMovement.pMovementState.RopeClimbing && Mathf.Abs(movement.y) > 0f)
         {
             ChangeAnimation("Rope_Climbing", 0.1f);
+            animator.speed = 1f;
         }
-        else if (falling)
+        else if (action == PlayerMovement.pMovementState.RopeClimbing && Mathf.Abs(movement.y) == 0f)
+        {
+            animator.speed = 0;
+        }
+        else if (action == PlayerMovement.pMovementState.RopeClimbing && Mathf.Abs(movement.y) < 0f)
+        {
+            animator.speed = -1;
+        }
+        else if (action == PlayerMovement.pMovementState.Falling)
         {
             ChangeAnimation("Jump", 0.1f);
         }
-        if (!falling && Mathf.Abs(movement) > 0f)
+        else if (!falling && Mathf.Abs(movement.x) > 0f)
         {
             ChangeAnimation("Walk", 0.2f);
-            //Debug.Log("Walking!!");
         }
         else if (currentAnimation != "Idle")
         {
-            ChangeAnimation("Idle", 0.2f);
-            //Debug.Log("Idling!!");
+            ChangeAnimation("Idle", 0.1f);
         }
     }
-    private void ChangeAnimation(string animation, float crossfade = 0.2f)
+    private void ChangeAnimation(string animation, float crossfade)
     {
         if (currentAnimation != animation)
         {
