@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WagonInstance : MonoBehaviour {
@@ -6,6 +7,8 @@ public class WagonInstance : MonoBehaviour {
 
     [SerializeField] Rigidbody rb;
     [SerializeField] Collider mainCol;
+
+    [SerializeField] bool stopped = false;
 
 
     private void FixedUpdate() {
@@ -25,6 +28,12 @@ public class WagonInstance : MonoBehaviour {
             if(PlayerMovement.I.getInheritRb() == rb)
                 PlayerMovement.I.setInheritRb(null);
         }
-        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, target, accSpeed * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, stopped ? Vector3.zero : target, accSpeed * Time.fixedDeltaTime);
+    }
+    public void startBeingBoat() {
+        stopped = false;
+    }
+    public void stopBeingBoat() {
+        stopped = true;
     }
 }
