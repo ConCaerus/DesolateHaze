@@ -16,13 +16,13 @@ public class DebuggerWindow : EditorWindow {
         GUILayout.BeginHorizontal();
         if(GUILayout.Button("Previous Checkpoint")) {
             Saver.untriggerLastCheckpoint(FindFirstObjectByType<CheckpointManager>(), PlayerMovement.I);
-            TransitionCanvas.I.loadGame();
+            TransitionCanvas.I.loadGame(CheckpointManager.I.aType);
         }
         if(GUILayout.Button("Clear Save"))
             SaveData.wipe();
         if(GUILayout.Button("Next Checkpoint")) {
             Saver.triggerNextCheckpoint(FindFirstObjectByType<CheckpointManager>(), PlayerMovement.I);
-            TransitionCanvas.I.loadGame();
+            TransitionCanvas.I.loadGame(CheckpointManager.I.aType);
         }
         GUILayout.EndHorizontal();
     }

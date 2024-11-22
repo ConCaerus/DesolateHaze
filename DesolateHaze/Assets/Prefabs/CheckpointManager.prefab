@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8693937406509274018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6705618033060202337}
+  - component: {fileID: 8968608464500183950}
+  m_Layer: 0
+  m_Name: CheckpointManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6705618033060202337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693937406509274018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8968608464500183950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693937406509274018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bda4bfc2efabc84fa74ea8db44a6bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aType: 0
+  initted: 0
+  playerPref: {fileID: 3293564536650127051, guid: 15fa0f5176fe2924d9691771c9766001, type: 3}
+  outsideColor: {r: 0.4316045, g: 0.8742138, b: 0.3546338, a: 1}
+  onsiteColor: {r: 0.78616345, g: 0.46809924, b: 0.2892487, a: 1}
+  insideColor: {r: 0.53448236, g: 0.37425327, b: 0.93710685, a: 1}
+  underColor: {r: 0.35415915, g: 0.7987421, b: 0.7941934, a: 1}
+  throughColor: {r: 0.7987421, g: 0.3892755, b: 0.28885314, a: 1}
+  onColor: {r: 0.59748423, g: 0.20104025, b: 0.47317204, a: 1}
+  endColor: {r: 0.8616352, g: 0.15986308, b: 0.15986308, a: 1}

@@ -9,7 +9,6 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
     [SerializeField] Slider masterVolSlider; // musicVolSlider, sfxVolSlider;
     [SerializeField] GameObject background;
     [SerializeField] TextMeshProUGUI screenModeText;
-    [SerializeField] float growSize;
 
     FullScreenMode curScreenMode;
 
@@ -43,13 +42,6 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
     }
     public void hide() {
         background.SetActive(false);
-    }
-
-    public void grow(Transform t) {
-        t.localScale = Vector3.one * growSize;
-    }
-    public void shrink(Transform t) {
-        t.localScale = Vector3.one;
     }
 
     public bool isOpen() {

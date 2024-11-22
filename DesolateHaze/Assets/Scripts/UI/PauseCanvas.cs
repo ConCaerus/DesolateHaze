@@ -46,9 +46,6 @@ public class PauseCanvas : Singleton<PauseCanvas> {
     public void resume() {
         paused = !paused;
     }
-    public void load() {
-        TransitionCanvas.I.loadGame();
-    }
     public void mainMenu() {
         TransitionCanvas.I.loadMainMenu();
     }

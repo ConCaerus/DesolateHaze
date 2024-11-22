@@ -10,7 +10,10 @@ public class CheckpointManager : Singleton<CheckpointManager> {
 
     [SerializeField] GameObject playerPref;
 
+    [SerializeField] Color outsideColor, onsiteColor, insideColor, underColor, throughColor, onColor, endColor;
+
     protected override void awake() {
+        if(aType == Saver.areaType.None) return;
         //  stores all available checkpoints (must be children of this)
         foreach(var i in transform.GetComponentsInChildren<CheckpointInstance>()) {
             checkpoints.Add(i);
@@ -36,6 +39,19 @@ public class CheckpointManager : Singleton<CheckpointManager> {
         foreach(var i in checkpoints) {
             if(Saver.hasTriggeredCheckpoint(this, PlayerMovement.I, i.transform.position))
                 i.triggered = true;
+        }
+    }
+
+    public Color getColor(Saver.areaType aType) {
+        switch(aType) {
+            case Saver.areaType.Outside: return outsideColor;
+            case Saver.areaType.Onsite: return onsiteColor;
+            case Saver.areaType.Inside: return insideColor;
+            case Saver.areaType.Under: return underColor;
+            case Saver.areaType.Through: return throughColor;
+            case Saver.areaType.On: return onColor;
+            case Saver.areaType.End: return endColor;
+            default: return Color.white;
         }
     }
 }

@@ -4,16 +4,17 @@ using UnityEngine;
 
 public static class Saver {
     static string playerTag = "PlayerSaveData";
+    [System.Serializable]
     public enum areaType {
         None, Outside, Onsite, Inside, Under, Through, On, End
     }
 
-    public static ExtractedPlayerSaveData getSave() {
+    static ExtractedPlayerSaveData getSave() {
         var data = SaveData.getString(playerTag);
         return (string.IsNullOrEmpty(data) ? new PlayerSaveData() : JsonUtility.FromJson<PlayerSaveData>(data)).extractData();
     }
     public static void storeSave(ExtractedPlayerSaveData saveData) {
-        var data = JsonUtility.ToJson(saveData.compressData()); ;
+        var data = JsonUtility.ToJson(saveData.compressData());
         SaveData.setString(playerTag, data);
     }
     public static void clearSave() {
@@ -60,6 +61,25 @@ public static class Saver {
             }
         }
 
+        //  checks for new cur area
+        save.curArea = cm.aType;
+
+        storeSave(save);
+    }
+    public static void setLastCheckpoint(areaType area, Vector3 checkPointPos) {
+        var save = getSave();
+
+        bool past = false;
+        foreach(var i in save.data[(int)area - 1]) {
+            if(!past && i.pos == checkPointPos) {
+                i.triggered = true;
+                past = true;
+            }
+            else if(past) {
+                i.triggered = false;
+            }
+        }
+
         storeSave(save);
     }
 
@@ -72,7 +92,7 @@ public static class Saver {
                 }
             }
         }
-        var temp = new CheckpointSaveData(cm.checkpoints[0], 1f);
+        var temp = new CheckpointSaveData(cm.checkpoints[0], 1f, cm.aType);
         temp.triggered = true;
         return temp;
     }
@@ -106,13 +126,32 @@ public static class Saver {
         //  checks for newly created checkpoints
         if(save.data[(int)cm.aType - 1].Count != cm.checkpoints.Count) {
             for(int i = save.data[(int)cm.aType - 1].Count; i < cm.checkpoints.Count; i++) {
-                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, pm.speedMod, false);
+                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, pm.speedMod, false, cm.aType);
                 save.data[(int)cm.aType - 1].Add(csd);
             }
         }
         storeSave(save);
         cm.initted = true;
         return false;
+    }
+
+    public static int getCheckpointCount(areaType a) {
+        var save = getSave();
+        return save.data[(int)a - 1].Count;
+    }
+    public static int getAreaCount() {
+        int ind = 1;
+        while(System.Enum.IsDefined(typeof(areaType), ind))
+            ind++;
+        return ind - 1;
+    }
+    public static CheckpointSaveData getCheckpointAtIndex(areaType a, int index) {
+        var save = getSave();
+        return save.data[(int)a - 1][index];
+    }
+
+    public static areaType getCurArea() {
+        return getSave().curArea;
     }
 }
 
@@ -127,6 +166,8 @@ public class PlayerSaveData {
     public List<CheckpointSaveData> onData = new List<CheckpointSaveData>();
     public List<CheckpointSaveData> endData = new List<CheckpointSaveData>();
 
+    public Saver.areaType curArea;
+
     public ExtractedPlayerSaveData extractData() {
         var temp = new ExtractedPlayerSaveData();
         temp.data[0].AddRange(outsideData);
@@ -136,6 +177,7 @@ public class PlayerSaveData {
         temp.data[4].AddRange(throughData);
         temp.data[5].AddRange(onData);
         temp.data[6].AddRange(endData);
+        temp.curArea = curArea;
         return temp;
     }
 }
@@ -144,6 +186,7 @@ public class PlayerSaveData {
 [System.Serializable]
 public class ExtractedPlayerSaveData {
     public List<List<CheckpointSaveData>> data = new List<List<CheckpointSaveData>>();
+    public Saver.areaType curArea;
 
     public ExtractedPlayerSaveData() {
         for(int i = 0; i < 7; i++)
@@ -159,6 +202,7 @@ public class ExtractedPlayerSaveData {
         temp.throughData.AddRange(data[4]);
         temp.onData.AddRange(data[5]);
         temp.endData.AddRange(data[6]);
+        temp.curArea = curArea;
         return temp;
     }
 }
@@ -168,15 +212,18 @@ public class CheckpointSaveData {
     public Vector3 pos;
     public float playerSpeedMod;
     public bool triggered = false;
+    public Saver.areaType area;
 
-    public CheckpointSaveData(Vector3 p, float sm, bool t) {
+    public CheckpointSaveData(Vector3 p, float sm, bool t, Saver.areaType a) {
         pos = p;
         playerSpeedMod = sm;
         triggered = t;
+        area = a;
     }
-    public CheckpointSaveData(CheckpointInstance ci, float sm) {
+    public CheckpointSaveData(CheckpointInstance ci, float sm, Saver.areaType a) {
         pos = ci.transform.position;
         playerSpeedMod = sm;
         triggered = ci.triggered;
+        area = a;
     }
 }

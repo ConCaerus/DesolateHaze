@@ -17,10 +17,16 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
         StartCoroutine(unloader());
     }
 
-    public void loadGame() {
+    public void loadGame(Saver.areaType a) {
         if(waiter != null) return;
         
-        waiter = StartCoroutine(loader(SceneManager.GetActiveScene().name == "MainMenu" ? "Game" : SceneManager.GetActiveScene().name));
+        waiter = StartCoroutine(loader(a == Saver.areaType.Outside ? "Game" : 
+            a == Saver.areaType.Onsite ? "Onsite" : 
+            a == Saver.areaType.Inside ? "Inside" : 
+            a == Saver.areaType.Under ? "Under" : 
+            a == Saver.areaType.Through ? "Through" : 
+            a == Saver.areaType.On ? "On" : 
+            a == Saver.areaType.End ? "End" : ""));
     }
     public void loadMainMenu() {
         if(waiter != null) return;
