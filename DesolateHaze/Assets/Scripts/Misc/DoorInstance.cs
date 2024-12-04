@@ -17,4 +17,8 @@ public class DoorInstance : MonoBehaviour {
         transform.DOKill();
         transform.DOMove(startPos, dur);
     }
+
+    public Vector3 getOffset() {
+        return endOffset;
+    }
 }
