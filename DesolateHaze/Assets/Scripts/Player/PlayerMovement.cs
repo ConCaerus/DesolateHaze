@@ -570,7 +570,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region GROUND CHECKS
     public void touchedGround(Collider col) {
-        if(curState != pMovementState.Driving && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box")) {
+        if((col.gameObject.tag == "Ground" || col.gameObject.tag == "Box")) {
             usedGround = col;
             grounded = true;
         }
