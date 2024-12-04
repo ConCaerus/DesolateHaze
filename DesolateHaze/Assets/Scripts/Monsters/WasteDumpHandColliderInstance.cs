@@ -40,7 +40,6 @@ public class WasteDumpHandColliderInstance : MonoBehaviour {
         PlayerMovement.I.rb.isKinematic = true;
         PlayerMovement.I.GetComponent<Collider>().enabled = false;
         PlayerMovement.I.enabled = false;
-        PlayerMovement.I.transform.DOMove((Vector2)hand.transform.position, .19f);
         yield return new WaitForSeconds(.2f);
         hand.moveToStart(.25f);
         PlayerMovement.I.transform.DOMoveZ(-hand.getOffset().z, .25f);
