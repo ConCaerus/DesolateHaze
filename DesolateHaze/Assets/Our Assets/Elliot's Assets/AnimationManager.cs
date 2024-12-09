@@ -8,13 +8,14 @@ public class AnimationManager : Singleton<AnimationManager>
     private void Start()
     {
         ChangeAnimation("Idle", 0.1f);
+        //Death Ragdoll stuff
+        //GetComponent<Animator>().enabled = true;
     }
 
     //Checks for player's curState and other factors to identify current action and pass updates
     public void CheckAnimation(Vector2 movement, bool falling, PlayerMovement.pMovementState action)
     {
         //for Push/Pull, check direction player facing when entering state then check direction?
-        //find Death trigger
         if (action == PlayerMovement.pMovementState.RopeClimbing && Mathf.Abs(movement.y) > 0f)
         {
             ChangeAnimation("Rope_Climbing", 0.1f);
