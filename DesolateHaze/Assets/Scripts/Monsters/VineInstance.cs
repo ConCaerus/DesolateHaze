@@ -70,8 +70,7 @@ public class VineInstance : MonoBehaviour {
     }
 
     public void killPlayer() {
-        PlayerMovement.I.canMove = false;
-        PlayerMovement.I.rb.isKinematic = true;
+        PlayerMovement.I.beKilled();
         if(attacker != null) {
             StopCoroutine(attacker);
             attacker = null;

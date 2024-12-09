@@ -597,4 +597,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     public Rigidbody getCurPushing() {
         return curPushing;
     }
+
+    public void beKilled() {
+        canMove = false;
+        rb.isKinematic = true;
+        //  your ragdoll here
+    }
 }

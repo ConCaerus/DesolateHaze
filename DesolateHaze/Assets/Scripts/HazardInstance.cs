@@ -39,13 +39,13 @@ public class HazardInstance : MonoBehaviour {
     public void hazardPlayerInteraction() {
         switch(hType) {
             case hazardType.BarbedWire:
-                PlayerMovement.I.canMove = false;
+                PlayerMovement.I.beKilled();
                 Debug.Log("Player Died to Hazard: " + hType.ToString() + " " + gameObject.name);
                 TransitionCanvas.I.loadGameAfterDeath(1.5f);
                 break;
 
             case hazardType.Landmine:
-                PlayerMovement.I.canMove = false;
+                PlayerMovement.I.beKilled();
                 PlayerMovement.I.rb.AddExplosionForce(1000f, transform.position + Vector3.down, 3f);
                 Debug.Log("Player Died to Hazard: " + hType.ToString() + " " + gameObject.name);
                 TransitionCanvas.I.loadGameAfterDeath(3f);

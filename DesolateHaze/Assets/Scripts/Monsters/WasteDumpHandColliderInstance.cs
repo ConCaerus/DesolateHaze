@@ -33,7 +33,7 @@ public class WasteDumpHandColliderInstance : MonoBehaviour {
     }
 
     IEnumerator deathSequence() {
-        PlayerMovement.I.canMove = false;
+        PlayerMovement.I.beKilled();
         TransitionCanvas.I.loadGameAfterDeath(2f);
         hand.moveToEnd(.15f);
         yield return new WaitForSeconds(.15f);

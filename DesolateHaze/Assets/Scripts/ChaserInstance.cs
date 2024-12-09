@@ -11,7 +11,7 @@ public class ChaserInstance : MonoBehaviour {
     private void OnCollisionEnter(Collision col) {
         if(col.gameObject.tag == "Player") {
             Debug.Log("Player died to monster: " + gameObject.name);
-            PlayerMovement.I.canMove = false;
+            PlayerMovement.I.beKilled();
             TransitionCanvas.I.loadGameAfterDeath(2f);
             endChase(false);
         }
@@ -19,7 +19,7 @@ public class ChaserInstance : MonoBehaviour {
     private void OnTriggerEnter(Collider col) {
         if(col.gameObject.tag == "Player") {
             Debug.Log("Player died to monster: " + gameObject.name);
-            PlayerMovement.I.canMove = false;
+            PlayerMovement.I.beKilled();
             TransitionCanvas.I.loadGameAfterDeath(2f);
             endChase(false);
         }

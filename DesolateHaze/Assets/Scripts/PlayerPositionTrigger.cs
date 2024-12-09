@@ -38,7 +38,7 @@ public class PlayerPositionTrigger : MonoBehaviour {
         SceneManager.LoadScene("Onsite");
     }
     public void killPlayer(float waitTime) {
-        PlayerMovement.I.canMove = false;
+        PlayerMovement.I.beKilled();
         TransitionCanvas.I.loadGameAfterDeath(waitTime);
     }
 
