@@ -5,11 +5,34 @@ public class AnimationManager : Singleton<AnimationManager>
     [SerializeField] Animator animator;
     private string currentAnimation = "";
 
+    public GameObject playerRig;
+    Collider[] ragdollColliders;
+    Rigidbody[] limbsRigidbodies;
+
     private void Start()
     {
         ChangeAnimation("Idle", 0.1f);
-        //Death Ragdoll stuff
-        GetComponent<Animator>().enabled = true;
+        RagdollMode(false);
+    }
+
+    public void RagdollMode(bool state)
+    {
+        ragdollColliders = playerRig.GetComponentsInChildren<Collider>();
+        limbsRigidbodies = playerRig.GetComponentsInChildren<Rigidbody>();
+
+        if(state)
+        {
+            GetComponent<Animator>().enabled = false;
+        }
+     
+        foreach (Collider col in ragdollColliders)
+        {
+            col.enabled = state;
+        }
+        foreach(Rigidbody rigid in limbsRigidbodies)
+        {
+            rigid.isKinematic = !state;
+        }
     }
 
     //Checks for player's curState and other factors to identify current action and pass updates
@@ -22,7 +45,7 @@ public class AnimationManager : Singleton<AnimationManager>
             animator.speed = 1f;
         }
         else if (action == PlayerMovement.pMovementState.LadderClimbing && Mathf.Abs(movement.y) > 0f)
-        { 
+        {
             ChangeAnimation("Ladder_Climbing", 0.1f);
             animator.speed = 1f;
         }
@@ -46,11 +69,6 @@ public class AnimationManager : Singleton<AnimationManager>
         {
             ChangeAnimation("Idle", 0.1f);
         }
-    }
-
-    public void DeathAnimation()
-    {
-        GetComponent<Animator>().enabled = false;
     }
 
     //Check if current animation is the desired animation, crossfade to desired animation

@@ -254,6 +254,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         lastGroundedY = transform.position.y;
         canMove = true;
+        //Elliot~ testing stuff    
+        groundCol.enabled = true;
+        mainCol.enabled = true;
+        rb.isKinematic = false;
     }
     private void FixedUpdate() {
         move();
@@ -600,8 +604,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     public void beKilled() {
         canMove = false;
+        groundCol.enabled = false;
+        mainCol.enabled = false;
         rb.isKinematic = true;
-        //  your ragdoll here
-        AnimationManager.DeathAnimation();
+        AnimationManager.I.RagdollMode(true);
     }
 }
