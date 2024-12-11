@@ -9,7 +9,7 @@ public class AnimationManager : Singleton<AnimationManager>
     {
         ChangeAnimation("Idle", 0.1f);
         //Death Ragdoll stuff
-        //GetComponent<Animator>().enabled = true;
+        GetComponent<Animator>().enabled = true;
     }
 
     //Checks for player's curState and other factors to identify current action and pass updates
@@ -46,6 +46,11 @@ public class AnimationManager : Singleton<AnimationManager>
         {
             ChangeAnimation("Idle", 0.1f);
         }
+    }
+
+    public void DeathAnimation()
+    {
+        GetComponent<Animator>().enabled = false;
     }
 
     //Check if current animation is the desired animation, crossfade to desired animation

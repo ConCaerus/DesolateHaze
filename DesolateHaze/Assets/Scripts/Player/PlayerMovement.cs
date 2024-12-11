@@ -602,5 +602,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         canMove = false;
         rb.isKinematic = true;
         //  your ragdoll here
+        AnimationManager.DeathAnimation();
     }
 }
