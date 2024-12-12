@@ -106,8 +106,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 lastGroundedY = transform.position.y;
                 heldRope = null;
             }
-            else if(cs == pMovementState.LadderClimbing) {
+            if(cs == pMovementState.LadderClimbing) {
                 lastGroundedY = transform.position.y;
+                spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+            }
+            else if(cs != pMovementState.LadderClimbing) {
+                //spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
             }
 
             cs = value;
@@ -227,7 +231,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  ladders
         else if(col.gameObject.tag == "Ladder") {
-            if(savedInput.y > 0f)
+            if (savedInput.y > 0f)
                 curState = pMovementState.LadderClimbing;
         }
     }
@@ -254,7 +258,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         lastGroundedY = transform.position.y;
         canMove = true;
-        //Elliot~ testing stuff    
+ 
         groundCol.enabled = true;
         mainCol.enabled = true;
         rb.isKinematic = false;
@@ -283,7 +287,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void facePos(float x) {
         if(PauseCanvas.I.paused) return;
-        if(curState == pMovementState.Falling) return;
+        if (curState == pMovementState.LadderClimbing)
+        {
+            spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+            return;
+        }
+        if (curState == pMovementState.Falling) return;
         if(curState == pMovementState.Pushing) {
             facingRight = curPushing.position.x >= transform.position.x;
             spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);

@@ -51,11 +51,11 @@ public class AnimationManager : Singleton<AnimationManager>
         }
         else if (action == PlayerMovement.pMovementState.RopeClimbing || action == PlayerMovement.pMovementState.LadderClimbing && Mathf.Abs(movement.y) == 0f)
         {
-            animator.speed = 0;
+            animator.speed = 0f;
         }
         else if (action == PlayerMovement.pMovementState.RopeClimbing || action == PlayerMovement.pMovementState.LadderClimbing && Mathf.Abs(movement.y) < 0f)
         {
-            animator.speed = -1;
+            animator.speed = -1f;
         }
         else if (action == PlayerMovement.pMovementState.Falling)
         {
