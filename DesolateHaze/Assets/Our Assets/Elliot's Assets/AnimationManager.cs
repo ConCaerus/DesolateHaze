@@ -57,11 +57,11 @@ public class AnimationManager : Singleton<AnimationManager>
         {
             animator.speed = -1f;
         }
-        else if (action == PlayerMovement.pMovementState.Falling)
+        else if (action == PlayerMovement.pMovementState.Falling || falling)
         {
             ChangeAnimation("Jump", 0.1f);
-        }
-        else if (!falling && Mathf.Abs(movement.x) > 0f)
+        }  
+        else if (action == PlayerMovement.pMovementState.Walking && Mathf.Abs(movement.x) > 0f)
         {
             ChangeAnimation("Walk", 0.1f);
         }
@@ -72,7 +72,7 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     //Check if current animation is the desired animation, crossfade to desired animation
-    private void ChangeAnimation(string animation, float crossfade)
+    public void ChangeAnimation(string animation, float crossfade)
     {
         if (currentAnimation != animation)
         {

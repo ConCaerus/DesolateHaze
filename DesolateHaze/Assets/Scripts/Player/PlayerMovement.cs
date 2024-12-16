@@ -364,6 +364,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Falling:
+                    spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);;
                     target = rb.linearVelocity;
                     //  slight air control
                     var max = speed * speedMod * 100f * Time.fixedDeltaTime;
