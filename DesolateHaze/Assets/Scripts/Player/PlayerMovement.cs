@@ -59,6 +59,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
     }
+    public Rigidbody closePushing = null;
 
     //  driving things
     VehicleInstance cd = null;
@@ -231,7 +232,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  ladders
         else if(col.gameObject.tag == "Ladder") {
-            if (savedInput.y > 0f)
+            if(savedInput.y > 0f)
                 curState = pMovementState.LadderClimbing;
         }
     }
@@ -258,7 +259,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         lastGroundedY = transform.position.y;
         canMove = true;
- 
+
         groundCol.enabled = true;
         mainCol.enabled = true;
         rb.isKinematic = false;
@@ -287,12 +288,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void facePos(float x) {
         if(PauseCanvas.I.paused) return;
-        if (curState == pMovementState.LadderClimbing)
-        {
+        if(curState == pMovementState.LadderClimbing) {
             spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             return;
         }
-        if (curState == pMovementState.Falling) return;
+        if(curState == pMovementState.Falling) return;
         if(curState == pMovementState.Pushing) {
             facingRight = curPushing.position.x >= transform.position.x;
             spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
@@ -314,6 +314,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Walking:    //  update x axis velocity
+                    //  checks if pushing
+                    if(closePushing != null && controls.Player.Interact.ReadValue<float>() != 0f) {
+                        curPushing = closePushing;
+                        break;
+                    }
+
                     target.x = savedInput.x * speed * speedMod * 100f * Time.fixedDeltaTime;
                     break;
 
@@ -364,7 +370,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Falling:
-                    spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);;
+                    spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f); ;
                     target = rb.linearVelocity;
                     //  slight air control
                     var max = speed * speedMod * 100f * Time.fixedDeltaTime;

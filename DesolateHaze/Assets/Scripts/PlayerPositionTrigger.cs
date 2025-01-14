@@ -6,9 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class PlayerPositionTrigger : MonoBehaviour {
-    [SerializeField] UnityEvent events;
-    [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>();
-    [SerializeField] List<float> secondsDelays = new List<float>();
+    [SerializeField] UnityEvent events, exitEvents;
+    [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>(), exitDelayedSequences = new List<UnityEvent>();
+    [SerializeField] List<float> secondsDelays = new List<float>(), exitSecondsDelay = new List<float>();
     [SerializeField] bool singleUse = true;
 
     [SerializeField] AudioPoolInfo sound;
@@ -27,6 +27,13 @@ public class PlayerPositionTrigger : MonoBehaviour {
                 gameObject.SetActive(false);
         }
     }
+    private void OnTriggerExit(Collider col) {
+        if(col.gameObject.tag == "Player") {
+            exitEvents.Invoke();
+            for(int i = 0; i < exitDelayedSequences.Count; i++)
+                StartCoroutine(delay(exitDelayedSequences[i], exitSecondsDelay[i]));
+        }
+    }
 
     public void setPlayerSpeedMod(float mod) {
         PlayerMovement.I.speedMod = mod;
@@ -40,6 +47,13 @@ public class PlayerPositionTrigger : MonoBehaviour {
     public void killPlayer(float waitTime) {
         PlayerMovement.I.beKilled();
         TransitionCanvas.I.loadGameAfterDeath(waitTime);
+    }
+    public void setClosestPushing() {
+        PlayerMovement.I.closePushing = GetComponentInParent<Rigidbody>();
+    }
+    public void unsetClosestPushing() {
+        if(PlayerMovement.I.closePushing = GetComponentInParent<Rigidbody>())
+            PlayerMovement.I.closePushing = null;
     }
 
     public void playSound(Transform origin) {
