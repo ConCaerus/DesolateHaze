@@ -59,7 +59,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
     }
-    public Rigidbody closePushing = null;
+    [HideInInspector] public Rigidbody closePushing = null;
 
     //  driving things
     VehicleInstance cd = null;
@@ -317,6 +317,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     //  checks if pushing
                     if(closePushing != null && controls.Player.Interact.ReadValue<float>() != 0f) {
                         curPushing = closePushing;
+                        pushOffset = curPushing.transform.position - transform.position;
+                        facePos(closePushing.transform.position.x);
                         break;
                     }
 
