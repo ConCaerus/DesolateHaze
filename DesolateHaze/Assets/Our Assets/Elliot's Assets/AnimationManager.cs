@@ -38,7 +38,44 @@ public class AnimationManager : Singleton<AnimationManager>
     //Checks for player's curState and other factors to identify current action and pass updates
     public void CheckAnimation(Vector2 movement, bool falling, PlayerMovement.pMovementState action)
     {
-        //for Push/Pull, check direction player facing when entering state then check direction?
+        switch(action) {
+            case PlayerMovement.pMovementState.LadderClimbing:
+                ChangeAnimation("Ladder_Climbing", 0.1f);
+                if (Mathf.Abs(movement.y) > 0f)
+                    animator.speed = 1f;
+                if (Mathf.Abs(movement.y) < 0f)
+                    animator.speed = -1f;
+                if (Mathf.Abs(movement.y) == 0f)
+                    animator.speed = 0f;
+                break;
+            case PlayerMovement.pMovementState.RopeClimbing:
+                ChangeAnimation("Rope_Climbing", 0.1f);
+                if (Mathf.Abs(movement.y) > 0f)
+                    animator.speed = 1f;
+                if (Mathf.Abs(movement.y) < 0f)
+                    animator.speed = -1f;
+                if (Mathf.Abs(movement.y) == 0f)
+                    animator.speed = 0f;
+                break;
+            case PlayerMovement.pMovementState.LedgeClimbing:
+                break;
+            case PlayerMovement.pMovementState.Pushing:
+                break;
+            case PlayerMovement.pMovementState.Falling:
+                ChangeAnimation("Jump", 0.1f);
+                break;
+            case PlayerMovement.pMovementState.Walking:
+                if (Mathf.Abs(movement.x) == 0f)
+                    ChangeAnimation("Idle", 0.1f);
+                else
+                    ChangeAnimation("Walk", 0.1f);
+                break;
+            case PlayerMovement.pMovementState.None:
+                ChangeAnimation("Idle", 0.1f);
+                break;
+        }
+        //old gross elif
+        /*
         if (action == PlayerMovement.pMovementState.RopeClimbing && Mathf.Abs(movement.y) > 0f)
         {
             ChangeAnimation("Rope_Climbing", 0.1f);
@@ -69,6 +106,7 @@ public class AnimationManager : Singleton<AnimationManager>
         {
             ChangeAnimation("Idle", 0.1f);
         }
+        */
     }
 
     //Check if current animation is the desired animation, crossfade to desired animation
