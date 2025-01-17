@@ -41,6 +41,16 @@ public class AudioManager : Singleton<AudioManager> {
         asi.playSound(clip, false, true, volMod);
         StartCoroutine(repoolSource(asi, clip.length, info.title, point));
     }
+    public void playButtonSound(AudioPoolInfo info, float volMod) {
+        if(string.IsNullOrEmpty(info.title)) return;
+        if(!poolInfo.ContainsKey(info.title)) initSound(info);
+        if(poolSources[info.title].Count == 0 || mute) return;
+        var asi = poolSources[info.title][0];
+        poolSources[info.title].RemoveAt(0);
+        var clip = poolInfo[info.title].clips[Random.Range(0, poolInfo[info.title].clips.Count)];
+        asi.playSound(clip, true, false, volMod);
+        StartCoroutine(repoolSource(asi, clip.length, info.title, null));
+    }
 
     public void initSound(AudioPoolInfo info) {
         if(poolInfo.ContainsKey(info.title)) return;

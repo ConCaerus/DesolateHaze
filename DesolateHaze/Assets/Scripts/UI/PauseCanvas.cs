@@ -1,11 +1,8 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PauseCanvas : Singleton<PauseCanvas> {
     [SerializeField] GameObject background;
-    [SerializeField] float growSize;
 
     InputMaster controls;
 
@@ -33,13 +30,6 @@ public class PauseCanvas : Singleton<PauseCanvas> {
 
     private void OnDisable() {
         runOnPauseChange = (bool b) => { };
-    }
-
-    public void grow(Transform t) {
-        t.localScale = growSize * Vector2.one;
-    }
-    public void shrink(Transform t) {
-        t.localScale = Vector2.one;
     }
 
     //  buttons
