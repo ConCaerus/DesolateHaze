@@ -40,6 +40,8 @@ public class CheckpointManager : Singleton<CheckpointManager> {
             if(Saver.hasTriggeredCheckpoint(this, PlayerMovement.I, i.transform.position))
                 i.triggered = true;
         }
+
+        PlayerCameraInstance.I.checkForHasCamera();
     }
 
     public Color getColor(Saver.areaType aType) {
