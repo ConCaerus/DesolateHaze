@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
@@ -13,6 +15,29 @@ public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
     }
 
     [SerializeField] GameObject cam;
+    [SerializeField] GameObject polaroidPref;
+    [SerializeField] Transform polaroidOrigin, polaroidTarget;
+    [SerializeField] float cooldown;
+
+    InputMaster controls;
+
+    Coroutine cooldowner = null;
+
+    private void Start() {
+        controls = new InputMaster();
+        controls.Enable();
+        controls.Player.Camera.performed += ctx => {
+            if(!hasCamera || cooldowner != null) return;
+            var p = Instantiate(polaroidPref, transform);
+            p.transform.position = polaroidOrigin.transform.position;
+            p.transform.DOLocalMove(polaroidTarget.localPosition, 1f).OnComplete(() => {
+                p.transform.parent = null;
+                p.GetComponent<Rigidbody>().isKinematic = false;
+            });
+
+            cooldowner = StartCoroutine(cooldownWaiter());
+        };
+    }
 
     public void checkForHasCamera() {
         //  checks if before camera pickup area
@@ -31,5 +56,10 @@ public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
         hasCamera = transform.position.x > PlayersCameraPickupable.I.transform.position.x;
         if(hasCamera)
             Destroy(PlayersCameraPickupable.I.gameObject);
+    }
+
+    IEnumerator cooldownWaiter() {
+        yield return new WaitForSeconds(cooldown);
+        cooldowner = null;
     }
 }
