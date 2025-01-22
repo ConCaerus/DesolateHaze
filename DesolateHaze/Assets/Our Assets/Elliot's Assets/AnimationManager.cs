@@ -60,6 +60,7 @@ public class AnimationManager : Singleton<AnimationManager>
             case PlayerMovement.pMovementState.LedgeClimbing:
                 break;
             case PlayerMovement.pMovementState.Pushing:
+                ChangeAnimation("Push", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Falling:
                 ChangeAnimation("Jump", 0.1f);
