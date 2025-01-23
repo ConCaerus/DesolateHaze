@@ -20,6 +20,7 @@ public class CraneInstance : MonoBehaviour {
         controls.Player.Move.canceled += ctx => updateDir(Vector2.zero);
 
         button.transform.parent = transform.parent;
+        rb.isKinematic = true;
     }
 
     private void Update() {
@@ -33,9 +34,11 @@ public class CraneInstance : MonoBehaviour {
 
     public void trigger() {
         active = true;
+        rb.isKinematic = false;
     }
     public void detrigger() {
         active = false;
+        rb.isKinematic = true;
     }
 
     void updateDir(Vector2 dir) {
