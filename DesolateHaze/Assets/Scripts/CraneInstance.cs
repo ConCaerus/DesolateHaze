@@ -7,6 +7,10 @@ public class CraneInstance : MonoBehaviour {
     [SerializeField] Rigidbody rb;
     [SerializeField] Transform button;
 
+    [SerializeField] bool rotationalMovement = false;
+    [SerializeField] Transform rotPoint;
+    [SerializeField] float rotSpeed;
+
     bool active = false;
 
     Vector2 savedDir = Vector2.zero;
@@ -47,7 +51,12 @@ public class CraneInstance : MonoBehaviour {
     }
 
     void move() {
-        var target = !active ? Vector3.zero : new Vector3(xAxis ? savedDir.x : 0f, yAxis ? savedDir.y : 0f, 0f) * speed * 100f * Time.deltaTime;
-        rb.linearVelocity =  Vector3.Lerp(rb.linearVelocity, target, accSpeed * 100f * Time.deltaTime);
+        var target = !active ? Vector3.zero : new Vector3(!rotationalMovement && xAxis ? savedDir.x : 0f, yAxis ? savedDir.y : 0f, 0f) * speed * 100f * Time.deltaTime;
+        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, target, accSpeed * 100f * Time.deltaTime);
+
+        if(rotationalMovement) {
+            var rotTarget = Vector3.forward * savedDir.x * rotSpeed * 10f * Time.deltaTime;
+            rotPoint.localEulerAngles += rotTarget;
+        }
     }
 }
