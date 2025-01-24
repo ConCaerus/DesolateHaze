@@ -11,7 +11,7 @@ public class DumpsterPushSoundManager : Singleton<DumpsterPushSoundManager> {
     void manageSound() {
         var shouldPlay = PlayerMovement.I.curState == PlayerMovement.pMovementState.Pushing && PlayerMovement.I.getCurPushing().transform == transform;
         if(shouldPlay && !asi.isPlaying())
-            asi.playSound(squeak, false, false, 1f);
+            asi.playSound(squeak, false, false, 0.2f);
         else if(!shouldPlay && asi.isPlaying())
             asi.stopPlaying();
     }
