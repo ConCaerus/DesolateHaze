@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class PlayerPositionTrigger : MonoBehaviour {
+public class CollisionTrigger : MonoBehaviour {
     [SerializeField] UnityEvent events, exitEvents;
     [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>(), exitDelayedSequences = new List<UnityEvent>();
     [SerializeField] List<float> secondsDelays = new List<float>(), exitSecondsDelay = new List<float>();
@@ -17,21 +16,17 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider col) {
-        if(col.gameObject.tag == "Player") {
-            events.Invoke();
-            for(int i = 0; i < delayedSequences.Count; i++)
-                StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
+        events.Invoke();
+        for(int i = 0; i < delayedSequences.Count; i++)
+            StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
 
-            if(singleUse)
-                gameObject.SetActive(false);
-        }
+        if(singleUse)
+            gameObject.SetActive(false);
     }
     private void OnTriggerExit(Collider col) {
-        if(col.gameObject.tag == "Player") {
-            exitEvents.Invoke();
-            for(int i = 0; i < exitDelayedSequences.Count; i++)
-                StartCoroutine(delay(exitDelayedSequences[i], exitSecondsDelay[i]));
-        }
+        exitEvents.Invoke();
+        for(int i = 0; i < exitDelayedSequences.Count; i++)
+            StartCoroutine(delay(exitDelayedSequences[i], exitSecondsDelay[i]));
     }
 
     public void setPlayerSpeedMod(float mod) {
@@ -39,9 +34,6 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
     public void setPlayerFalling() {
         PlayerMovement.I.setNewState(PlayerMovement.pMovementState.Falling);
-    }
-    public void loadLevel2() {
-        SceneManager.LoadScene("Onsite");
     }
     public void killPlayer(float waitTime) {
         PlayerMovement.I.beKilled();
@@ -76,9 +68,5 @@ public class PlayerPositionTrigger : MonoBehaviour {
     IEnumerator delay(UnityEvent e, float s) {
         yield return new WaitForSeconds(s);
         e.Invoke();
-    }
-
-    public void testWarn() {
-        Debug.Log("warn");
     }
 }

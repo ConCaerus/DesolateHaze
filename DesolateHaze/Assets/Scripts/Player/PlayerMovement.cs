@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering.HighDefinition;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -137,7 +138,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     bool cm = false;
     public bool canMove {
-        get { return cm; }
+        get { return cm && initted; }
         set {
             cm = value;
             if(cm)
@@ -146,8 +147,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     bool g = false;
     public bool grounded {
-        get { return g; }
+        get { return g && initted; }
         private set {
+            if(!initted) return;
             g = value;
             rb.angularDamping = g ? .05f : 0f;
             if(g) {
@@ -185,6 +187,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             }
         }
     }
+
+    public bool initted = false;
 
     [System.Serializable]
     public enum pMovementState {

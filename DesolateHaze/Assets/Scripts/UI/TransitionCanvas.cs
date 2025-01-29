@@ -61,6 +61,11 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
     IEnumerator unloader() {
         background.gameObject.SetActive(true);
         background.color = Color.black;
+
+        //  waits for player to touch ground
+        do
+            yield return new WaitForFixedUpdate();
+        while(PlayerMovement.I != null && !PlayerMovement.I.grounded);
         float blackTime = .75f;
         float elapsedTime = 0f;
         float startTime = Time.realtimeSinceStartup;

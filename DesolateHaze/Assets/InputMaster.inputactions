@@ -6,6 +6,15 @@
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
+                    "name": "Camera",
+                    "type": "Button",
+                    "id": "4801bd6d-5d2e-4ad9-9328-85ea0f9eb3f0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
@@ -27,15 +36,6 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "f1ba0d36-48eb-4cd5-b651-1c94a6531f70",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Camera",
-                    "type": "Button",
-                    "id": "4801bd6d-5d2e-4ad9-9328-85ea0f9eb3f0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",

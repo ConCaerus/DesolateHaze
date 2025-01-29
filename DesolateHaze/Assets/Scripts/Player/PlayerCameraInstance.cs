@@ -26,17 +26,11 @@ public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
     private void Start() {
         controls = new InputMaster();
         controls.Enable();
-        controls.Player.Camera.performed += ctx => {
-            if(!hasCamera || cooldowner != null) return;
-            var p = Instantiate(polaroidPref, transform);
-            p.transform.position = polaroidOrigin.transform.position;
-            p.transform.DOLocalMove(polaroidTarget.localPosition, 1f).OnComplete(() => {
-                p.transform.parent = null;
-                p.GetComponent<Rigidbody>().isKinematic = false;
-            });
+        controls.Player.Camera.performed += ctx => takePicture();
+    }
 
-            cooldowner = StartCoroutine(cooldownWaiter());
-        };
+    private void OnDisable() {
+        controls.Disable();
     }
 
     public void checkForHasCamera() {
@@ -56,6 +50,20 @@ public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
         hasCamera = transform.position.x > PlayersCameraPickupable.I.transform.position.x;
         if(hasCamera)
             Destroy(PlayersCameraPickupable.I.gameObject);
+    }
+
+    void takePicture() {
+        if(!hasCamera || cooldowner != null) return;
+        var p = Instantiate(polaroidPref, transform);
+        p.transform.position = polaroidOrigin.transform.position;
+        p.transform.DOLocalMove(polaroidTarget.localPosition, 1f).OnComplete(() => {
+            p.transform.parent = null;
+            p.GetComponent<Rigidbody>().isKinematic = false;
+        });
+
+        cooldowner = StartCoroutine(cooldownWaiter());
+
+        CameraFlashInstance.I.flash();
     }
 
     IEnumerator cooldownWaiter() {
