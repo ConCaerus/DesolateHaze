@@ -54,11 +54,13 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
             startTime = Time.realtimeSinceStartup;
         }
         background.color = Color.black;
+        Time.timeScale = 1f;
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
         SceneManager.LoadScene(sName);
     }
     IEnumerator unloader() {
+        Time.timeScale = 1f;
         background.gameObject.SetActive(true);
         background.color = Color.black;
 
