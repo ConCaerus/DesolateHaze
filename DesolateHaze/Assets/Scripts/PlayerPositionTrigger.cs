@@ -40,8 +40,8 @@ public class PlayerPositionTrigger : MonoBehaviour {
     public void setPlayerFalling() {
         PlayerMovement.I.setNewState(PlayerMovement.pMovementState.Falling);
     }
-    public void loadLevel2() {
-        SceneManager.LoadScene("Onsite");
+    public void loadNextArea() {
+        TransitionCanvas.I.loadNextArea(CheckpointManager.I.aType);
     }
     public void killPlayer(float waitTime) {
         PlayerMovement.I.beKilled();

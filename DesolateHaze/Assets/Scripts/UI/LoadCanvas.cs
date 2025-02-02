@@ -19,6 +19,17 @@ public class LoadCanvas : Singleton<LoadCanvas> {
     void spawnLoaders() {
         destroyLoaders();
         for(int i = 0; i < Saver.getAreaCount(); i++) {
+            //  no save data for area, so create a default one
+            if(Saver.getCheckpointCount((Saver.areaType)i + 1) == 0) {
+                var temp = Instantiate(loaderPref, holder);
+                temp.name = ((Saver.areaType)i + 1).ToString();
+                var c = CheckpointManager.I.getColor((Saver.areaType)i + 1);
+                temp.GetComponent<Image>().color = c;
+                temp.GetComponent<LoadCircleInstance>().aType = ((Saver.areaType)i + 1);
+                temp.GetComponent<LoadCircleInstance>().data = null;
+                loaders.Add(temp.transform);
+            }
+
             for(int j = 0; j < Saver.getCheckpointCount((Saver.areaType)i + 1); j++) {
                 var data = Saver.getCheckpointAtIndex((Saver.areaType)i + 1, j);
                 var temp = Instantiate(loaderPref, holder);
@@ -36,8 +47,8 @@ public class LoadCanvas : Singleton<LoadCanvas> {
         loaders.Clear();
     }
 
-    public void updateInfo(CheckpointSaveData data) {
-        aText.text = "<alpha=#00>" + titleText.text + "<alpha=#FF>: " + data.area.ToString();
+    public void updateInfo(Saver.areaType area) {
+        aText.text = "<alpha=#00>" + titleText.text + "<alpha=#FF>: " + area.ToString();
     }
 
     public void show() {

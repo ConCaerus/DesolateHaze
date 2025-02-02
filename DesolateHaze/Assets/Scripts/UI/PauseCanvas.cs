@@ -13,7 +13,8 @@ public class PauseCanvas : Singleton<PauseCanvas> {
         get { return p; }
         set {
             p = value;
-            background.SetActive(p);
+            if(background != null)
+                background.SetActive(p);
             Time.timeScale = p ? 0f : 1f;
 
             runOnPauseChange(p);

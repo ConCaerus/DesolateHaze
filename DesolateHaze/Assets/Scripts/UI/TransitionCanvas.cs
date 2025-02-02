@@ -28,6 +28,10 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
             a == Saver.areaType.On ? "On" : 
             a == Saver.areaType.End ? "End" : ""));
     }
+    public void loadNextArea(Saver.areaType curA) {
+        if(waiter != null || curA == Saver.areaType.End) return;
+        loadGame((Saver.areaType)((int)curA + 1));
+    }
     void loadGame() {
         loadGame(CheckpointManager.I.aType);
     }
