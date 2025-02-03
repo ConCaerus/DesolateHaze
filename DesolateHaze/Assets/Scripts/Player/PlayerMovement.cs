@@ -12,6 +12,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
     [HideInInspector] public float speedMod = 1f;
 
+    float pHeight;
+
     [SerializeField] Collider mainCol, groundCol;
     public Rigidbody rb;
     [SerializeField] Rigidbody pushingRb;
@@ -129,6 +131,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             }
 
             if(cs != pMovementState.Walking) PlayerAudioManager.I.stopWalking();
+            //  sets crawl height
+            ((CapsuleCollider)mainCol).height = pHeight * (curState == pMovementState.Crawling ? .5f : 1f);
 
             updateInput(controls.Player.Move.ReadValue<Vector2>());
 
@@ -192,7 +196,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     [System.Serializable]
     public enum pMovementState {
-        None, Walking, Falling, Pushing, LedgeClimbing, RopeClimbing, LadderClimbing, Driving
+        None, Walking, Falling, Pushing, LedgeClimbing, RopeClimbing, LadderClimbing, Driving, Crawling
     }
     #endregion
 
@@ -267,6 +271,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         groundCol.enabled = true;
         mainCol.enabled = true;
         rb.isKinematic = false;
+
+        pHeight = ((CapsuleCollider)mainCol).height;
     }
     private void FixedUpdate() {
         move();
@@ -323,6 +329,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         curPushing = closePushing;
                         pushOffset = curPushing.transform.position - transform.position;
                         facePos(closePushing.transform.position.x);
+                        break;
+                    }
+                    //  checks if crawling
+                    if(savedInput.y < 0f) {
+                        curState = pMovementState.Crawling;
                         break;
                     }
 
@@ -415,6 +426,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     target.y = savedInput.y * ladderClimbSpeed * speedMod * 100f * Time.fixedDeltaTime;   //  rigid body y movement
                     accTarget = 1f;
                     break;
+
                 case pMovementState.Driving:
                     if(curDriving == null) {
                         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
@@ -422,6 +434,27 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     }
                     transform.position = curDriving.seatPos.position;
                     target.x = savedInput.x * curDriving.speed * 100f * Time.fixedDeltaTime;
+                    break;
+
+                case pMovementState.Crawling:
+                    //  checks if pushing
+                    if(closePushing != null && controls.Player.Interact.ReadValue<float>() != 0f) {
+                        curPushing = closePushing;
+                        pushOffset = curPushing.transform.position - transform.position;
+                        facePos(closePushing.transform.position.x);
+                        break;
+                    }
+                    //  checks if walking
+                    if(savedInput.y >= 0f) {
+                        //  checks for can stand
+                        if(!Physics.CapsuleCast(mainCol.transform.position + Vector3.down * (pHeight / 2f), mainCol.transform.position + Vector3.up * (pHeight / 2f),
+                            ((CapsuleCollider)mainCol).radius, Vector3.up)) {
+                            curState = pMovementState.Walking;
+                            break;
+                        }
+                    }
+
+                    target.x = savedInput.x * speed * speedMod * 50f * Time.fixedDeltaTime;
                     break;
             }
         }
