@@ -52,11 +52,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(cp != null) {
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), mainCol, false);
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), groundCol, false);
+                cp.TryGetComponent<ToppleableInstance>(out var tp);
+                if(tp != null && tp.enabled) tp.stopTopple();
             }
             cp = value;
             if(cp != null) {
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), mainCol, true);
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), groundCol, true);
+                cp.TryGetComponent<ToppleableInstance>(out var tp);
+                if(tp != null && tp.enabled) tp.startTopple();
             }
             if(cp == null && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
@@ -663,5 +667,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         mainCol.enabled = false;
         rb.isKinematic = true;
         AnimationManager.I.RagdollMode(true);
+    }
+
+    public Vector2 getSavedInput() {
+        return savedInput;
     }
 }
