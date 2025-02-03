@@ -59,8 +59,8 @@ public class PlayerCameraInstance : Singleton<PlayerCameraInstance> {
         p.transform.DOLocalMove(polaroidTarget.localPosition, 1f).OnComplete(() => {
             p.transform.parent = null;
             p.GetComponent<Rigidbody>().isKinematic = false;
+            p.GetComponent<PolaroidInstance>().init();
         });
-
         cooldowner = StartCoroutine(cooldownWaiter());
 
         CameraFlashInstance.I.flash();
