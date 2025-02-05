@@ -12,6 +12,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     [SerializeField] float ropeClimbSpeed, ladderClimbSpeed;
     [HideInInspector] public float speedMod = 1f;
 
+    public bool isContaminated = false;
+
     float pHeight;
 
     [SerializeField] Collider mainCol, groundCol;

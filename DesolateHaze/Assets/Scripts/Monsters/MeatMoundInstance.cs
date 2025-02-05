@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class MeatMoundInstance : MonoBehaviour {
     [SerializeField] Transform rotPoint1, rotPoint2, tip;
