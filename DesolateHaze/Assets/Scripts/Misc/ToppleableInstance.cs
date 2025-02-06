@@ -67,6 +67,7 @@ public class ToppleableInstance : MonoBehaviour {
                     tweener.DOKill();
                     tweener.DOLocalMoveX(1f, toppleTime).OnComplete(() => {
                         toppleEvents.Invoke();
+                        Destroy(this);
                     }).OnUpdate(() => {
                         var topOff = Vector3.right * toppleRange * tweener.localPosition.x * (toppleRight ? 1f : -1f);
                         transform.position = toppleOrigin + topOff;

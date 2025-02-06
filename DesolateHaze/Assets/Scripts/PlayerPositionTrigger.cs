@@ -55,6 +55,10 @@ public class PlayerPositionTrigger : MonoBehaviour {
             PlayerMovement.I.closePushing = null;
     }
 
+    public void setPlayerContaminated(bool b) {
+        PlayerMovement.I.isContaminated = b;
+    }
+
     public void playSound(Transform origin) {
         AudioManager.I.playSound(sound, origin.position, 1f);
     }
