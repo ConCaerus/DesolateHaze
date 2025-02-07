@@ -53,16 +53,40 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6103613198449448589, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -6103613198449448589, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0e0a388c26af6d94cba6562907ec85d6, type: 2}
     - target: {fileID: -5785229551906003712, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5785229551906003712, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a80f77c44f2f73f4fb7c615f3cce5662, type: 2}
+    - target: {fileID: -3661985432938654458, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
       propertyPath: m_Name
       value: Bus
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823506122465456227, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285576564706734815, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448678818323749754, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6448678818323749754, guid: 4f245304a6cb7964eb5892d3d7b4e8f6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
