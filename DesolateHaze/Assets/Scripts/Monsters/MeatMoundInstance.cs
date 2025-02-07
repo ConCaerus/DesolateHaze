@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class MeatMoundInstance : MonoBehaviour {
@@ -9,11 +11,16 @@ public class MeatMoundInstance : MonoBehaviour {
     private void Start() {
         l1 = getFirstLength();
         l2 = getSecondLength();
+
+        target.position = transform.position;
+        moveArms();
     }
 
-    private void LateUpdate() {
-        calculate_angles();
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.U)) strike();
+        moveArms();
     }
+
 
     /*
     float getRot1() {
@@ -26,13 +33,17 @@ public class MeatMoundInstance : MonoBehaviour {
         var bot = 2f * l2 * l1;
         return Mathf.Acos(top / bot) * Mathf.Rad2Deg;
     }*/
+    /*
     void calculate_angles() {
         // Calculate distance from shoulder to target point (hypotenuse)
-        var distance = Mathf.Sqrt(target.position.x * target.position.x + target.position.y * target.position.y);
+        var offsetFromBase = target.position - rotPoint1.transform.position;
+        var distance = Mathf.Sqrt(Mathf.Pow(offsetFromBase.x, 2f) + Mathf.Pow(offsetFromBase.y, 2f));
 
-        // Check if the target is reachable
-        if(distance > (l1 + l2) || distance < Mathf.Abs(l1 - l2))
-            return;
+        if(distance > (l1 + l2)) {
+            offsetFromBase.Normalize();
+            offsetFromBase *= l1 + l2;
+            distance = Mathf.Sqrt(Mathf.Pow(offsetFromBase.x, 2f) + Mathf.Pow(offsetFromBase.y, 2f));
+        }
 
         // Use the Law of Cosines to find the elbow angle (theta2)
         var cos_theta2 = (distance * distance - l1 * l1 - l2 * l2) / (-2 * l1 * l2);
@@ -56,6 +67,35 @@ public class MeatMoundInstance : MonoBehaviour {
 
         rotPoint1.transform.localEulerAngles = Vector3.forward * theta1_deg;
         rotPoint2.transform.localEulerAngles = Vector3.forward * theta2_deg;
+    }
+    */
+
+    void moveArms() {
+        var offsetFromBase = target.position - rotPoint1.transform.position;
+        var hyp = Mathf.Sqrt(Mathf.Pow(offsetFromBase.x, 2f) + Mathf.Pow(offsetFromBase.y, 2f));
+
+        if(hyp > (l1 + l2)) {
+            offsetFromBase.Normalize();
+            offsetFromBase *= (l1 + l2) - .001f;
+            hyp = Mathf.Sqrt(Mathf.Pow(offsetFromBase.x, 2f) + Mathf.Pow(offsetFromBase.y, 2f));
+        }
+
+        var top = hyp * hyp + l1 * l1 - l2 * l2;
+        var bot = 2f * hyp * l1;
+        var rot1 = Mathf.Acos(top / Mathf.Max(bot, .01f)) * Mathf.Rad2Deg;
+        rotPoint1.transform.localEulerAngles = Vector3.forward * rot1;
+
+        var top2 = l1 * l1 + l2 * l2 - hyp * hyp;
+        var bot2 = 2f * l1 * l2;
+        var rot2 = Mathf.Acos(top2 / Mathf.Max(bot2, .01f)) * Mathf.Rad2Deg + 180f;
+        rotPoint2.transform.localEulerAngles = Vector3.forward * rot2;
+    }
+
+    void strike() {
+        target.position = transform.position;
+        target.DOLocalMoveX(l1 + l2, .25f).OnComplete(() => {
+            target.DOLocalMoveX(0f, .5f);
+        });
     }
 
     float getFirstLength() {
