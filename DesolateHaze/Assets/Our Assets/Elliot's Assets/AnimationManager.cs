@@ -58,6 +58,7 @@ public class AnimationManager : Singleton<AnimationManager>
                     animator.speed = 0f;
                 break;
             case PlayerMovement.pMovementState.LedgeClimbing:
+                ChangeAnimation("Ledge_Climbing", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Pushing:
                 ChangeAnimation("Push", 0.1f);
