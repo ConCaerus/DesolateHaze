@@ -128,9 +128,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
             //  after changing
             rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing && cs != pMovementState.LedgeClimbing;
-            if(cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
+            if (cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
-            else if(cs == pMovementState.LedgeClimbing)
+            else if (cs == pMovementState.LedgeClimbing)
+                AnimationManager.I.CheckAnimation(savedInput, curState);
                 rb.linearVelocity = Vector3.zero;
             if(cs != pMovementState.Pushing && curPushing != null) {
                 curPushing = null;
@@ -477,7 +478,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
             movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
-        AnimationManager.I.CheckAnimation(savedInput, !grounded, curState);
+        AnimationManager.I.CheckAnimation(savedInput, curState);
     }
     public void setNewState(pMovementState newState) {
         curState = newState;
@@ -673,5 +674,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     public Vector2 getSavedInput() {
         return savedInput;
+    }
+
+    public void resetMovement()
+    {
+        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
     }
 }

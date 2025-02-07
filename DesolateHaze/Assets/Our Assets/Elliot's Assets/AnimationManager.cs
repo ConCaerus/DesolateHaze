@@ -1,4 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 
 public class AnimationManager : Singleton<AnimationManager>
 {
@@ -36,7 +40,7 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     //Checks for player's curState and other factors to identify current action and pass updates
-    public void CheckAnimation(Vector2 movement, bool falling, PlayerMovement.pMovementState action)
+    public void CheckAnimation(Vector2 movement, PlayerMovement.pMovementState action)
     {
         switch(action) {
             case PlayerMovement.pMovementState.LadderClimbing:
@@ -58,10 +62,11 @@ public class AnimationManager : Singleton<AnimationManager>
                     animator.speed = 0f;
                 break;
             case PlayerMovement.pMovementState.LedgeClimbing:
-                ChangeAnimation("Ledge_Climbing", 0.1f);
+                StartCoroutine(LedgeTime());
                 break;
             case PlayerMovement.pMovementState.Pushing:
                 ChangeAnimation("Push", 0.1f);
+                //PlayerMovement.I.facingRight
                 break;
             case PlayerMovement.pMovementState.Falling:
                 ChangeAnimation("Jump", 0.1f);
@@ -112,12 +117,17 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     //Check if current animation is the desired animation, crossfade to desired animation
-    public void ChangeAnimation(string animation, float crossfade)
-    {
+    public void ChangeAnimation(string animation, float crossfade) {
         if (currentAnimation != animation)
         {
             currentAnimation = animation;
             animator.CrossFade(animation, crossfade);
         }
+    }
+
+    IEnumerator LedgeTime() {
+        ChangeAnimation("Ledge_Climbing", 0.1f);
+        yield return new WaitForSeconds(1);
+        PlayerMovement.I.resetMovement();
     }
 }
