@@ -132,7 +132,7 @@ public class AnimationManager : Singleton<AnimationManager>
 
     IEnumerator LedgeTime() {
         ChangeAnimation("Ledge_Climbing", 0.1f);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         PlayerMovement.I.resetMovement();
     }
 }
