@@ -621,7 +621,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 canMove = false;
                 rb.linearVelocity = Vector3.zero;
                 transform.DOKill();
-                transform.DOMove(tallestChild.position, .5f).OnComplete(() => {
+                transform.DOMove(tallestChild.position, 1f).OnComplete(() => {
                     mainCol.isTrigger = false;
                     canMove = true;
                     rb.linearVelocity = Vector3.zero;

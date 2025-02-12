@@ -70,8 +70,8 @@ public class AnimationManager : Singleton<AnimationManager>
                     animator.speed = 0f;
                 if (PlayerMovement.I.facingRight == true)
                     animator.speed = 1f;
-                if (PlayerMovement.I.facingRight != true)
-                    animator.speed = -1f;
+               // if (PlayerMovement.I.facingRight != true)
+               //     animator.speed = -1f;
                 break;
             case PlayerMovement.pMovementState.Falling:
                 ChangeAnimation("Jump", 0.1f);
