@@ -193,7 +193,7 @@ GameObject:
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &5437976677263317118
 Transform:
@@ -250,7 +250,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vInstance: {fileID: 1443954197695024293}
+  mInstance: {fileID: 0}
 --- !u!1 &5252396288615073407
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +402,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1e1ae88703983bd4f9e52c843391e35c, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1e1ae88703983bd4f9e52c843391e35c, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -415,6 +420,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1e1ae88703983bd4f9e52c843391e35c, type: 3}
       propertyPath: m_Name
       value: Vine
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1e1ae88703983bd4f9e52c843391e35c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
