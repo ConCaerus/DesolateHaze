@@ -44,45 +44,59 @@ public class AnimationManager : Singleton<AnimationManager>
     {
         switch(action) {
             case PlayerMovement.pMovementState.LadderClimbing:
-                ChangeAnimation("Ladder_Climbing", 0.1f);
-                if (Mathf.Abs(movement.y) > 0f)
-                    animator.speed = 1f;
-                if (Mathf.Abs(movement.y) < 0f)
-                    animator.speed = -1f;
+                animator.speed = 1f;
                 if (Mathf.Abs(movement.y) == 0f)
                     animator.speed = 0f;
+                if (Mathf.Abs(movement.y) > 0f)
+                    ChangeAnimation("Ladder_Climbing", 0.1f);
+                if (Mathf.Abs(movement.y) < 0f)
+                    ChangeAnimation("Ladder_Climbing_Down", 0.1f);
                 break;
             case PlayerMovement.pMovementState.RopeClimbing:
-                ChangeAnimation("Rope_Climbing", 0.1f);
-                if (Mathf.Abs(movement.y) > 0f)
-                    animator.speed = 1f;
-                if (Mathf.Abs(movement.y) < 0f)
-                    animator.speed = -1f;
+                animator.speed = 1f;
                 if (Mathf.Abs(movement.y) == 0f)
                     animator.speed = 0f;
+                if (Mathf.Abs(movement.y) > 0f)
+                    ChangeAnimation("Rope_Climbing", 0.1f);
+                if (Mathf.Abs(movement.y) < 0f)
+                    ChangeAnimation("Rope_Climbing_Down", 0.1f);
                 break;
             case PlayerMovement.pMovementState.LedgeClimbing:
+                animator.speed = 1f;
                 StartCoroutine(LedgeTime());
                 break;
             case PlayerMovement.pMovementState.Pushing:
+                animator.speed = 1f;
                 ChangeAnimation("Push", 0.1f);
                 if (Mathf.Abs(movement.x) == 0f)
                     animator.speed = 0f;
                 if (PlayerMovement.I.facingRight == true)
-                    animator.speed = 1f;
-               // if (PlayerMovement.I.facingRight != true)
-               //     animator.speed = -1f;
+                    ChangeAnimation("Push", 0.1f);
+                 if (PlayerMovement.I.facingRight != true)
+                     ChangeAnimation("Pull", 0.1f);
+                break;
+            case PlayerMovement.pMovementState.Crawling:
+                animator.speed = 1f;
+                if (Mathf.Abs(movement.x) == 0f)
+                    animator.speed = 0f;
+                if (Mathf.Abs(movement.x) > 0f)
+                    ChangeAnimation("Crawl", 0.1f);
+                if (Mathf.Abs(movement.x) < 0f)
+                    ChangeAnimation("Crawl_Back", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Falling:
+                animator.speed = 1f;
                 ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
+                animator.speed = 1f;
                 if (Mathf.Abs(movement.x) == 0f)
                     ChangeAnimation("Idle", 0.1f);
                 else
                     ChangeAnimation("Walk", 0.1f);
                 break;
             case PlayerMovement.pMovementState.None:
+                animator.speed = 1f;
                 ChangeAnimation("Idle", 0.1f);
                 break;
         }
@@ -132,7 +146,7 @@ public class AnimationManager : Singleton<AnimationManager>
 
     IEnumerator LedgeTime() {
         ChangeAnimation("Ledge_Climbing", 0.1f);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         PlayerMovement.I.resetMovement();
     }
 }
