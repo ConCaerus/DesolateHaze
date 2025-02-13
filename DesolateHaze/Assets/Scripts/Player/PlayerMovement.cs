@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.Rendering.HighDefinition;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -132,7 +130,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             else if (cs == pMovementState.LedgeClimbing)
                 AnimationManager.I.CheckAnimation(savedInput, curState);
-                rb.linearVelocity = Vector3.zero;
             if(cs != pMovementState.Pushing && curPushing != null) {
                 curPushing = null;
             }
@@ -183,7 +180,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 //  jumps if jumps
                 if(jumpHeld)
-                    doJump(true);
+                    doJump();
             }
             else
                 lastGroundedY = transform.position.y;
@@ -322,7 +319,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void move() {
         if(rb.isKinematic && curState != pMovementState.Driving) return;
-        Vector2 target = (canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
+        Vector2 target = (true || canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
         float accTarget = speedAccSpeed;
 
         if(canMove) {
@@ -468,6 +465,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         var movingRb = curState == pMovementState.Pushing ? curPushing : curState == pMovementState.Driving ? curDriving.rb : rb;
         //  does the thing
+        //Debug.Log(curState.ToString() + " " + target);
         var temp = Vector2.MoveTowards(movingRb.linearVelocity, target, accTarget * 100f * Time.fixedDeltaTime);
         if(grounded && savedInput.x != 0f)
             temp.y = movingRb.linearVelocity.y;
@@ -508,17 +506,17 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             return;
         //  if grounded, jump immedietely 
         if(grounded)
-            doJump(true);
+            doJump();
         else if(curState == pMovementState.LadderClimbing)
-            doJump(false, 2f);
+            doJump(2f);
         else if(curState == pMovementState.RopeClimbing)
-            doJump(true, 1f, 5f);
+            doJump(1f, 5f);
 
         //  checks if coyote time applies
         else if(coyoteTime != null) {
             StopCoroutine(coyoteTime);
             coyoteTime = null;
-            doJump(true);
+            doJump();
         }
 
         //  queue up the jump
@@ -535,12 +533,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(jumpCanceler == null && !grounded)
             jumpCanceler = StartCoroutine(jumpCancelWaiter());
     }
-    void doJump(bool keepXVel, float xMod = 1f, float minX = 0f) {
+    void doJump(float xMod = 1f, float minX = 0f) {
         curState = pMovementState.Falling;
         jumpHeld = false;
         Vector2 target;
         //target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
-        target.x = (savedInput.x < 0f ? Mathf.Min(rb.linearVelocity.x, savedInput.x) : Mathf.Max(rb.linearVelocity.x, savedInput.x)) * xMod;
+        target.x = (savedInput.x < 0f ? Mathf.Min(rb.linearVelocity.x, savedInput.x) : Mathf.Max(rb.linearVelocity.x, savedInput.x)) * Mathf.Max(xMod, 1f);
         target.x = target.x < 0f ? target.x = Mathf.Min(target.x, -minX) : Mathf.Max(target.x, minX);
         target.y = jumpHeight * 100f * Time.fixedDeltaTime;
         rb.linearVelocity = new Vector2(Mathf.Clamp(target.x, -maxVelocity, maxVelocity), target.y);
@@ -572,7 +570,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  does the jump if can do the jump
         if(canMove && allowedTime > 0f)
-            doJump(true);
+            doJump();
         queuedJump = null;
     }   //  for queuing up a jump before the player is back on the ground
     IEnumerator coyoteWaiter() {
