@@ -197,6 +197,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     public bool initted = false;
+    bool isDead = false;
 
     [System.Serializable]
     public enum pMovementState {
@@ -301,7 +302,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         facePos(savedInput.x);
     }
     void facePos(float x) {
-        if(PauseCanvas.I.paused) return;
+        if(PauseCanvas.I.paused || isDead) return;
         if(curState == pMovementState.LadderClimbing) {
             spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             return;
@@ -366,28 +367,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         facePos(curPushing.position.x);
                     else if(curPushing.position.x > transform.position.x && facingRight)
                         facePos(curPushing.position.x);
-                    var pTarget = transform.position;
-                    transform.position = new Vector3(curPushing.transform.position.x - pushOffset.x, pTarget.y, 0f);
-                    /*  NEW OLD SHIT
-                    /*  OLD SHIT
-                    pushing = true;
-                    //  inputted pushing / pulling
-                    if(controls.Player.Interact.ReadValue<float>() == 0f) {
-                        //  checks for physics based pushing / pulling
-                        var xOffset = curPushing.transform.position.x - transform.position.x;
-                        if((savedInput.x > 0f) != (xOffset > 0f)) {
-                            pushing = false;
-                        }
-                    }
-                    /* old shit
-                    if(controls.Player.Interact.ReadValue<float>() != 0f || (savedInput.x > 0f == xOffset > 0f)) {
-                        if(touchingCurPushing) {
-                            var sMod = savedInput.x > 0f == xOffset > 0f ? .9f : 1.15f;
-                            curPushing.linearVelocity = new Vector3(target.x * sMod, curPushing.linearVelocity.y);
-                        }
-                        else
-                            curPushing.linearVelocity = new Vector3(rb.linearVelocity.x, curPushing.linearVelocity.y);
-                    }*/
+                    var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
+                    transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.deltaTime);
                     break;
 
                 case pMovementState.Falling:
@@ -663,10 +644,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     public void beKilled() {
+        isDead = true;
         canMove = false;
         groundCol.enabled = false;
         mainCol.enabled = false;
         rb.isKinematic = true;
+        if(PlayerInteraction.I.getCurInteractable() != null)
+            PlayerInteraction.I.getCurInteractable().detrigger();
         AnimationManager.I.RagdollMode(true);
     }
 
