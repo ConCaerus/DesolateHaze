@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
 
 public class AnimationManager : Singleton<AnimationManager>
 {
@@ -74,6 +72,10 @@ public class AnimationManager : Singleton<AnimationManager>
                     ChangeAnimation("Push", 0.1f);
                  if (PlayerMovement.I.facingRight != true)
                      ChangeAnimation("Pull", 0.1f);
+                break;
+            case PlayerMovement.pMovementState.Driving:
+                animator.speed = 1f;
+                ChangeAnimation("Driving", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Crawling:
                 animator.speed = 1f;
