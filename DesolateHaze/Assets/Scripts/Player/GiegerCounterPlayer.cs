@@ -29,17 +29,19 @@ public class GiegerCounterPlayer : MonoBehaviour {
     void manageSound() {
         Transform close = objs[0].transform;
         var pPos = PlayerMovement.I.transform.position;
-        var newDist = 0f;
+        var newDist = Vector3.Distance(close.position, pPos);
 
         foreach(var i in objs) {
             newDist = Vector3.Distance(i.position, pPos);
-            if(Vector3.Distance(i.position, pPos) < Vector3.Distance(close.position, pPos)) {
+            if(newDist < Vector3.Distance(close.position, pPos)) {
                 close = i;
-                if(newDist < 1f)
+
+                if(newDist < 1f) {
                     break;
+                }
             }
         }
-
+        newDist = Vector3.Distance(close.position, pPos);
         distPerc = Mathf.Clamp01(newDist / fieldRange);
     }
 
