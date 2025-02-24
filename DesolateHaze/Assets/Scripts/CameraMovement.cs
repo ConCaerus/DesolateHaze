@@ -4,8 +4,6 @@ public class CameraMovement : Singleton<CameraMovement> {
     [SerializeField] float speed;
     [SerializeField] float yOffset;
 
-    Transform playerTrans;
-
     [HideInInspector] public bool canMove = true;
 
     private void LateUpdate() {
@@ -14,11 +12,9 @@ public class CameraMovement : Singleton<CameraMovement> {
     }
 
     void followPlayer() {
-        if(playerTrans == null) {
-            if(PlayerMovement.I == null) return;
-            playerTrans = PlayerMovement.I.transform;
-        }
-        transform.position = Vector3.Lerp(transform.position, new Vector3(playerTrans.position.x, playerTrans.position.y + yOffset, transform.position.z), speed * Time.deltaTime);
+        var target = PlayerMovement.I.getCamFollowPos() + Vector3.up * yOffset;
+        target.z = transform.position.z;
+        transform.position = Vector3.Lerp(transform.position, target, speed * Time.deltaTime);
     }
 
     public void snapToPosition(Vector3 pos) {

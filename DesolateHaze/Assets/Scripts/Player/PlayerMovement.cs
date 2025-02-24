@@ -657,6 +657,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     public Vector2 getSavedInput() {
         return savedInput;
     }
+    public Vector3 getCamFollowPos() {
+        return transform.position + (Vector3.up * pHeight * (curState == pMovementState.Crawling ? .5f : 0f));
+    }
 
     public void resetMovement()
     {

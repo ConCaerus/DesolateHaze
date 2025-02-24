@@ -15,7 +15,7 @@ public class MusicPlayer : Singleton<MusicPlayer> {
     IEnumerator ambienceLoop() {
         while(true) {
             ambiencePlayer.playSound(ambience, false, false, 1f);
-            yield return new WaitForSeconds(ambience.length);
+            yield return new WaitForSecondsRealtime(ambience.length);
         }
     }
 }
