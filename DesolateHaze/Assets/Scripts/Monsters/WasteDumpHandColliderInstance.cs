@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WasteDumpHandColliderInstance : MonoBehaviour {
     [SerializeField] DoorInstance hand;
+    [SerializeField] Animator handani;
     bool canKill = true;
 
     Coroutine killWaiter = null;
@@ -33,9 +34,10 @@ public class WasteDumpHandColliderInstance : MonoBehaviour {
     }
 
     IEnumerator deathSequence() {
+        handani.SetTrigger("Kill");
         PlayerMovement.I.beKilled();
         TransitionCanvas.I.loadGameAfterDeath(2f);
-        hand.moveToEnd(.15f);
+        hand.moveToEnd(.40f);
         yield return new WaitForSeconds(.15f);
         PlayerMovement.I.rb.isKinematic = true;
         PlayerMovement.I.GetComponent<Collider>().enabled = false;
