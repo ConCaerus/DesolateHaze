@@ -9,6 +9,7 @@ public class PlayerPositionTrigger : MonoBehaviour {
     [SerializeField] List<UnityEvent> delayedSequences = new List<UnityEvent>(), exitDelayedSequences = new List<UnityEvent>();
     [SerializeField] List<float> secondsDelays = new List<float>(), exitSecondsDelay = new List<float>();
     [SerializeField] bool singleUse = true;
+    [SerializeField] Collider mainCol;
 
     [SerializeField] AudioPoolInfo sound;
 
@@ -23,7 +24,7 @@ public class PlayerPositionTrigger : MonoBehaviour {
                 StartCoroutine(delay(delayedSequences[i], secondsDelays[i]));
 
             if(singleUse)
-                gameObject.SetActive(false);
+                mainCol.enabled = false;
         }
     }
     private void OnTriggerExit(Collider col) {

@@ -100,6 +100,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     //  jump things
     bool jumpHeld = false;
+    [SerializeField] AudioPoolInfo jumpLandSound;
 
     //  specials
     pMovementState cs = pMovementState.None;
@@ -114,7 +115,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 lastGroundedY = transform.position.y;
                 heldRope = null;
             }
-            if(cs == pMovementState.LadderClimbing) {
+            else if(cs == pMovementState.Falling) {
+                carryover = Vector3.right * rb.linearVelocity.x;
+                rb.linearVelocity = Vector3.up * rb.linearVelocity.y;
+
+                //  play landing sound
+                if(value == pMovementState.Walking)
+                    AudioManager.I.playSound(jumpLandSound, transform.position, 1f);
+            }
+            else if(cs == pMovementState.LadderClimbing) {
                 lastGroundedY = transform.position.y;
                 spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             }
@@ -337,7 +346,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         break;
                     }
                     //  checks if crawling
-                    if(savedInput.y < 0f) {
+                    if(savedInput.y < -.25f) {
                         curState = pMovementState.Crawling;
                         break;
                     }
@@ -388,9 +397,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     rb.mass = 0f;
 
                     //  shimmies
-                    if(savedInput.y > 0f)
+                    if(savedInput.y > .25f)
                         heldRope.moveUp(ropeClimbSpeed * Time.fixedDeltaTime);
-                    else if(savedInput.y < 0f) {
+                    else if(savedInput.y < -.25f) {
                         if(heldRope.moveDown(ropeClimbSpeed * Time.fixedDeltaTime)) {
                             curState = pMovementState.Falling;
                             return;
@@ -430,7 +439,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         break;
                     }
                     //  checks if walking
-                    if(savedInput.y >= 0f) {
+                    if(savedInput.y >= -.15f) {
                         //  checks for can stand
                         if(!Physics.CapsuleCast(mainCol.transform.position + Vector3.down * (pHeight / 2f), mainCol.transform.position + Vector3.up * (pHeight / 2f),
                             ((CapsuleCollider)mainCol).radius, Vector3.up)) {
@@ -516,6 +525,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     void doJump(float xMod = 1f, float minX = 0f) {
         curState = pMovementState.Falling;
+        grounded = false;
         jumpHeld = false;
         Vector2 target;
         //target.x = (keepXVel || true ? rb.linearVelocity.x : savedInput.x > 0f ? 1f : -1f) * xMod;
@@ -551,7 +561,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
         //  does the jump if can do the jump
         if(canMove && allowedTime > 0f)
-            doJump();
+            jump();
         queuedJump = null;
     }   //  for queuing up a jump before the player is back on the ground
     IEnumerator coyoteWaiter() {

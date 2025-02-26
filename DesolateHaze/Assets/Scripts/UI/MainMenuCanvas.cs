@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuCanvas : MonoBehaviour {
+    [SerializeField] Button selectOnStart;
+
     private void Start() {
         Time.timeScale = 1f;
+        selectOnStart.Select();
     }
 
     //  buttons
