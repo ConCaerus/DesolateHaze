@@ -1,12 +1,13 @@
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseCanvas : Singleton<PauseCanvas> {
     [SerializeField] GameObject background;
+    [SerializeField] Button defaultBut;
 
     InputMaster controls;
 
-    public static Action<bool> runOnPauseChange = (bool b) => { };
+    public static System.Action<bool> runOnPauseChange = (bool b) => { };
 
     bool p = false;
     public bool paused {
@@ -15,6 +16,7 @@ public class PauseCanvas : Singleton<PauseCanvas> {
             p = value;
             if(background != null)
                 background.SetActive(p);
+            if(p && !ControlSchemeManager.I.usingKeyboard) defaultBut.Select();
             Time.timeScale = p ? 0f : 1f;
 
             runOnPauseChange(p);
@@ -25,6 +27,11 @@ public class PauseCanvas : Singleton<PauseCanvas> {
         controls = new InputMaster();
         controls.Enable();
         controls.Misc.Pause.performed += ctx => { paused = !paused; };
+
+        ControlSchemeManager.runOnChange += (keyb) => {
+            if(!paused) return;
+            if(!keyb) defaultBut.Select();
+        };
 
         paused = false;
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,14 +8,16 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
     [SerializeField] Slider masterVolSlider; // musicVolSlider, sfxVolSlider;
     [SerializeField] GameObject background;
     [SerializeField] TextMeshProUGUI screenModeText;
+    [SerializeField] Selectable defaultBut;
 
     FullScreenMode curScreenMode;
 
-    public static Action settingsChanged = () => { };
+    public static System.Action settingsChanged = () => { };
 
     private void Start() {
         setup();
         background.SetActive(false);
+        ControlSchemeManager.runOnChange += (keyb) => { if(background.activeInHierarchy && !keyb) defaultBut.Select(); };
     }
 
     void setup() {
@@ -39,6 +40,7 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
     public void show() {
         setup();
         background.SetActive(true);
+        if(!ControlSchemeManager.I.usingKeyboard) defaultBut.Select();
     }
     public void hide() {
         background.SetActive(false);

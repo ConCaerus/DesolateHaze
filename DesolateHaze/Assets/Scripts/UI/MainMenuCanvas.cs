@@ -7,6 +7,7 @@ public class MainMenuCanvas : MonoBehaviour {
     private void Start() {
         Time.timeScale = 1f;
         selectOnStart.Select();
+        ControlSchemeManager.runOnChange += (keyb) => { selectOnStart.Select(); };
     }
 
     //  buttons
