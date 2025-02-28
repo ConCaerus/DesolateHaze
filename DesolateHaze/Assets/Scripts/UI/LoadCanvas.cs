@@ -14,6 +14,7 @@ public class LoadCanvas : Singleton<LoadCanvas> {
 
     private void Start() {
         spawnLoaders();
+        ControlSchemeManager.runOnChange += (keyb) => { if(!keyb) loaders[0].GetComponent<Selectable>().Select(); };
     }
 
     void spawnLoaders() {
@@ -54,6 +55,7 @@ public class LoadCanvas : Singleton<LoadCanvas> {
     public void show() {
         background.gameObject.SetActive(true);
         spawnLoaders();
+        if(!ControlSchemeManager.I.usingKeyboard) loaders[0].GetComponent<Selectable>().Select();
     }
     public void hide() {
         background.gameObject.SetActive(false);

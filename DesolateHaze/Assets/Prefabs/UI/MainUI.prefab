@@ -363,6 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2582066255941887551}
+  - component: {fileID: 2625272031856819875}
   m_Layer: 0
   m_Name: MainUI
   m_TagString: Untagged
@@ -391,6 +392,18 @@ Transform:
   - {fileID: 1625626832350378264}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2625272031856819875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822402406953950086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f43acc144b9dda4cb44ea62da00f933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &930920693502960479
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 3271889359783967196}
+  defaultBut: {fileID: 8559016433041388670}
 --- !u!1 &1671064126876491013
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,6 +4299,7 @@ MonoBehaviour:
   masterVolSlider: {fileID: 5873140208881052296}
   background: {fileID: 2636251646580483377}
   screenModeText: {fileID: 7373558476964687879}
+  defaultBut: {fileID: 5873140208881052296}
 --- !u!1 &8448559716642354676
 GameObject:
   m_ObjectHideFlags: 0
