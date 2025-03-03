@@ -187,6 +187,7 @@ MonoBehaviour:
   ropeClimbSpeed: 2.5
   ladderClimbSpeed: 2.5
   speedMod: 1
+  isContaminated: 0
   mainCol: {fileID: 5209831697231438111}
   groundCol: {fileID: 1568795378167682335}
   rb: {fileID: 4188132916916667625}
@@ -194,7 +195,15 @@ MonoBehaviour:
   spriteTrans: {fileID: 8421557751034862052}
   canTakeFallDamage: 1
   closePushing: {fileID: 0}
+  jumpLandSound:
+    title: 
+    poolCount: 0
+    clips: []
   initted: 0
+  deathSound:
+    title: 
+    poolCount: 0
+    clips: []
 --- !u!114 &2445624396566840757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,14 +229,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529c5b86a0c1a1242935b2336dc15412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSound:
-    title: PlayerWalkSound
-    poolCount: 5
-    clips:
-    - {fileID: 8300000, guid: ab045f552d9a198459a2e215702d3fb5, type: 3}
-    - {fileID: 8300000, guid: 0367448a6f49b2b45a932b5f9d047d5b, type: 3}
-    - {fileID: 8300000, guid: 6f35d8fbf5a9a764884716c85c12c122, type: 3}
-    - {fileID: 8300000, guid: 0f4a0325508e26c498690fb03730b451, type: 3}
+  walkSounds:
+  - sound:
+      title: DirtWalkSounds
+      poolCount: 5
+      clips:
+      - {fileID: 8300000, guid: ab045f552d9a198459a2e215702d3fb5, type: 3}
+      - {fileID: 8300000, guid: 0367448a6f49b2b45a932b5f9d047d5b, type: 3}
+      - {fileID: 8300000, guid: 6f35d8fbf5a9a764884716c85c12c122, type: 3}
+      - {fileID: 8300000, guid: 0f4a0325508e26c498690fb03730b451, type: 3}
+    type: 1
+  - sound:
+      title: ConcreteWalkSounds
+      poolCount: 5
+      clips:
+      - {fileID: 8300000, guid: 80524b64256da6748af5e6323557831d, type: 3}
+    type: 2
+  - sound:
+      title: TileWalkSounds
+      poolCount: 5
+      clips:
+      - {fileID: 8300000, guid: 842e2364d5db17f4c854777cab36d6f2, type: 3}
+    type: 3
 --- !u!114 &4639373247820944572
 MonoBehaviour:
   m_ObjectHideFlags: 0
