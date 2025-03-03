@@ -92,7 +92,7 @@ public static class Saver {
                 }
             }
         }
-        var temp = new CheckpointSaveData(cm.checkpoints[0], 1f, cm.aType);
+        var temp = new CheckpointSaveData(cm.checkpoints[0], 1f, cm.aType, cm.checkpoints[0].groundType);
         temp.triggered = true;
         return temp;
     }
@@ -126,7 +126,7 @@ public static class Saver {
         //  checks for newly created checkpoints
         if(save.data[(int)cm.aType - 1].Count != cm.checkpoints.Count) {
             for(int i = save.data[(int)cm.aType - 1].Count; i < cm.checkpoints.Count; i++) {
-                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, pm.speedMod, false, cm.aType);
+                var csd = new CheckpointSaveData(cm.checkpoints[i].transform.position, pm.speedMod, false, cm.aType, cm.checkpoints[i].groundType);
                 save.data[(int)cm.aType - 1].Add(csd);
             }
         }
@@ -213,17 +213,20 @@ public class CheckpointSaveData {
     public float playerSpeedMod;
     public bool triggered = false;
     public Saver.areaType area;
+    public PlayerAudioManager.groundType groundType;
 
-    public CheckpointSaveData(Vector3 p, float sm, bool t, Saver.areaType a) {
+    public CheckpointSaveData(Vector3 p, float sm, bool t, Saver.areaType a, PlayerAudioManager.groundType g) {
         pos = p;
         playerSpeedMod = sm;
         triggered = t;
         area = a;
+        groundType = g;
     }
-    public CheckpointSaveData(CheckpointInstance ci, float sm, Saver.areaType a) {
+    public CheckpointSaveData(CheckpointInstance ci, float sm, Saver.areaType a, PlayerAudioManager.groundType g) {
         pos = ci.transform.position;
         playerSpeedMod = sm;
         triggered = ci.triggered;
         area = a;
+        groundType = g;
     }
 }

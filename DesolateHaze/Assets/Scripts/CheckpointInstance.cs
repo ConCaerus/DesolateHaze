@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class CheckpointInstance : MonoBehaviour {
+    public PlayerAudioManager.groundType groundType;
+
     bool t = false;
     public bool triggered {
         get { return t; }

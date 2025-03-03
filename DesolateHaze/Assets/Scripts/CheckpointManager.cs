@@ -33,6 +33,7 @@ public class CheckpointManager : Singleton<CheckpointManager> {
         //  spawns player at the last triggered checkpoint
         var lastCheckpoint = Saver.getLastCheckpoint(this, PlayerMovement.I);
         CameraMovement.I.snapToPosition(PlayerMovement.I.transform.position = lastCheckpoint.pos);
+        PlayerAudioManager.I.setGroundType(lastCheckpoint.groundType);
         PlayerMovement.I.rb.linearVelocity = Vector3.zero;
         PlayerMovement.I.speedMod = lastCheckpoint.playerSpeedMod;
         PlayerMovement.I.initted = true;

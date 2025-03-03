@@ -172,8 +172,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(g) {
                 //  checks for fall damage
                 if(canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist) {
-                    Debug.Log("fall damage killed you");
-                    canMove = false;
+                    beKilled();
                     TransitionCanvas.I.loadGameAfterDeath(2f);
                 }
 
@@ -207,6 +206,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     public bool initted = false;
     bool isDead = false;
+    [SerializeField] AudioPoolInfo deathSound;
 
     [System.Serializable]
     public enum pMovementState {
@@ -662,6 +662,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(PlayerInteraction.I.getCurInteractable() != null)
             PlayerInteraction.I.getCurInteractable().detrigger();
         AnimationManager.I.RagdollMode(true);
+        AudioManager.I.playSound(deathSound, transform.position, 1f);
     }
 
     public Vector2 getSavedInput() {
