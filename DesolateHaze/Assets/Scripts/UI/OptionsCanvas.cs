@@ -14,6 +14,8 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
 
     public static System.Action settingsChanged = () => { };
 
+    public bool shown { get; private set; } = false;
+
     private void Start() {
         setup();
         background.SetActive(false);
@@ -38,11 +40,13 @@ public class OptionsCanvas : Singleton<OptionsCanvas> {
     }
 
     public void show() {
+        shown = true;
         setup();
         background.SetActive(true);
         if(!ControlSchemeManager.I.usingKeyboard) defaultBut.Select();
     }
     public void hide() {
+        shown = false;
         background.SetActive(false);
     }
 

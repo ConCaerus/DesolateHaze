@@ -11,10 +11,12 @@ public class LoadCanvas : Singleton<LoadCanvas> {
 
     List<Transform> loaders = new List<Transform>();
 
+    public bool shown { get; private set; } = false;
+
 
     private void Start() {
         spawnLoaders();
-        ControlSchemeManager.runOnChange += (keyb) => { if(!keyb) loaders[0].GetComponent<Selectable>().Select(); };
+        ControlSchemeManager.runOnChange += (keyb) => { if(!keyb && loaders.Count > 0 && shown) loaders[0].GetComponent<Selectable>().Select(); };
     }
 
     void spawnLoaders() {
@@ -53,11 +55,13 @@ public class LoadCanvas : Singleton<LoadCanvas> {
     }
 
     public void show() {
+        shown = true;
         background.gameObject.SetActive(true);
         spawnLoaders();
         if(!ControlSchemeManager.I.usingKeyboard) loaders[0].GetComponent<Selectable>().Select();
     }
     public void hide() {
+        shown = false;
         background.gameObject.SetActive(false);
         destroyLoaders();
     }

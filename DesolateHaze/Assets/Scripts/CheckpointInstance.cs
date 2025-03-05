@@ -18,5 +18,6 @@ public class CheckpointInstance : MonoBehaviour {
         if(col.gameObject.tag != "Player") return;
         triggered = true;
         Saver.triggerCheckpoint(CheckpointManager.I, PlayerMovement.I, transform.position);
+        PlayerAudioManager.I.setGroundType(groundType);
     }
 }

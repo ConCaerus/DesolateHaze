@@ -19,6 +19,11 @@ public class PauseCanvas : Singleton<PauseCanvas> {
             if(p && !ControlSchemeManager.I.usingKeyboard) defaultBut.Select();
             Time.timeScale = p ? 0f : 1f;
 
+            if(!p) {
+                if(OptionsCanvas.I.shown) OptionsCanvas.I.hide();
+                if(LoadCanvas.I.shown) LoadCanvas.I.hide();
+            }
+
             runOnPauseChange(p);
         }
     }
