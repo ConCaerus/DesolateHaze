@@ -10,6 +10,7 @@ public class CraneInstance : MonoBehaviour {
     [SerializeField] bool rotationalMovement = false;
     [SerializeField] Transform rotPoint;
     [SerializeField] float rotSpeed;
+    [SerializeField] BoxCollider kill;
 
     bool active = false;
 
@@ -25,6 +26,7 @@ public class CraneInstance : MonoBehaviour {
 
         button.transform.parent = transform.parent;
         rb.isKinematic = true;
+        kill.enabled = false;
     }
 
     private void Update() {
@@ -39,10 +41,12 @@ public class CraneInstance : MonoBehaviour {
     public void trigger() {
         active = true;
         rb.isKinematic = false;
+        kill.enabled = true;
     }
     public void detrigger() {
         active = false;
         rb.isKinematic = true;
+        kill.enabled = false;
     }
 
     void updateDir(Vector2 dir) {

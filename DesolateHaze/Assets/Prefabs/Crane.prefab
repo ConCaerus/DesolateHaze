@@ -56,6 +56,7 @@ MonoBehaviour:
   rotationalMovement: 0
   rotPoint: {fileID: 3120070606791624190}
   rotSpeed: 2
+  kill: {fileID: 7996380610868762446}
 --- !u!1001 &2028617831720420982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85,32 +86,44 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2643511947271638993, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643511947271638993, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
+      propertyPath: m_Size.z
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643511947271638993, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Center.y
       value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Size.x
-      value: 14.910002
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Size.y
-      value: 5.870022
+      value: 5.7
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Size.z
-      value: 5.942245
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
+      propertyPath: m_Center.x
+      value: -21.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Center.y
-      value: 1.0300041
+      value: 1.05
       objectReference: {fileID: 0}
     - target: {fileID: 3713647365937450071, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Center.z
-      value: -0.36887813
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5622608895502333880, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -127,6 +140,10 @@ PrefabInstance:
     - target: {fileID: 7236602563054893141, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_Name
       value: Crane2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7712659452644648495, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 8009162774949208815, guid: 8dccd73e6fd64c14c8d8b156baa8141b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -199,11 +216,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020000001, y: 0.021, z: 0.002}
+  m_Size: {x: 0.022, y: 0.021, z: 0.002}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8153857706562326971
 MonoBehaviour:
