@@ -673,8 +673,23 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         return transform.position + (Vector3.up * pHeight * (curState == pMovementState.Crawling ? .5f : 0f));
     }
 
-    public void resetMovement()
-    {
+    public void resetMovement() {
         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+    }
+    
+    public void checkDirection() {
+        if (facingRight)
+        {
+            if (savedInput.x > 0)
+                return push;
+            else
+                return pull;
+        }
+        if (!facingRight) {
+                if (savedInput.x < 0)
+                return pull;
+            else
+                return push;
+        }
     }
 }

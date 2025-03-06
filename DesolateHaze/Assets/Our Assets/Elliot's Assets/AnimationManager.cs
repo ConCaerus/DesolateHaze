@@ -88,6 +88,7 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.Falling:
                 animator.speed = 1f;
+                LongFall();
                 ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
@@ -150,5 +151,14 @@ public class AnimationManager : Singleton<AnimationManager>
         ChangeAnimation("Ledge_Climbing", 0.1f);
         yield return new WaitForSeconds(1);
         PlayerMovement.I.resetMovement();
+    }
+
+    IEnumerator LongFall() {
+        yield return new WaitForSeconds(1);
+        if (PlayerMovement.I.curState == PlayerMovement.pMovementState.Falling) {
+            ChangeAnimation("Fall", 0.1f);
+            yield return null;
+        }
+        ChangeAnimation("Recover", 0.1f);
     }
 }
