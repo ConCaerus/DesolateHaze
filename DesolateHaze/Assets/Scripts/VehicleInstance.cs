@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VehicleInstance : MonoBehaviour {
     public Transform seatPos;
+    public Transform endPos;
     public float speed;
     public Rigidbody rb;
     [SerializeField] List<Collider> toggledCols = new List<Collider>();

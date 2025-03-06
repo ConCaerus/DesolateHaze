@@ -98958,6 +98958,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8153857706562326971, guid: e27c141333bc6644fb33df71d82b6734, type: 3}
+      propertyPath: mainCol
+      value: 
+      objectReference: {fileID: 2055564645}
     - target: {fileID: 8588302658388451417, guid: e27c141333bc6644fb33df71d82b6734, type: 3}
       propertyPath: m_TagString
       value: Ground
@@ -106674,6 +106678,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbdc67f81b1ab9348841c75445c6c154, type: 3}
+--- !u!65 &2055564645 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 7996380610868762446, guid: e27c141333bc6644fb33df71d82b6734, type: 3}
+  m_PrefabInstance: {fileID: 1921456255}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2055891391
 PrefabInstance:
   m_ObjectHideFlags: 0

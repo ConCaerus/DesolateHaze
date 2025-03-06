@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &606560401408711475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5255471114928223792}
+  m_Layer: 0
+  m_Name: finPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5255471114928223792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606560401408711475}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.68, y: 1.6439548, z: -0.00402689}
+  m_LocalScale: {x: 1.3089602, y: 1.30896, z: 1.3089602}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8899335248689307791}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1782975102789013165
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +95,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 34010993425430896}
+  - {fileID: 5255471114928223792}
   - {fileID: 1915052268568116688}
   - {fileID: 2733177629476270500}
   m_Father: {fileID: 0}
@@ -129,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seatPos: {fileID: 3420268993317324431}
+  endPos: {fileID: 5255471114928223792}
   speed: 100
   rb: {fileID: 6406252597681651200}
   toggledCols:
@@ -138,7 +171,7 @@ MonoBehaviour:
     m_Bits: 128
   inUseInclude:
     serializedVersion: 2
-    m_Bits: 6007
+    m_Bits: 14199
 --- !u!1 &5797785544400316726
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +368,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ledge
       objectReference: {fileID: 0}
+    - target: {fileID: 3688643170119947368, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
+      propertyPath: m_Radius
+      value: 0.24
+      objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.9853828
@@ -389,11 +426,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.29
+      value: 0.301
       objectReference: {fileID: 0}
     - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.73
+      value: 0.44
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -721,6 +758,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ledge (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3688643170119947368, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.9853828
@@ -739,11 +780,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.78
+      value: 4.09
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.79
+      value: -0.74
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -779,7 +820,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.73
+      value: 0.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -803,6 +848,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ledge (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3688643170119947368, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.9853828
@@ -817,15 +866,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.21307716
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0337796
+      value: 2.23
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.9421465
+      value: 3.74
       objectReference: {fileID: 0}
     - target: {fileID: 5289092941328638179, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -857,11 +906,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.44
+      value: -0.352
       objectReference: {fileID: 0}
     - target: {fileID: 5531702452737465142, guid: 5f7088df3f8e9f545bacef041944475b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.73
+      value: 0.53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

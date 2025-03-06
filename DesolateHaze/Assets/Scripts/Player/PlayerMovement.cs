@@ -79,6 +79,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 transform.parent = null;
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                 rb.isKinematic = false;
+                transform.position = cd.endPos.position;
             }
             cd = value;
             if(cd != null) {
