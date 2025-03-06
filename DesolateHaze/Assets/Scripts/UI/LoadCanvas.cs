@@ -39,6 +39,7 @@ public class LoadCanvas : Singleton<LoadCanvas> {
                 temp.name = ((Saver.areaType)i + 1).ToString();
                 var c = CheckpointManager.I.getColor((Saver.areaType)i + 1);
                 temp.GetComponent<Image>().color = data.triggered ? c : (c + Color.black * 2) / 3f;
+                temp.GetComponent<Button>().interactable = data.triggered;
                 temp.GetComponent<LoadCircleInstance>().data = data;
                 loaders.Add(temp.transform);
             }

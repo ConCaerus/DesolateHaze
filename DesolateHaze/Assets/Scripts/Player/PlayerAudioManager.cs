@@ -41,6 +41,7 @@ public class PlayerAudioManager : Singleton<PlayerAudioManager> {
     }
 
     public void setGroundType(groundType t) {
+        if(t == groundType.None) return;
         if(!dic.ContainsKey(t)) {
             Debug.LogError("PLAYER AUDIO MANGAER DOES NOT CONTAIN A REFERENCE FOR GROUND TYPE: " + t.ToString());
             return;

@@ -1,4 +1,4 @@
-using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CustomButtonInformation))]
 public class CustomButtonInstance : Button {
     CustomButtonInformation cbi;
+    Coroutine scaler = null;
 
     protected override void Start() {
         base.Start();
@@ -37,8 +38,9 @@ public class CustomButtonInstance : Button {
     
 
     void hover() {
-        transform.DOComplete();
-        transform.DOScale(cbi.hoverSize, .15f);
+        if(!gameObject.activeInHierarchy) return;
+        if(scaler != null) StopCoroutine(scaler);
+        scaler = StartCoroutine(scale(cbi.hoverSize, .25f));
         if(cbi.playSound) ButtonSoundPlayer.I.playButtonSound();  //  sound
         //if(cbi.showEffect) UIIconCanvas.I.show(transform); //  show effect
 
@@ -46,17 +48,34 @@ public class CustomButtonInstance : Button {
     }
     void dehover() {
         //if(cbi.showEffect) UIIconCanvas.I.hide();  //  hide effect
-        transform.DOComplete();
-        transform.DOScale(cbi.normalSize, .25f);
+        if(scaler != null) StopCoroutine(scaler);
+        scaler = StartCoroutine(scale(cbi.normalSize, .25f));
 
         cbi.dehoverEvents.Invoke();
     }
     void click() {
         if(cbi.playSound) ButtonSoundPlayer.I.playClickSound();   //  sound
         //if(cbi.showEffect) UIIconCanvas.I.hardHide();
-        transform.DOComplete();
-        transform.DOScale(cbi.normalSize, .25f);
+        if(scaler != null) StopCoroutine(scaler);
+        scaler = StartCoroutine(scale(cbi.normalSize, .25f));
 
         cbi.clickEvents.Invoke();
+    }
+
+    IEnumerator scale(float endSize, float dur) {
+        var startTime = Time.realtimeSinceStartup;
+        var startSize = transform.localScale.x;
+        var sizeOffset = endSize - startSize;
+        var elapsedTime = 0f;
+
+        while(elapsedTime < dur) {
+            yield return new WaitForEndOfFrame();
+            elapsedTime += Time.realtimeSinceStartup - startTime;
+            startTime = Time.realtimeSinceStartup;
+            transform.localScale = Vector3.one * (startSize + sizeOffset * (elapsedTime / dur));
+        }
+
+        transform.localScale = Vector3.one * endSize;
+        scaler = null;
     }
 }
