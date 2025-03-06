@@ -65,13 +65,10 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.Pushing:
                 animator.speed = 1f;
-                ChangeAnimation("Push", 0.1f);
                 if (Mathf.Abs(movement.x) == 0f)
                     animator.speed = 0f;
-                if (PlayerMovement.I.facingRight == true)
-                    ChangeAnimation("Push", 0.1f);
-                 if (PlayerMovement.I.facingRight != true)
-                     ChangeAnimation("Pull", 0.1f);
+                PlayerMovement.I.checkDirection(string value);
+                ChangeAnimation("$", value, 0.1f);
                 break;
             case PlayerMovement.pMovementState.Driving:
                 animator.speed = 1f;
