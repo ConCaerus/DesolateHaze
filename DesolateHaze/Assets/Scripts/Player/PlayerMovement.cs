@@ -677,19 +677,20 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
     }
     
-    public string checkDirection(string value) {
+    public string checkDirection() {
         if (facingRight)
         {
             if (savedInput.x > 0)
-                return Push;
+                return "Push";
             else
-                return Pull;
+                return "Pull";
         }
         if (!facingRight) {
             if (savedInput.x < 0)
-                return Pull;
+                return "Pull";
             else
-                return Push;
+                return "Push";
         }
+        return "";
     }
 }

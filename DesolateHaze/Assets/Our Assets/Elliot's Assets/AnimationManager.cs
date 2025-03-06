@@ -67,8 +67,7 @@ public class AnimationManager : Singleton<AnimationManager>
                 animator.speed = 1f;
                 if (Mathf.Abs(movement.x) == 0f)
                     animator.speed = 0f;
-                PlayerMovement.I.checkDirection(string value);
-                ChangeAnimation("$", value, 0.1f);
+                ChangeAnimation(PlayerMovement.I.checkDirection(), 0.1f);
                 break;
             case PlayerMovement.pMovementState.Driving:
                 animator.speed = 1f;
