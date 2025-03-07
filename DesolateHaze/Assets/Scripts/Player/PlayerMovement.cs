@@ -76,13 +76,17 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(cd == value) return;
             if(cd != null) {
                 cd.playerExit();
-                transform.parent = null;
-                curState = grounded ? pMovementState.Walking : pMovementState.Falling;
-                rb.isKinematic = false;
                 transform.position = cd.endPos.position;
+                transform.parent = null;
+                if(dismounter != null) return;
+                dismounter = StartCoroutine(dismountWaiter(cd.endPos.position));
             }
             cd = value;
             if(cd != null) {
+                if(dismounter != null) {
+                    StopCoroutine(dismounter);
+                    dismounter = null;
+                }
                 cd.playerEnter();
                 transform.position = cd.seatPos.position;
                 transform.parent = cd.transform;
@@ -91,6 +95,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             }
         }
     }
+    Coroutine dismounter = null;
 
     //  input things
     InputMaster controls;
@@ -136,9 +141,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
             //  after changing
             rb.useGravity = cs != pMovementState.LadderClimbing && cs != pMovementState.RopeClimbing && cs != pMovementState.LedgeClimbing;
-            if (cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
+            if(cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
-            else if (cs == pMovementState.LedgeClimbing)
+            else if(cs == pMovementState.LedgeClimbing)
                 AnimationManager.I.CheckAnimation(savedInput, curState);
             if(cs != pMovementState.Pushing && curPushing != null) {
                 curPushing = null;
@@ -318,6 +323,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             return;
         }
         if(curState == pMovementState.Falling) return;
+        if(curState == pMovementState.Driving && curDriving != null) {
+            facingRight = true;
+            if(x != 0f)
+                curDriving.facingRight = x > 0;
+        }
         if(curState == pMovementState.Pushing) {
             facingRight = curPushing.position.x >= transform.position.x;
             spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
@@ -382,7 +392,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
 
                 case pMovementState.Falling:
-                    spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f); ;
+                    spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
                     target = rb.linearVelocity;
                     //  slight air control
                     var max = speed * speedMod * 100f * Time.fixedDeltaTime;
@@ -424,11 +434,11 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 case pMovementState.Driving:
                     if(curDriving == null) {
-                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
                         return;
                     }
                     transform.position = curDriving.seatPos.position;
                     target.x = savedInput.x * curDriving.speed * 100f * Time.fixedDeltaTime;
+                    updateFaceDir();
                     break;
 
                 case pMovementState.Crawling:
@@ -487,6 +497,18 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     public void climbLadder() {
         curState = pMovementState.LadderClimbing;
+    }
+    #endregion
+
+    #region DRIVING LOGIC
+    IEnumerator dismountWaiter(Vector2 target) {
+        do {
+            yield return new WaitForFixedUpdate();
+            transform.position = target;
+        }
+        while(transform.position != (Vector3)target);
+        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+        rb.isKinematic = false;
     }
     #endregion
 
@@ -676,17 +698,16 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     public void resetMovement() {
         curState = grounded ? pMovementState.Walking : pMovementState.Falling;
     }
-    
+
     public string checkDirection() {
-        if (facingRight)
-        {
-            if (savedInput.x > 0)
+        if(facingRight) {
+            if(savedInput.x > 0)
                 return "Push";
             else
                 return "Pull";
         }
-        if (!facingRight) {
-            if (savedInput.x < 0)
+        if(!facingRight) {
+            if(savedInput.x < 0)
                 return "Pull";
             else
                 return "Push";

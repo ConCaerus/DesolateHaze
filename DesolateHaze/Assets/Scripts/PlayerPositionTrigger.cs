@@ -14,6 +14,7 @@ public class PlayerPositionTrigger : MonoBehaviour {
     [SerializeField] AudioPoolInfo sound;
 
     private void Start() {
+        if(mainCol == null) TryGetComponent(out mainCol); 
         AudioManager.I.initSound(sound);
     }
 
