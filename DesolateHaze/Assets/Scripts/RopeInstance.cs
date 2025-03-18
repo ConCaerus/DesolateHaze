@@ -7,12 +7,14 @@ public class RopeInstance : MonoBehaviour {
     //  ordered highest to lowest
     [SerializeField] List<Transform> segments = new List<Transform>();
     [SerializeField] List<Rigidbody> segRbs = new List<Rigidbody>();
+    [SerializeField] float maxLinMag, maxAngMag;
 
     Rigidbody prb;
     float movePerc;
     int curSegInd;
 
     Coroutine waiter = null;
+    Coroutine clamper = null;
 
     Transform getClosestSeg(Vector3 point) {
         Transform temp = null;
@@ -76,10 +78,17 @@ public class RopeInstance : MonoBehaviour {
         prb = b;
         curSegInd = segments.IndexOf(getClosestSeg(prb.transform.position));
         movePerc = 0f;
+
+        if(clamper != null) StopCoroutine(clamper);
+        clamper = StartCoroutine(clampVelocity());
     }
     public void dropPlayer() {
         if(waiter != null) return;
         waiter = StartCoroutine(dropWaiter());
+        if(clamper != null) {
+            StopCoroutine(clamper);
+            clamper = null;
+        }
     }
     IEnumerator dropWaiter() {
         yield return new WaitForSeconds(1f);
@@ -88,6 +97,15 @@ public class RopeInstance : MonoBehaviour {
             i.excludeLayers = LayerMask.GetMask(new string[] { "Rope", "GroundCollider" });
         }
         waiter = null;
+    }
+    IEnumerator clampVelocity() {
+        while(true) {
+            foreach(var i in segRbs) {
+                if(i.linearVelocity.magnitude > maxLinMag) i.linearVelocity = i.linearVelocity.normalized * maxLinMag;
+                if(i.angularVelocity.magnitude > maxAngMag) i.angularVelocity = i.angularVelocity.normalized * maxAngMag;
+            }
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void addSwingForce(Vector3 force) {
