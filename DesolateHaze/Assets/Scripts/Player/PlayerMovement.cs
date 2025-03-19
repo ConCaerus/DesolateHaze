@@ -712,6 +712,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             else
                 return "Push";
         }
-        return "";
+        return "Idle";
     }
 }

@@ -150,11 +150,14 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     IEnumerator LongFall() {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         if (PlayerMovement.I.curState == PlayerMovement.pMovementState.Falling) {
-            ChangeAnimation("Fall", 0.1f);
-            yield return null;
+            ChangeAnimation("Falling", 0.1f);
+            WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
+            yield return wait;
+            ChangeAnimation("Landing", 0.1f);
+            yield return new WaitForSeconds(1f);
+            PlayerMovement.I.resetMovement();
         }
-        ChangeAnimation("Recover", 0.1f);
     }
 }
