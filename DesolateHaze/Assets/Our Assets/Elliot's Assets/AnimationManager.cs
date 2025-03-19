@@ -6,7 +6,7 @@ public class AnimationManager : Singleton<AnimationManager>
 {
     [SerializeField] Animator animator;
     private string currentAnimation = "";
-    private bool isFalling = false;
+    public bool isFalling = false;
 
     public GameObject playerRig;
     Collider[] ragdollColliders;
@@ -43,8 +43,6 @@ public class AnimationManager : Singleton<AnimationManager>
     {
         if (grounded)
             isFalling = false;
-        if (currentAnimation == "Landing")
-            return;
         switch (action) {
             case PlayerMovement.pMovementState.LadderClimbing:
                 animator.speed = 1f;
@@ -90,12 +88,18 @@ public class AnimationManager : Singleton<AnimationManager>
             case PlayerMovement.pMovementState.Falling:
                 animator.speed = 1f;
                 if (!isFalling)
-                    LongFall();
+                    StartCoroutine(LongFall());
                 if (currentAnimation != "Falling")
                     ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
                 animator.speed = 1f;
+                if (currentAnimation == "Falling")
+                {
+                    ChangeAnimation("Landing", 0.1f);
+                    StartCoroutine(WaitForAnim(currentAnimation, 1f));
+                    break;
+                }
                 if (Mathf.Abs(movement.x) == 0f)
                     ChangeAnimation("Idle", 0.1f);
                 else
@@ -103,6 +107,12 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.None:
                 animator.speed = 1f;
+                if (currentAnimation == "Falling")
+                {
+                    ChangeAnimation("Landing", 0.1f);
+                    StartCoroutine(WaitForAnim(currentAnimation, 1f));
+                    break;
+                }
                 ChangeAnimation("Idle", 0.1f);
                 break;
         }
@@ -154,18 +164,37 @@ public class AnimationManager : Singleton<AnimationManager>
         ChangeAnimation("Ledge_Climbing", 0.1f);
         yield return new WaitForSeconds(1);
         PlayerMovement.I.resetMovement();
+        yield break;
     }
 
     IEnumerator LongFall() {
         isFalling = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Check for Fall");
         if (currentAnimation == "Jump") {
+            animator.speed = 1f;
             ChangeAnimation("Falling", 0.1f);
-            WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
+            Debug.Log("Falling!");
+     /*       WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
             yield return wait;
+            if (!PlayerMovement.I.canMove)
+                PlayerMovement.I.canMove = false;
             ChangeAnimation("Landing", 0.1f);
+            Debug.Log("Landing!");
             yield return new WaitForSeconds(1f);
-            PlayerMovement.I.resetMovement();
+            PlayerMovement.I.canMove = true;
+            PlayerMovement.I.resetMovement(); */
         }
+        yield break;
+    }
+
+    IEnumerator WaitForAnim(string Animation, float time)
+    {
+        if (!PlayerMovement.I.canMove)
+            PlayerMovement.I.canMove = false;
+        ChangeAnimation(Animation, 0.1f);
+        yield return new WaitForSeconds(time);
+        PlayerMovement.I.canMove = true;
+        yield break;
     }
 }
