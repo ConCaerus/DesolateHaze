@@ -21,7 +21,7 @@ public class AudioManager : Singleton<AudioManager> {
     }
 
     public void playSound(AudioPoolInfo info, Vector3 point, float volMod) {
-        if(string.IsNullOrEmpty(info.title)) return;
+        if(info == null || string.IsNullOrEmpty(info.title)) return;
         if(!poolInfo.ContainsKey(info.title)) initSound(info);
         if(poolSources[info.title].Count == 0 || mute) return;
         var asi = poolSources[info.title][0];
