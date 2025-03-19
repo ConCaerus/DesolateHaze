@@ -144,7 +144,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(cs == pMovementState.LadderClimbing || cs == pMovementState.RopeClimbing)
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             else if(cs == pMovementState.LedgeClimbing)
-                AnimationManager.I.CheckAnimation(savedInput, curState);
+                AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
             if(cs != pMovementState.Pushing && curPushing != null) {
                 curPushing = null;
             }
@@ -477,7 +477,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
             movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
-        AnimationManager.I.CheckAnimation(savedInput, curState);
+        AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
     }
     public void setNewState(pMovementState newState) {
         curState = newState;

@@ -6,6 +6,7 @@ public class AnimationManager : Singleton<AnimationManager>
 {
     [SerializeField] Animator animator;
     private string currentAnimation = "";
+    private bool isFalling = false;
 
     public GameObject playerRig;
     Collider[] ragdollColliders;
@@ -38,9 +39,13 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     //Checks for player's curState and other factors to identify current action and pass updates
-    public void CheckAnimation(Vector2 movement, PlayerMovement.pMovementState action)
+    public void CheckAnimation(Vector2 movement, PlayerMovement.pMovementState action, bool grounded)
     {
-        switch(action) {
+        if (grounded)
+            isFalling = false;
+        if (currentAnimation == "Landing")
+            return;
+        switch (action) {
             case PlayerMovement.pMovementState.LadderClimbing:
                 animator.speed = 1f;
                 if (Mathf.Abs(movement.y) == 0f)
@@ -84,8 +89,10 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.Falling:
                 animator.speed = 1f;
-                LongFall();
-                ChangeAnimation("Jump", 0.1f);
+                if (!isFalling)
+                    LongFall();
+                if (currentAnimation != "Falling")
+                    ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
                 animator.speed = 1f;
@@ -150,8 +157,9 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     IEnumerator LongFall() {
+        isFalling = true;
         yield return new WaitForSeconds(0.5f);
-        if (PlayerMovement.I.curState == PlayerMovement.pMovementState.Falling) {
+        if (currentAnimation == "Jump") {
             ChangeAnimation("Falling", 0.1f);
             WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
             yield return wait;
