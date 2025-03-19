@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,9 @@ public class InteractableInstance : MonoBehaviour {
     }
     public void startPlayerMovement() {
         PlayerMovement.I.canMove = true;
+    }
+    public void movePlayerHere() {
+        PlayerMovement.I.transform.DOMoveX(transform.position.x, .25f);
     }
     IEnumerator delay(UnityEvent e, float s) {
         yield return new WaitForEndOfFrame();

@@ -196,14 +196,16 @@ MonoBehaviour:
   canTakeFallDamage: 1
   closePushing: {fileID: 0}
   jumpLandSound:
-    title: 
-    poolCount: 0
-    clips: []
+    title: PlayerLandThud
+    poolCount: 2
+    clips:
+    - {fileID: 8300000, guid: 9aa630982a9e66e4da835edf659571ac, type: 3}
   initted: 0
   deathSound:
-    title: 
-    poolCount: 0
-    clips: []
+    title: PlayerDeathSound
+    poolCount: 1
+    clips:
+    - {fileID: 8300000, guid: bb9fdd30c5610fb43820eb5b6b6974e0, type: 3}
 --- !u!114 &2445624396566840757
 MonoBehaviour:
   m_ObjectHideFlags: 0
