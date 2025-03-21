@@ -211,7 +211,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     public bool initted = false;
-    bool isDead = false;
+    public bool isDead { get; private set; } = false;
     [SerializeField] AudioPoolInfo deathSound;
 
     [System.Serializable]
@@ -613,7 +613,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     void climbLedge(Collider col) {
         if(curState == pMovementState.LedgeClimbing) return;    //  already climbing
         if(Mathf.Abs(transform.position.y - lastGroundedY) < 1f) return;    //  barely off the ground
-        var offset = transform.position - col.gameObject.transform.position;
+        Vector2 offset = transform.position - col.gameObject.transform.position;
         if(curState == pMovementState.Falling && offset.y < 1.5f && offset.x < 0f == facingRight && savedInput.x != 0f) {
             var tallestChild = col.gameObject.transform.GetChild(0);
             foreach(var i in col.gameObject.transform.GetComponentsInChildren<Transform>()) {
@@ -633,7 +633,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 canMove = false;
                 rb.linearVelocity = Vector3.zero;
                 transform.DOKill();
-                transform.DOMove(tallestChild.position, 1f).OnComplete(() => {
+                transform.DOMove((Vector2)tallestChild.position, 1f).OnComplete(() => {
                     mainCol.isTrigger = false;
                     canMove = true;
                     rb.linearVelocity = Vector3.zero;

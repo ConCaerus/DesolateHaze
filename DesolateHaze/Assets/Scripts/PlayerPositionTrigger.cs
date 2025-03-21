@@ -57,6 +57,18 @@ public class PlayerPositionTrigger : MonoBehaviour {
             PlayerMovement.I.closePushing = null;
     }
 
+    
+    public void anchorCamera(float fov = 80) {
+        if(transform.childCount == 0) {
+            Debug.LogError("Create a child for the PlayerPositionTrigger that is anchoring the Camera that is in the anchored position.");
+            return;
+        }
+        CameraMovement.I.setAnchorPoint(transform.GetChild(0).position, fov);
+    }
+    public void unanchorCamera() {
+        CameraMovement.I.unAnchorPoint();
+    }
+
     public void setPlayerContaminated(bool b) {
         PlayerMovement.I.isContaminated = b;
     }
