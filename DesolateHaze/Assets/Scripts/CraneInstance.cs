@@ -26,7 +26,8 @@ public class CraneInstance : MonoBehaviour {
 
         button.transform.parent = transform.parent;
         rb.isKinematic = true;
-        kill.enabled = false;
+        if(kill != null)
+            kill.enabled = false;
     }
 
     private void Update() {
@@ -41,12 +42,14 @@ public class CraneInstance : MonoBehaviour {
     public void trigger() {
         active = true;
         rb.isKinematic = false;
-        kill.enabled = true;
+        if(kill != null)
+            kill.enabled = true;
     }
     public void detrigger() {
         active = false;
         rb.isKinematic = true;
-        kill.enabled = false;
+        if(kill != null)
+            kill.enabled = false;
     }
 
     void updateDir(Vector2 dir) {
