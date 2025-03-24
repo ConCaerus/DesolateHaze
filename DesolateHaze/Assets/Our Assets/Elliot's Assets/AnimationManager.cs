@@ -109,7 +109,6 @@ public class AnimationManager : Singleton<AnimationManager>
                 animator.speed = 1f;
                 if (currentAnimation == "Falling")
                 {
-                    ChangeAnimation("Landing", 0.1f);
                     StartCoroutine(WaitForAnim(currentAnimation, 1f));
                     break;
                 }
@@ -151,7 +150,6 @@ public class AnimationManager : Singleton<AnimationManager>
         */
     }
 
-    //Check if current animation is the desired animation, crossfade to desired animation
     public void ChangeAnimation(string animation, float crossfade) {
         if (currentAnimation != animation)
         {
@@ -190,7 +188,7 @@ public class AnimationManager : Singleton<AnimationManager>
 
     IEnumerator WaitForAnim(string Animation, float time)
     {
-        if (!PlayerMovement.I.canMove)
+        if (PlayerMovement.I.canMove)
             PlayerMovement.I.canMove = false;
         ChangeAnimation(Animation, 0.1f);
         yield return new WaitForSeconds(time);
