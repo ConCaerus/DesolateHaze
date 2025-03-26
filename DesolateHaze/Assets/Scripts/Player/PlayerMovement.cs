@@ -254,7 +254,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
     private void OnTriggerStay(Collider col) {
         //  ledge climbing
-        if(!grounded && curState == pMovementState.Falling && col.gameObject.tag == "Ledge") {
+        if(!grounded && col.gameObject.tag == "Ledge" && curState == pMovementState.Falling) {
             climbLedge(col);
         }
 

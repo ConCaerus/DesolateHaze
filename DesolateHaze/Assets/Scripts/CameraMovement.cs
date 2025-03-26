@@ -1,13 +1,16 @@
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraMovement : Singleton<CameraMovement> {
     [SerializeField] float speed;
     [SerializeField] float yOffset;
+    [SerializeField] float maxOffsetFromPlayer; //  used for dynamic offsets and lookat trans
 
     [HideInInspector] public bool canMove = true;
 
     Vector3 dynamicOffset = Vector3.zero;
+    [HideInInspector] public Transform lookAtTrans = null;
 
     bool isAnchored = false;
     Vector2 anchorPoint;
@@ -27,12 +30,23 @@ public class CameraMovement : Singleton<CameraMovement> {
 
     void followPlayer() {
         var target = PlayerMovement.I.getCamFollowPos() + Vector3.up * yOffset;
+        if(lookAtTrans != null) {
+            if(Vector2.Distance(PlayerMovement.I.transform.position, lookAtTrans.position) <= maxOffsetFromPlayer) {
+                target += lookAtTrans.position;
+                target /= 2f;
+            }
+        }
         target.z = transform.position.z;
         target += dynamicOffset;
         transform.position = Vector3.Lerp(transform.position, target, speed * Time.deltaTime);
     }
     void followAnchor() {
-        Vector3 target = anchorPoint + Vector2.up;
+        //  checks if too far away from player
+        if(Vector2.Distance(anchorPoint, PlayerMovement.I.transform.position) > maxOffsetFromPlayer) {
+            unAnchorPoint();
+            return;
+        }
+        Vector3 target = anchorPoint;
         target.z = transform.position.z;
         transform.position = Vector3.Lerp(transform.position, target, speed * .5f * Time.deltaTime);
     }

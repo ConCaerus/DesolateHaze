@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -57,7 +58,7 @@ public class PlayerPositionTrigger : MonoBehaviour {
             PlayerMovement.I.closePushing = null;
     }
 
-    
+    //  cam changers
     public void anchorCamera(float fov = 80) {
         if(transform.childCount == 0) {
             Debug.LogError("Create a child for the PlayerPositionTrigger that is anchoring the Camera that is in the anchored position.");
@@ -67,6 +68,12 @@ public class PlayerPositionTrigger : MonoBehaviour {
     }
     public void unanchorCamera() {
         CameraMovement.I.unAnchorPoint();
+    }
+    public void setCamLookingAt(Transform lookAt) {
+        CameraMovement.I.lookAtTrans = lookAt;
+    }
+    public void unsetCamLookat() {
+        CameraMovement.I.lookAtTrans = null;
     }
 
     public void setPlayerContaminated(bool b) {
