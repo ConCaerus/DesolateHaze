@@ -7,6 +7,8 @@ public class CameraMovement : Singleton<CameraMovement> {
 
     [HideInInspector] public bool canMove = true;
 
+    Vector3 dynamicOffset = Vector3.zero;
+
     bool isAnchored = false;
     Vector2 anchorPoint;
     float normFOV;
@@ -26,6 +28,7 @@ public class CameraMovement : Singleton<CameraMovement> {
     void followPlayer() {
         var target = PlayerMovement.I.getCamFollowPos() + Vector3.up * yOffset;
         target.z = transform.position.z;
+        target += dynamicOffset;
         transform.position = Vector3.Lerp(transform.position, target, speed * Time.deltaTime);
     }
     void followAnchor() {
@@ -50,5 +53,9 @@ public class CameraMovement : Singleton<CameraMovement> {
         isAnchored = false;
         anchorPoint = Vector3.zero;
         Camera.main.DOFieldOfView(normFOV, 1f);
+    }
+
+    public void setDynamicOffset(Vector3 o) {
+        dynamicOffset = o;
     }
 }
