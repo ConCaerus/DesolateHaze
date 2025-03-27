@@ -147,7 +147,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
             if(cs != pMovementState.Pushing && curPushing != null) {
                 curPushing = null;
+                rb.interpolation = RigidbodyInterpolation.None;
             }
+            else if(cs != pMovementState.Driving) rb.interpolation = RigidbodyInterpolation.Interpolate;
 
             if(cs != pMovementState.Walking) PlayerAudioManager.I.stopWalking();
             //  sets crawl height
@@ -325,8 +327,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(curState == pMovementState.Falling) return;
         if(curState == pMovementState.Driving && curDriving != null) {
             facingRight = true;
-            if(x != 0f)
-                curDriving.facingRight = x > 0;
         }
         if(curState == pMovementState.Pushing) {
             facingRight = curPushing.position.x >= transform.position.x;
@@ -438,7 +438,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     }
                     transform.position = curDriving.seatPos.position;
                     target.x = savedInput.x * curDriving.speed * 100f * Time.fixedDeltaTime;
-                    updateFaceDir();
+                    facePos(curDriving.facingRight ? 1f : -1f);
                     break;
 
                 case pMovementState.Crawling:

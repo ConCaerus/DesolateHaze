@@ -8,17 +8,8 @@ public class VehicleInstance : MonoBehaviour {
     [SerializeField] Transform rotTrans;
     public float speed;
     public Rigidbody rb;
-    [SerializeField] List<Collider> toggledCols = new List<Collider>();
     [SerializeField] LayerMask inUseExclude, inUseInclude;
-
-    bool fr = true;
-    public bool facingRight {
-        get { return fr; }
-        set {
-            fr = value;
-            rotTrans.rotation = Quaternion.Euler(0f, fr ? 0f : 180f, 0f);
-        }
-    }
+    public bool facingRight = true;
 
     public static System.Action runOnEnter = () => { }, runOnExit = () => { };
 
@@ -33,8 +24,13 @@ public class VehicleInstance : MonoBehaviour {
 
     public void playerEnter() {
         runOnEnter();
+        PlayerMovement.I.rb.isKinematic = true;
+        PlayerMovement.I.rb.linearVelocity = Vector3.zero;
+        PlayerMovement.I.rb.interpolation = RigidbodyInterpolation.None;
     }
     public void playerExit() {
         runOnExit();
+        PlayerMovement.I.rb.isKinematic = false;
+        PlayerMovement.I.rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 }
