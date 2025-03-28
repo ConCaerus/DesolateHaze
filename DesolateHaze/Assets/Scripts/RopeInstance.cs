@@ -9,6 +9,8 @@ public class RopeInstance : MonoBehaviour {
     [SerializeField] List<Rigidbody> segRbs = new List<Rigidbody>();
     [SerializeField] float maxLinMag, maxAngMag;
 
+    bool canHoldPlayer = true;
+
     Rigidbody prb;
     float movePerc;
     int curSegInd;
@@ -69,7 +71,7 @@ public class RopeInstance : MonoBehaviour {
     }
 
     public void holdPlayer(Rigidbody b) {
-        if(waiter != null) return;
+        if(waiter != null || !canHoldPlayer) return;
         //  sets can't collide with player
         foreach(var i in segRbs) {
             i.excludeLayers = LayerMask.GetMask(new string[] { "Player", "Rope", "GroundCollider" });
@@ -117,6 +119,9 @@ public class RopeInstance : MonoBehaviour {
     }
 
     public bool canHold() {
-        return waiter == null;
+        return waiter == null && canHoldPlayer;
+    }
+    public void setCanHoldPlayer(bool b) {
+        canHoldPlayer = b;
     }
 }

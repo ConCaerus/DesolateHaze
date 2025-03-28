@@ -93,7 +93,7 @@ public class AnimationManager : Singleton<AnimationManager>
                     ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
-                animator.speed = 1f;
+                //animator.speed = 1f;
                 if (currentAnimation == "Falling")
                 {
                     ChangeAnimation("Landing", 0.1f);

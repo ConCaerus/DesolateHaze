@@ -32,6 +32,7 @@ public class GiegerCounterPlayer : MonoBehaviour {
         var newDist = Vector3.Distance(close.position, pPos);
 
         foreach(var i in objs) {
+            if(i == null) continue;
             newDist = Vector3.Distance(i.position, pPos);
             if(newDist < Vector3.Distance(close.position, pPos)) {
                 close = i;

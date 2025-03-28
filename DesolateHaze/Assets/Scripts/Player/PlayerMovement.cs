@@ -18,6 +18,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     public Rigidbody rb;
     [SerializeField] Rigidbody pushingRb;
     [SerializeField] Transform spriteTrans;
+    [SerializeField] Animator anim;
+    [SerializeField] float animSpeedMod = 1f;
 
     Coroutine queuedJump = null;
     Coroutine coyoteTime = null;
@@ -53,6 +55,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), mainCol, false);
                 Physics.IgnoreCollision(cp.GetComponent<Collider>(), groundCol, false);
                 cp.TryGetComponent<ToppleableInstance>(out var tp);
+                cp.linearVelocity = Vector3.zero;
                 if(tp != null && tp.enabled) tp.stopTopple();
             }
             cp = value;
@@ -361,6 +364,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         curState = pMovementState.Crawling;
                         break;
                     }
+
+                    //  changes the anim speed
+                    anim.speed = savedInput.x != 0f ? Mathf.Abs(savedInput.x) * animSpeedMod * speed * speedMod : 1f;
 
                     target.x = savedInput.x * speed * speedMod * 100f * Time.fixedDeltaTime;
                     break;
