@@ -7,6 +7,7 @@ public class AnimationManager : Singleton<AnimationManager>
     [SerializeField] Animator animator;
     private string currentAnimation = "";
     public bool isFalling = false;
+    public bool oneSec = false;
 
     public GameObject playerRig;
     Collider[] ragdollColliders;
@@ -41,8 +42,8 @@ public class AnimationManager : Singleton<AnimationManager>
     //Checks for player's curState and other factors to identify current action and pass updates
     public void CheckAnimation(Vector2 movement, PlayerMovement.pMovementState action, bool grounded)
     {
-        if (grounded)
-            isFalling = false;
+        //if (grounded)
+        //    isFalling = false;
         switch (action) {
             case PlayerMovement.pMovementState.LadderClimbing:
                 animator.speed = 1f;
@@ -89,17 +90,17 @@ public class AnimationManager : Singleton<AnimationManager>
                 animator.speed = 1f;
                 if (!isFalling)
                     StartCoroutine(LongFall());
-                if (currentAnimation != "Falling")
-                    ChangeAnimation("Jump", 0.1f);
+                //if (currentAnimation != "Falling")
+                //   ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
                 //animator.speed = 1f;
-                if (currentAnimation == "Falling")
+                /*if (currentAnimation == "Falling")
                 {
                     ChangeAnimation("Landing", 0.1f);
                     StartCoroutine(WaitForAnim(currentAnimation, 1f));
                     break;
-                }
+                } */
                 if (Mathf.Abs(movement.x) == 0f)
                     ChangeAnimation("Idle", 0.1f);
                 else
@@ -167,22 +168,32 @@ public class AnimationManager : Singleton<AnimationManager>
 
     IEnumerator LongFall() {
         isFalling = true;
-        yield return new WaitForSeconds(1f);
-        Debug.Log("Check for Fall");
-        if (currentAnimation == "Jump") {
-            animator.speed = 1f;
-            ChangeAnimation("Falling", 0.1f);
-            Debug.Log("Falling!");
-     /*       WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
-            yield return wait;
-            if (!PlayerMovement.I.canMove)
-                PlayerMovement.I.canMove = false;
-            ChangeAnimation("Landing", 0.1f);
-            Debug.Log("Landing!");
-            yield return new WaitForSeconds(1f);
-            PlayerMovement.I.canMove = true;
-            PlayerMovement.I.resetMovement(); */
+        ChangeAnimation("Jump", 0.1f);
+        StartCoroutine(SecWaiter());
+        while (currentAnimation == "Jump")
+        {
+            if (oneSec)
+            {
+                ChangeAnimation("Falling", 0.1f);
+            }
         }
+        /*       WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
+               yield return wait;
+               if (!PlayerMovement.I.canMove)
+                   PlayerMovement.I.canMove = false;
+               ChangeAnimation("Landing", 0.1f);
+               Debug.Log("Landing!");
+               yield return new WaitForSeconds(1f);
+               PlayerMovement.I.canMove = true;
+               PlayerMovement.I.resetMovement(); */
+        isFalling = false;
+        yield break;
+    }
+
+    IEnumerator SecWaiter()
+    {
+        yield return new WaitForSeconds(1f);
+        oneSec = true;
         yield break;
     }
 
