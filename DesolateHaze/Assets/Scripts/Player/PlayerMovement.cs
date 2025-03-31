@@ -345,7 +345,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(rb.isKinematic && curState != pMovementState.Driving) return;
         Vector2 target = (true || canMove || !grounded) ? rb.linearVelocity : Vector3.zero;
         float accTarget = speedAccSpeed;
-
         if(canMove) {
             switch(curState) {
                 case pMovementState.None:   //  return to stand-still
@@ -469,7 +468,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     break;
             }
         }
-
         var movingRb = curState == pMovementState.Pushing ? curPushing : curState == pMovementState.Driving ? curDriving.rb : rb;
         //  does the thing
         //Debug.Log(curState.ToString() + " " + target);

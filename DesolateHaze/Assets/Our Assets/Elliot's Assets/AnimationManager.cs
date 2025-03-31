@@ -13,6 +13,8 @@ public class AnimationManager : Singleton<AnimationManager>
     Collider[] ragdollColliders;
     Rigidbody[] limbsRigidbodies;
 
+    Coroutine animWaiter = null, sWaiter = null, lWaiter = null;
+
     private void Start()
     {
         ChangeAnimation("Idle", 0.1f);
@@ -26,7 +28,7 @@ public class AnimationManager : Singleton<AnimationManager>
 
         if(state)
         {
-            GetComponent<Animator>().enabled = false;
+            animator.enabled = false;
         }
      
         foreach (Collider col in ragdollColliders)
@@ -44,6 +46,7 @@ public class AnimationManager : Singleton<AnimationManager>
     {
         //if (grounded)
         //    isFalling = false;
+
         switch (action) {
             case PlayerMovement.pMovementState.LadderClimbing:
                 animator.speed = 1f;
@@ -65,7 +68,8 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.LedgeClimbing:
                 animator.speed = 1f;
-                StartCoroutine(LedgeTime());
+                if(lWaiter == null)
+                    lWaiter = StartCoroutine(LedgeTime());
                 break;
             case PlayerMovement.pMovementState.Pushing:
                 animator.speed = 1f;
@@ -89,7 +93,7 @@ public class AnimationManager : Singleton<AnimationManager>
             case PlayerMovement.pMovementState.Falling:
                 animator.speed = 1f;
                 if (!isFalling)
-                    StartCoroutine(LongFall());
+                    LongFall();
                 //if (currentAnimation != "Falling")
                 //   ChangeAnimation("Jump", 0.1f);
                 break;
@@ -108,9 +112,9 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.None:
                 animator.speed = 1f;
-                if (currentAnimation == "Falling")
+                if (currentAnimation == "Falling" && animWaiter == null)
                 {
-                    StartCoroutine(WaitForAnim(currentAnimation, 1f));
+                    animWaiter = StartCoroutine(WaitForAnim(currentAnimation, 1f));
                     break;
                 }
                 ChangeAnimation("Idle", 0.1f);
@@ -163,18 +167,20 @@ public class AnimationManager : Singleton<AnimationManager>
         ChangeAnimation("Ledge_Climbing", 0.1f);
         yield return new WaitForSeconds(1);
         PlayerMovement.I.resetMovement();
-        yield break;
+        lWaiter = null;
     }
 
     IEnumerator LongFall() {
         isFalling = true;
         ChangeAnimation("Jump", 0.1f);
-        StartCoroutine(SecWaiter());
+        if(sWaiter == null)
+            sWaiter = StartCoroutine(SecWaiter());
         while (currentAnimation == "Jump")
         {
             if (oneSec)
             {
                 ChangeAnimation("Falling", 0.1f);
+                yield return new WaitForEndOfFrame();
             }
         }
         /*       WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
@@ -187,14 +193,13 @@ public class AnimationManager : Singleton<AnimationManager>
                PlayerMovement.I.canMove = true;
                PlayerMovement.I.resetMovement(); */
         isFalling = false;
-        yield break;
     }
 
     IEnumerator SecWaiter()
     {
         yield return new WaitForSeconds(1f);
         oneSec = true;
-        yield break;
+        sWaiter = null;
     }
 
     IEnumerator WaitForAnim(string Animation, float time)
@@ -204,6 +209,6 @@ public class AnimationManager : Singleton<AnimationManager>
         ChangeAnimation(Animation, 0.1f);
         yield return new WaitForSeconds(time);
         PlayerMovement.I.canMove = true;
-        yield break;
+        animWaiter = null;
     }
 }
