@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimationManager : Singleton<AnimationManager>
@@ -44,8 +45,8 @@ public class AnimationManager : Singleton<AnimationManager>
     //Checks for player's curState and other factors to identify current action and pass updates
     public void CheckAnimation(Vector2 movement, PlayerMovement.pMovementState action, bool grounded)
     {
-        //if (grounded)
-        //    isFalling = false;
+        if (grounded)
+            isFalling = false;
 
         switch (action) {
             case PlayerMovement.pMovementState.LadderClimbing:
@@ -92,10 +93,9 @@ public class AnimationManager : Singleton<AnimationManager>
                 break;
             case PlayerMovement.pMovementState.Falling:
                 animator.speed = 1f;
+                ChangeAnimation("Jump", 0.1f);
                 if (!isFalling)
                     LongFall();
-                //if (currentAnimation != "Falling")
-                //   ChangeAnimation("Jump", 0.1f);
                 break;
             case PlayerMovement.pMovementState.Walking:
                 //animator.speed = 1f;
@@ -172,34 +172,17 @@ public class AnimationManager : Singleton<AnimationManager>
 
     IEnumerator LongFall() {
         isFalling = true;
-        ChangeAnimation("Jump", 0.1f);
-        if(sWaiter == null)
-            sWaiter = StartCoroutine(SecWaiter());
-        while (currentAnimation == "Jump")
-        {
-            if (oneSec)
-            {
-                ChangeAnimation("Falling", 0.1f);
-                yield return new WaitForEndOfFrame();
-            }
+        var startTime = Time.time;
+        var duration = 1f;
+        while(duration > 0f) {
+            yield return new WaitForEndOfFrame();
+            duration -= Time.time - startTime;
+            startTime = Time.time;
+            if (!isFalling)
+                break;
         }
-        /*       WaitUntil wait = new WaitUntil(() => PlayerMovement.I.curState != PlayerMovement.pMovementState.Falling);
-               yield return wait;
-               if (!PlayerMovement.I.canMove)
-                   PlayerMovement.I.canMove = false;
-               ChangeAnimation("Landing", 0.1f);
-               Debug.Log("Landing!");
-               yield return new WaitForSeconds(1f);
-               PlayerMovement.I.canMove = true;
-               PlayerMovement.I.resetMovement(); */
-        isFalling = false;
-    }
-
-    IEnumerator SecWaiter()
-    {
-        yield return new WaitForSeconds(1f);
-        oneSec = true;
-        sWaiter = null;
+        if (isFalling)
+            ChangeAnimation("Falling", 0.1f);
     }
 
     IEnumerator WaitForAnim(string Animation, float time)

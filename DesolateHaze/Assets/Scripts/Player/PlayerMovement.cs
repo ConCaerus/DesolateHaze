@@ -180,29 +180,34 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(!initted) return;
             g = value;
             rb.angularDamping = g ? .05f : 0f;
-            if(g) {
+            if (g)
+            {
                 //  checks for fall damage
-                if(canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist) {
+                if (canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist)
+                {
                     beKilled();
                     TransitionCanvas.I.loadGameAfterDeath(2f);
                 }
 
                 //  ends coyote time
-                if(coyoteTime != null)
+                if (coyoteTime != null)
                     StopCoroutine(coyoteTime);
                 coyoteTime = null;
 
                 //  ends jump canceler
-                if(jumpCanceler != null)
+                if (jumpCanceler != null)
                     StopCoroutine(jumpCanceler);
                 jumpCanceler = null;
 
                 //  jumps if jumps
-                if(jumpHeld)
+                if (jumpHeld)
                     doJump();
             }
             else
+            {
+                //checkFall(lastGroundedY - transform.position.y);
                 lastGroundedY = transform.position.y;
+            }
 
             //  sets cur state
             if(curState != pMovementState.LadderClimbing && curState != pMovementState.RopeClimbing)
@@ -718,4 +723,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         }
         return "Idle";
     }
+    /*
+    public void checkFall(float fall) {
+        if (fall > 15 && !isDead)
+        {
+            AnimationManager.I.ChangeAnimation("Landing", .1f);
+
+        }
+    } */
 }
