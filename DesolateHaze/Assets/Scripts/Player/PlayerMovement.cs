@@ -180,31 +180,28 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(!initted) return;
             g = value;
             rb.angularDamping = g ? .05f : 0f;
-            if (g)
-            {
+            if(g) {
                 //  checks for fall damage
-                if (canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist)
-                {
+                if(canTakeFallDamage && lastGroundedY - transform.position.y >= jumpDeathDist) {
                     beKilled();
                     TransitionCanvas.I.loadGameAfterDeath(2f);
                 }
 
                 //  ends coyote time
-                if (coyoteTime != null)
+                if(coyoteTime != null)
                     StopCoroutine(coyoteTime);
                 coyoteTime = null;
 
                 //  ends jump canceler
-                if (jumpCanceler != null)
+                if(jumpCanceler != null)
                     StopCoroutine(jumpCanceler);
                 jumpCanceler = null;
 
                 //  jumps if jumps
-                if (jumpHeld)
+                if(jumpHeld)
                     doJump();
             }
-            else
-            {
+            else {
                 //checkFall(lastGroundedY - transform.position.y);
                 lastGroundedY = transform.position.y;
             }
@@ -316,7 +313,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(!canMove || PauseCanvas.I.paused) return;
         if(Mathf.Abs(dir.y) < .15f) dir.y = 0f;
         if(Mathf.Abs(dir.x) < .15f) dir.x = 0f;
-        dir.Normalize();
         savedInput = dir;
         if(Mathf.Abs(savedInput.x) > 0f)
             PlayerAudioManager.I.startWalking(.5f);
@@ -364,7 +360,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         break;
                     }
                     //  checks if crawling
-                    if(savedInput.y < -.25f) {
+                    if(savedInput.y < -.5f) {
                         curState = pMovementState.Crawling;
                         break;
                     }
