@@ -39,6 +39,10 @@ public class TransitionCanvas : Singleton<TransitionCanvas> {
         if(waiter != null) return;
         waiter = StartCoroutine(loader("MainMenu"));
     }
+    public void loadDemoEnd() {
+        if(waiter != null) return;
+        waiter = StartCoroutine(loader("DemoEnd"));
+    }
 
     public void loadGameAfterDeath(float time) {
         Invoke("loadGame", time);

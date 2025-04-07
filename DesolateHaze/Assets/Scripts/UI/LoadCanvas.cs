@@ -8,6 +8,7 @@ public class LoadCanvas : Singleton<LoadCanvas> {
     [SerializeField] Transform holder;
     [SerializeField] TextMeshProUGUI aText, titleText;
     [SerializeField] Transform background;
+    [SerializeField] bool demo = false;
 
     List<Transform> loaders = new List<Transform>();
 
@@ -22,6 +23,7 @@ public class LoadCanvas : Singleton<LoadCanvas> {
     void spawnLoaders() {
         destroyLoaders();
         for(int i = 0; i < Saver.getAreaCount(); i++) {
+            if(i > 0 && demo) break;
             //  no save data for area, so create a default one
             if(Saver.getCheckpointCount((Saver.areaType)i + 1) == 0) {
                 var temp = Instantiate(loaderPref, holder);

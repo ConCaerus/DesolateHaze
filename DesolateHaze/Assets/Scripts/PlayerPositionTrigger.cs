@@ -46,6 +46,9 @@ public class PlayerPositionTrigger : MonoBehaviour {
     public void loadNextArea() {
         TransitionCanvas.I.loadNextArea(CheckpointManager.I.aType);
     }
+    public void loadDemoEnd() {
+        TransitionCanvas.I.loadDemoEnd();
+    }
     public void killPlayer(float waitTime) {
         PlayerMovement.I.beKilled();
         TransitionCanvas.I.loadGameAfterDeath(waitTime);
