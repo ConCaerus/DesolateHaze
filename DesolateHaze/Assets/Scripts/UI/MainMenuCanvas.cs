@@ -12,7 +12,6 @@ public class MainMenuCanvas : MonoBehaviour {
         ControlSchemeManager.runOnChange += (keyb) => { selectOnStart.Select(); };
 
         var ind = (int)Saver.getCurArea();
-        Debug.Log(Saver.getCurArea().ToString() + " " + ind);
         for(int i = 0; i < backgrounds.Count; i++) 
             backgrounds[i].SetActive(i == ind);
     }
