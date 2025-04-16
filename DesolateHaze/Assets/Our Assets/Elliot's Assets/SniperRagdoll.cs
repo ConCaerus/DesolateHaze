@@ -8,7 +8,7 @@ public class SniperRagdoll : MonoBehaviour
 
     private void Start()
     {
-        RagdollMode(false);
+        RagdollMode(true);
     }
 
     public void RagdollMode(bool state)
