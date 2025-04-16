@@ -10553,10 +10553,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3071299292358668041, guid: fdb4c7ff2a2f8354a87560703ee2ad8d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 28.683228
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13665,7 +13661,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   yOffset: 6
+  maxOffsetFromPlayer: 30
   canMove: 1
+  dynamicOffset: {x: 0, y: 0, z: 0}
+  lookAtTrans: {fileID: 0}
 --- !u!1 &1914154566
 GameObject:
   m_ObjectHideFlags: 0

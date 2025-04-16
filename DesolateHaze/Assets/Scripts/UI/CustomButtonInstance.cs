@@ -40,14 +40,14 @@ public class CustomButtonInstance : Button {
         if(!gameObject.activeInHierarchy) return;
         if(cbi.playSound) ButtonSoundPlayer.I.playButtonSound();  //  sound
         //if(cbi.showEffect) UIIconCanvas.I.show(transform); //  show effect
-        ConTween.stopTransTween(transform);
+        ConTween.kill(transform);
         ConTween.tweenScale(transform, cbi.hoverSize, new CTweenInfo(.15f, false));
 
         cbi.hoverEvents.Invoke();
     }
     void dehover() {
         //if(cbi.showEffect) UIIconCanvas.I.hide();  //  hide effect
-        ConTween.stopTransTween(transform);
+        ConTween.kill(transform);
         ConTween.tweenScale(transform, cbi.normalSize, new CTweenInfo(.25f, false));
 
         cbi.dehoverEvents.Invoke();
@@ -55,7 +55,7 @@ public class CustomButtonInstance : Button {
     void click() {
         if(cbi.playSound) ButtonSoundPlayer.I.playClickSound();   //  sound
         //if(cbi.showEffect) UIIconCanvas.I.hardHide();
-        ConTween.stopTransTween(transform);
+        ConTween.kill(transform);
         ConTween.tweenScale(transform, cbi.normalSize, new CTweenInfo(.25f, false));
 
         cbi.clickEvents.Invoke();

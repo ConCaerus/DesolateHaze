@@ -22,7 +22,7 @@ public static class ConTween {
 
     public static void init() {
         if(instance == null)
-            instance = new GameObject("ConTweenManager").AddComponent<ConTweenInstance>();
+            instance = new GameObject("ConTweenManager").AddComponent<ConTweenHandler>();
         initted = true;
     }
     public static void reset() {
@@ -64,6 +64,8 @@ public static class ConTween {
     }
 
     #region BASICS
+    //  NOTE: customTasks does not work with this
+    //          - update and complete tasks get overridden to use actual perc instead of relevant float
     public static CTweenInstance tweenFloat(float from, float to, CTweenInfo info) {
         if(!initted || instance == null) init();
         var t = new CTweenInstance();
@@ -115,7 +117,7 @@ public static class ConTween {
         }
         return t;
     }
-    public static void stopTransTween(Transform t) {
+    public static void kill(Transform t) {
         var id = t.GetInstanceID();
         if(!assignedTweens.ContainsKey(id)) return;
         foreach(var i in assignedTweens[id]) i.stop();
@@ -150,17 +152,17 @@ public static class ConTween {
     public static CTweenInstance tweenPos(Transform obj, Vector3 endPos, CTweenInfo info) {
         var startP = obj.position;
         return genericTween(info, (perc) => {
-            obj.position = startP + (endPos - startP) * perc;
+            if(obj != null) obj.position = startP + (endPos - startP) * perc;
         }, (perc) => {
-            obj.position = startP + (endPos - startP) * perc;
+            if(obj != null) obj.position = startP + (endPos - startP) * perc;
         }, obj);
     }
     public static CTweenInstance tweenLocalPos(Transform obj, Vector3 endPos, CTweenInfo info) {
         var startP = obj.localPosition;
         return genericTween(info, (perc) => {
-            obj.localPosition = startP + (endPos - startP) * perc;
+            if(obj != null) obj.localPosition = startP + (endPos - startP) * perc;
         }, (perc) => {
-            obj.localPosition = startP + (endPos - startP) * perc;
+            if(obj != null) obj.localPosition = startP + (endPos - startP) * perc;
         }, obj);
     }
     #endregion
@@ -169,9 +171,9 @@ public static class ConTween {
     public static CTweenInstance tweenScale(Transform obj, Vector3 endScale, CTweenInfo info) {
         var startS = obj.localScale;
         return genericTween(info, (perc) => {
-            obj.localScale = startS + (endScale - startS) * perc;
+            if(obj != null) obj.localScale = startS + (endScale - startS) * perc;
         }, (perc) => {
-            obj.localScale = startS + (endScale - startS) * perc;
+            if(obj != null) obj.localScale = startS + (endScale - startS) * perc;
         }, obj);
     }
     public static CTweenInstance tweenScale(Transform obj, float endScale, CTweenInfo info) {
@@ -182,10 +184,14 @@ public static class ConTween {
     #region ROTATION
     public static CTweenInstance tweenRotation(Transform obj, Vector3 endRot, CTweenInfo info) {
         var startR = obj.localEulerAngles;
+
+        //  checks for best rot direction 
+        if(Mathf.Abs(startR.z - endRot.z) > Mathf.Abs((startR.z - 360f) - endRot.z)) startR.z -= 360f;
+
         return genericTween(info, (perc) => {
-            obj.localEulerAngles = startR + (endRot - startR) * perc;
+            if(obj != null) obj.localEulerAngles = startR + (endRot - startR) * perc;
         }, (perc) => {
-            obj.localEulerAngles = startR + (endRot - startR) * perc;
+            if(obj != null) obj.localEulerAngles = startR + (endRot - startR) * perc;
         }, obj);
     }
     public static CTweenInstance tweenRotation(Transform obj, float endRot, CTweenInfo info) {
@@ -299,7 +305,7 @@ public class CTweenInfo {
 }
 
 //  Monobehaviour instance that is used to handle all tween coroutines
-public class ConTweenInstance : MonoBehaviour {
+public class ConTweenHandler : MonoBehaviour {
     private void OnDisable() {
         ConTween.reset();
     }

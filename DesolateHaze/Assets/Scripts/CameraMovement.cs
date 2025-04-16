@@ -9,7 +9,7 @@ public class CameraMovement : Singleton<CameraMovement> {
 
     [HideInInspector] public bool canMove = true;
 
-    Vector3 dynamicOffset = Vector3.zero;
+    [HideInInspector] public Vector3 dynamicOffset = Vector3.zero;
     [HideInInspector] public Transform lookAtTrans = null;
 
     bool isAnchored = false;
@@ -67,9 +67,5 @@ public class CameraMovement : Singleton<CameraMovement> {
         isAnchored = false;
         anchorPoint = Vector3.zero;
         Camera.main.DOFieldOfView(normFOV, 1f);
-    }
-
-    public void setDynamicOffset(Vector3 o) {
-        dynamicOffset = o;
     }
 }

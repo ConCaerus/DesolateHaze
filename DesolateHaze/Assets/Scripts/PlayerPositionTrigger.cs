@@ -78,6 +78,18 @@ public class PlayerPositionTrigger : MonoBehaviour {
     public void unsetCamLookat() {
         CameraMovement.I.lookAtTrans = null;
     }
+    public void setCamDynamicOffsetX(float off) {
+        CameraMovement.I.dynamicOffset.x = off;
+    }
+    public void setCamDynamicOffsetY(float off) {
+        CameraMovement.I.dynamicOffset.y = off;
+    }
+    public void setCamDynamicOffsetZ(float off) {
+        CameraMovement.I.dynamicOffset.z = off;
+    }
+    public void resetCamDynamicOffset() {
+        CameraMovement.I.dynamicOffset = Vector3.zero;
+    }
 
     public void setPlayerContaminated(bool b) {
         PlayerMovement.I.isContaminated = b;
