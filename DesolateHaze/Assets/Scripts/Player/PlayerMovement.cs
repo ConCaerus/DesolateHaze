@@ -631,6 +631,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
             //  checks if facing end pos
             var xOffset = tallestChild.position.x - transform.position.x;
+            bool lastG = grounded;
             if((xOffset < 0f && savedInput.x < 0f) || (xOffset > 0f && savedInput.x > 0f)) {
                 curState = pMovementState.LedgeClimbing;
                 rb.isKinematic = true;
@@ -639,6 +640,17 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = Vector3.zero;
                 transform.DOKill();
                 transform.DOMove((Vector2)tallestChild.position, 1f).OnComplete(() => {
+                    mainCol.isTrigger = false;
+                    canMove = true;
+                    rb.linearVelocity = Vector3.zero;
+                    curState = grounded ? pMovementState.Walking : pMovementState.Falling;
+                    rb.isKinematic = false;
+                }).OnUpdate(() => {
+                    if(lastG != grounded) {
+                        lastG = grounded;
+                        if(!grounded) transform.DOKill();
+                    }
+                }).OnKill(() => {
                     mainCol.isTrigger = false;
                     canMove = true;
                     rb.linearVelocity = Vector3.zero;
