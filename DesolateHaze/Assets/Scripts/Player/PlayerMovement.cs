@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -65,6 +66,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 cp.TryGetComponent<ToppleableInstance>(out var tp);
                 if(tp != null && tp.enabled) tp.startTopple();
             }
+            //rb.interpolation = cp == null ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
             if(cp == null && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
@@ -199,11 +201,15 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
                 //  jumps if jumps
                 if(jumpHeld)
-                    doJump();
+                    jump();
             }
             else {
                 //checkFall(lastGroundedY - transform.position.y);
                 lastGroundedY = transform.position.y;
+
+                //  starts coyote time
+                if(coyoteTime != null) StopCoroutine(coyoteTime);
+                coyoteTime = StartCoroutine(coyoteWaiter());
             }
 
             //  sets cur state
@@ -229,21 +235,22 @@ public class PlayerMovement : Singleton<PlayerMovement> {
 
     #region COLLISIONS
     private void OnCollisionEnter(Collision col) {
+        //  ropes
+        if(curState != pMovementState.RopeClimbing && col.gameObject.tag == "Rope" && col.transform.parent.TryGetComponent<RopeInstance>(out var ri) && ri.canHold()) {
+            if(!grounded) {
+                rb.linearVelocity = Vector3.zero;
+                curState = pMovementState.RopeClimbing;
+                heldRope = ri;
+            }
+        }
+    }
+    private void OnCollisionStay(Collision col) {
         //  pushables / boxes
         if(col.gameObject.tag == "Box") {
             if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
                 curPushing = colRb;
                 pushOffset = curPushing.transform.position - transform.position;
                 facePos(col.gameObject.transform.position.x);
-            }
-        }
-
-        //  ropes
-        else if(curState != pMovementState.RopeClimbing && col.gameObject.tag == "Rope" && col.transform.parent.TryGetComponent<RopeInstance>(out var ri) && ri.canHold()) {
-            if(!grounded) {
-                rb.linearVelocity = Vector3.zero;
-                curState = pMovementState.RopeClimbing;
-                heldRope = ri;
             }
         }
     }
@@ -378,8 +385,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     }
                     //  checks if moving away while not holding push button
                     if(controls.Player.Interact.ReadValue<float>() == 0f && ((savedInput.x > 0f) != (pushOffset.x > 0f))) {
-                        curState = grounded ? pMovementState.Walking : pMovementState.Falling;
-                        return;
+                        break;
                     }
                     //  checks if pushing obj too far away
                     Vector2 pOffset = curPushing.transform.position - transform.position;
@@ -393,8 +399,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                         facePos(curPushing.position.x);
                     else if(curPushing.position.x > transform.position.x && facingRight)
                         facePos(curPushing.position.x);
-                    var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
-                    transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.deltaTime);
                     break;
 
                 case pMovementState.Falling:
@@ -482,6 +486,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
             movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
+        if(curState == pMovementState.Pushing) {
+            if(!(controls.Player.Interact.ReadValue<float>() == 0f && ((savedInput.x > 0f) != (pushOffset.x > 0f)))) {    //  not moving away from box
+                var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
+                transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.deltaTime);
+            }
+        }
         AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
     }
     public void setNewState(pMovementState newState) {
@@ -531,7 +541,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             doJump(1f, 5f);
 
         //  checks if coyote time applies
-        else if(coyoteTime != null) {
+        else if(coyoteTime != null && rb.linearVelocity.y <= 0f) {
             StopCoroutine(coyoteTime);
             coyoteTime = null;
             doJump();
@@ -566,6 +576,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(jumpCanceler != null)
             StopCoroutine(jumpCanceler);
         jumpCanceler = null;
+        if(coyoteTime != null)
+            StopCoroutine(coyoteTime);
+        coyoteTime = null;
     }
 
     //  coroutines
@@ -674,9 +687,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(((curState != pMovementState.Pushing && curState != pMovementState.Driving) || controls.Player.Interact.ReadValue<float>() == 0f) && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Box") && gameObject.activeInHierarchy) {
             grounded = false;
             usedGround = null;
-
-            //  start coyote time
-            coyoteTime = StartCoroutine(coyoteWaiter());
         }
     }
     public void setFalling() {
