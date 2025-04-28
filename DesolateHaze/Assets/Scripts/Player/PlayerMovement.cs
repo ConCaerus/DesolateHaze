@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class PlayerMovement : Singleton<PlayerMovement> {
     #region GLOBALS
@@ -66,7 +65,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 cp.TryGetComponent<ToppleableInstance>(out var tp);
                 if(tp != null && tp.enabled) tp.startTopple();
             }
-            //rb.interpolation = cp == null ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
             if(cp == null && curState == pMovementState.Pushing) curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             else if(cp != null && curState != pMovementState.Pushing) curState = pMovementState.Pushing;
         }
@@ -138,9 +136,6 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 lastGroundedY = transform.position.y;
                 spriteTrans.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             }
-            else if(cs != pMovementState.LadderClimbing) {
-                //spriteTrans.transform.rotation = Quaternion.Euler(0f, facingRight ? 0f : 180f, 0f);
-            }
 
             cs = value;
 
@@ -150,11 +145,8 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f);
             else if(cs == pMovementState.LedgeClimbing)
                 AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
-            if(cs != pMovementState.Pushing && curPushing != null) {
+            if(cs != pMovementState.Pushing && curPushing != null) 
                 curPushing = null;
-                rb.interpolation = RigidbodyInterpolation.None;
-            }
-            else if(cs != pMovementState.Driving) rb.interpolation = RigidbodyInterpolation.Interpolate;
 
             if(cs != pMovementState.Walking) PlayerAudioManager.I.stopWalking();
             //  sets crawl height
@@ -250,7 +242,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             if(grounded && usedGround != col.collider && col.gameObject.TryGetComponent<Rigidbody>(out var colRb) && colRb != curPushing) {
                 curPushing = colRb;
                 pushOffset = curPushing.transform.position - transform.position;
-                facePos(col.gameObject.transform.position.x);
+                if(controls.Player.Interact.ReadValue<float>() != 0f || (savedInput.x != 0f && (savedInput.x > 0f) == (pushOffset.x > 0f))) {
+                    facePos(col.gameObject.transform.position.x);
+                }
+                else curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             }
         }
     }
@@ -487,9 +482,12 @@ public class PlayerMovement : Singleton<PlayerMovement> {
             movingRb.linearVelocity = new Vector2(Mathf.Clamp(temp.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(temp.y, iv.y - maxVelocity, iv.y + maxVelocity));
         }
         if(curState == pMovementState.Pushing) {
-            if(!(controls.Player.Interact.ReadValue<float>() == 0f && ((savedInput.x > 0f) != (pushOffset.x > 0f)))) {    //  not moving away from box
+            if(controls.Player.Interact.ReadValue<float>() != 0f || ((savedInput.x > 0f) == (pushOffset.x > 0f))) {    //  trying to push box
                 var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
                 transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.deltaTime);
+            }
+            else {
+                curState = grounded ? pMovementState.Walking : pMovementState.Falling;
             }
         }
         AnimationManager.I.CheckAnimation(savedInput, curState, grounded);
