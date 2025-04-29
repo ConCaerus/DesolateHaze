@@ -317,7 +317,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(Mathf.Abs(dir.x) < .15f) dir.x = 0f;
         savedInput = dir;
         if(Mathf.Abs(savedInput.x) > 0f)
-            PlayerAudioManager.I.startWalking(.5f);
+            PlayerAudioManager.I.startWalking(.25f);
         else PlayerAudioManager.I.stopWalking();
         updateFaceDir();
     }

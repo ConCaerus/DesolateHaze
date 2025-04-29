@@ -247,13 +247,17 @@ MonoBehaviour:
       title: ConcreteWalkSounds
       poolCount: 5
       clips:
-      - {fileID: 8300000, guid: 80524b64256da6748af5e6323557831d, type: 3}
+      - {fileID: 8300000, guid: fe5a9754eeaa8a744a933892af0aa656, type: 3}
+      - {fileID: 8300000, guid: d44cdee453246cd4d9d73cef90826dcc, type: 3}
+      - {fileID: 8300000, guid: 5a0d9c7ae9076d2459184a757b45626d, type: 3}
     type: 2
   - sound:
       title: TileWalkSounds
       poolCount: 5
       clips:
-      - {fileID: 8300000, guid: 842e2364d5db17f4c854777cab36d6f2, type: 3}
+      - {fileID: 8300000, guid: fe5a9754eeaa8a744a933892af0aa656, type: 3}
+      - {fileID: 8300000, guid: d44cdee453246cd4d9d73cef90826dcc, type: 3}
+      - {fileID: 8300000, guid: 5a0d9c7ae9076d2459184a757b45626d, type: 3}
     type: 3
 --- !u!114 &4639373247820944572
 MonoBehaviour:
@@ -1486,6 +1490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 4311710108215251692}
   isFalling: 0
+  oneSec: 0
   playerRig: {fileID: 7135706661819501957}
 --- !u!1 &7186403311162719084 stripped
 GameObject:
