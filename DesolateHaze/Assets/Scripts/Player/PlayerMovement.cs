@@ -447,6 +447,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     }
                     transform.position = curDriving.seatPos.position;
                     target.x = savedInput.x * curDriving.speed * 100f * Time.fixedDeltaTime;
+                    target.y = curDriving.rb.linearVelocity.y;
                     facePos(curDriving.facingRight ? 1f : -1f);
                     break;
 
@@ -488,7 +489,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(curState == pMovementState.Pushing) {
             if(controls.Player.Interact.ReadValue<float>() != 0f || ((savedInput.x > 0f) == (pushOffset.x > 0f))) {    //  trying to push box
                 var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
-                transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.fixedDeltaTime);
             }
             else {
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
@@ -729,19 +730,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
     }
 
     public string checkDirection() {
-        if(facingRight) {
-            if(savedInput.x > 0)
-                return "Push";
-            else
-                return "Pull";
-        }
-        if(!facingRight) {
-            if(savedInput.x < 0)
-                return "Pull";
-            else
-                return "Push";
-        }
-        return "Idle";
+        return (savedInput.x > 0f) == (curPushing.transform.position.x > transform.position.x) ? "Push" : "Pull";
     }
     /*
     public void checkFall(float fall) {
