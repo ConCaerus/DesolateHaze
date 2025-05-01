@@ -321,6 +321,10 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         else PlayerAudioManager.I.stopWalking();
         updateFaceDir();
     }
+    public void resetSavedInput() {
+        savedInput = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+    }
     void updateFaceDir() {
         facePos(savedInput.x);
     }

@@ -60,6 +60,9 @@ public class InteractableInstance : MonoBehaviour {
         PlayerMovement.I.canMove = true;
     }
     public void movePlayerHere() {
+        PlayerMovement.I.canMove = false;
+        PlayerMovement.I.resetSavedInput();
+        PlayerMovement.I.transform.DOKill();
         PlayerMovement.I.transform.DOMoveX(transform.position.x, .25f);
     }
     IEnumerator delay(UnityEvent e, float s) {
