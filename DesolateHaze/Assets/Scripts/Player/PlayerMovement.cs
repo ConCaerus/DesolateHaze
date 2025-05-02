@@ -489,7 +489,13 @@ public class PlayerMovement : Singleton<PlayerMovement> {
         if(curState == pMovementState.Pushing) {
             if(controls.Player.Interact.ReadValue<float>() != 0f || ((savedInput.x > 0f) == (pushOffset.x > 0f))) {    //  trying to push box
                 var pTarget = new Vector3(curPushing.transform.position.x - pushOffset.x, transform.position.y, 0f);
-                transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.fixedDeltaTime);
+                //transform.position = Vector3.Lerp(transform.position, pTarget, speed * 100f * Time.fixedDeltaTime);
+
+                var iv = inheritRb == null ? Vector2.zero : (Vector2)inheritRb.linearVelocity;
+                var followVel = rb.linearVelocity;
+                followVel.x = (curPushing.transform.position.x - pushOffset.x) - transform.position.x;
+                followVel.x = Mathf.Pow(followVel.x + (followVel.x > 0f ? 1f : -1f), 21f);
+                rb.linearVelocity = new Vector2(Mathf.Clamp(followVel.x, iv.x - maxVelocity, iv.x + maxVelocity), Mathf.Clamp(followVel.y, iv.y - maxVelocity, iv.y + maxVelocity));
             }
             else {
                 curState = grounded ? pMovementState.Walking : pMovementState.Falling;
