@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CraneInstance : MonoBehaviour {
     [SerializeField] Transform body;
@@ -11,6 +12,10 @@ public class CraneInstance : MonoBehaviour {
     [SerializeField] Transform rotPoint;
     [SerializeField] float rotSpeed;
     [SerializeField] BoxCollider kill;
+
+    [SerializeField] bool hasLowerEvent = false;
+    [SerializeField] float lowerEventY;
+    [SerializeField] UnityEvent lowerEvent;
 
     bool active = false;
 
@@ -33,6 +38,7 @@ public class CraneInstance : MonoBehaviour {
     private void Update() {
         if(active || rb.linearVelocity.magnitude > 0f)
             move();
+        if(hasLowerEvent) checkForLowerEvent();
     }
 
     private void OnDisable() {
@@ -51,6 +57,9 @@ public class CraneInstance : MonoBehaviour {
         if(kill != null)
             kill.enabled = false;
     }
+    public void uninteract() {
+        PlayerInteraction.I.setCurInteractable(null);
+    }
 
     void updateDir(Vector2 dir) {
         if(active)
@@ -64,6 +73,13 @@ public class CraneInstance : MonoBehaviour {
         if(rotationalMovement) {
             var rotTarget = Vector3.forward * savedDir.x * rotSpeed * 10f * Time.deltaTime;
             rotPoint.localEulerAngles += rotTarget;
+        }
+    }
+
+    void checkForLowerEvent() {
+        if(rb.transform.localPosition.z <= lowerEventY) {
+            hasLowerEvent = false;
+            lowerEvent.Invoke();
         }
     }
 }

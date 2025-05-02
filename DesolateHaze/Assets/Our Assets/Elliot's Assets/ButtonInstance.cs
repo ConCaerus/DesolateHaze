@@ -1,29 +1,25 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ButtonInstance : MonoBehaviour
-{
+public class ButtonInstance : MonoBehaviour {
     [SerializeField] Vector3 offset;
+    [SerializeField] Transform buttonPart;
     Vector3 startPos;
     bool on;
 
-    void Start()
-    {
-        startPos = transform.position;
+    void Start() {
+        startPos = buttonPart.localPosition;
         on = false;
     }
-    public void ButtonDepressed(float dur)
-    {
-        if (!on)
-        {
-            transform.DOKill();
-            transform.DOMove(startPos + offset, dur);
+    public void ButtonDepressed(float dur) {
+        if(!on) {
+            buttonPart.DOKill();
+            buttonPart.DOLocalMove(startPos + offset, dur);
             on = true;
         }
-        else
-        {
-            transform.DOKill();
-            transform.DOMove(startPos, dur);
+        else {
+            buttonPart.DOKill();
+            buttonPart.DOLocalMove(startPos, dur);
             on = false;
         }
     }
