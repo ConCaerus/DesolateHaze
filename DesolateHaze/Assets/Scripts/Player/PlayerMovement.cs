@@ -417,9 +417,9 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                     rb.mass = 0f;
 
                     //  shimmies
-                    if(savedInput.y > .25f)
+                    if(savedInput.y > .5f)
                         heldRope.moveUp(ropeClimbSpeed * Time.fixedDeltaTime);
-                    else if(savedInput.y < -.25f) {
+                    else if(savedInput.y < -.5f) {
                         if(heldRope.moveDown(ropeClimbSpeed * Time.fixedDeltaTime)) {
                             curState = pMovementState.Falling;
                             return;
@@ -661,7 +661,7 @@ public class PlayerMovement : Singleton<PlayerMovement> {
                 canMove = false;
                 rb.linearVelocity = Vector3.zero;
                 transform.DOKill();
-                transform.DOMove((Vector2)tallestChild.position, 1f).OnComplete(() => {
+                transform.DOMove(new Vector3(tallestChild.position.x, tallestChild.position.y, 0f), 1f).OnComplete(() => {
                     mainCol.isTrigger = false;
                     canMove = true;
                     rb.linearVelocity = Vector3.zero;
