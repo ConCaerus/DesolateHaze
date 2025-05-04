@@ -10,9 +10,9 @@ FBXHeaderExtension:  {
 		Month: 5
 		Day: 4
 		Hour: 12
-		Minute: 32
-		Second: 53
-		Millisecond: 533
+		Minute: 34
+		Second: 8
+		Millisecond: 32
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.3"
 	OtherFlags:  {
@@ -31,19 +31,19 @@ FBXHeaderExtension:  {
 			Comment: ""
 		}
 		Properties70:  {
-			P: "DocumentUrl", "KString", "Url", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door.fbx"
-			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door.fbx"
+			P: "DocumentUrl", "KString", "Url", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door_big.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door_big.fbx"
 			P: "Original", "Compound", "", ""
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "Maya"
 			P: "Original|ApplicationVersion", "KString", "", "", "2023"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "04/05/2025 17:32:53.530"
-			P: "Original|FileName", "KString", "", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door.fbx"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "04/05/2025 17:34:08.031"
+			P: "Original|FileName", "KString", "", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets\hanging_door_big.fbx"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2023"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "04/05/2025 17:32:53.530"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "04/05/2025 17:34:08.031"
 			P: "Original|ApplicationActiveProject", "KString", "", "", "C:\Users\skybr\Documents\DSU Homework\DSU Sr Year\DesolateHaze\Assets\Our Assets\Elliot's Assets"
 		}
 	}
@@ -79,7 +79,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 1747401661376, "", "Scene" {
+	Document: 1747187569632, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
@@ -252,9 +252,9 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 1747392832096, "Geometry::", "Mesh" {
+	Geometry: 1747183955424, "Geometry::", "Mesh" {
 		Vertices: *24 {
-			a: -1492.57360839844,747.559814453125,-2752.55346679688,-1392.57360839844,747.559814453125,-2752.55346679688,-1492.57360839844,1869.02099609375,-2752.55346679688,-1392.57360839844,1869.02099609375,-2752.55346679688,-1492.57360839844,1869.02099609375,-3605.48559570313,-1392.57360839844,1869.02099609375,-3605.48559570313,-1492.57360839844,747.559814453125,-3605.48559570313,-1392.57360839844,747.559814453125,-3605.48559570313
+			a: -7816.70947265625,-956.369384765625,-2385.1337890625,-7596.91357421875,-956.369384765625,-2385.1337890625,-7816.70947265625,3450.26879882813,-2385.1337890625,-7596.91357421875,3450.26879882813,-2385.1337890625,-7816.70947265625,3450.26879882813,-5431.40625,-7596.91357421875,3450.26879882813,-5431.40625,-7816.70947265625,-956.369384765625,-5431.40625,-7596.91357421875,-956.369384765625,-5431.40625
 		} 
 		PolygonVertexIndex: *24 {
 			a: 0,1,3,-3,2,3,5,-5,4,5,7,-7,6,7,1,-1,1,7,5,-4,6,0,2,-5
@@ -281,10 +281,10 @@ Objects:  {
 			MappingInformationType: "ByPolygonVertex"
 			ReferenceInformationType: "IndexToDirect"
 			UV: *36 {
-				a: 0.216049566864967,3.94571979995817e-05,0.715999662876129,0.288378477096558,0.437109082937241,3.72529029846191e-09,0,0.313580125570297,0.221111387014389,3.11024487018585e-05,0.215997517108917,0.313617020845413,0.221152365207672,0.284031450748444,0.499997794628143,0.31366565823555,0.500002145767212,0.288341462612152,0.437150031328201,0.284000247716904,5.18570741405711e-05,2.0592463620254e-14,0.715995311737061,0.313702613115311,0.216001912951469,0.288292944431305,0,0.284000277519226,1,0.288426995277405,4.27943268732633e-06,0.288255989551544,0.999995648860931,0.313751131296158,0.215997651219368,0.284039705991745
+				a: 0.416546404361725,0,1,0.315731287002563,0.704367935657501,0.30098769068718,0.00185799598693848,0.296910643577576,0.499999970197678,0.300989091396332,0.500000059604645,0.315734684467316,0.204367935657501,0.300991088151932,0.204368054866791,0.315736711025238,0,0.300992488861084,1.19209289550781e-07,0.31573811173439,0.204363942146301,0,0.20622193813324,0.295626193284988,0.212182492017746,0.00128442980349064,0.214040488004684,0.296910613775253,0,0.00128443166613579,0.704367995262146,0.315733313560486,1,0.300985664129257,0.418404400348663,0.295626163482666
 			} 
 			UVIndex: *24 {
-				a: 11,1,14,16,3,15,12,5,5,12,8,7,7,8,1,11,9,6,4,2,10,0,17,13
+				a: 16,1,15,2,2,15,5,4,4,5,7,6,6,7,9,8,14,10,11,3,12,0,17,13
 			} 
 		}
 		LayerElementMaterial: 0 {
@@ -312,11 +312,11 @@ Objects:  {
 			}
 		}
 	}
-	Model: 1746540750384, "Model::hanging_door", "Mesh" {
+	Model: 1746540745744, "Model::hanging_door1", "Mesh" {
 		Version: 232
 		Properties70:  {
-			P: "RotationPivot", "Vector3D", "Vector", "",-1442.57356082194,1308.29046236646,-3179.01955746587
-			P: "ScalingPivot", "Vector3D", "Vector", "",-1442.57356082194,1308.29046236646,-3179.01955746587
+			P: "RotationPivot", "Vector3D", "Vector", "",-7706.81156705152,1246.94976472738,-3908.27003126843
+			P: "ScalingPivot", "Vector3D", "Vector", "",-7706.81156705152,1246.94976472738,-3908.27003126843
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
@@ -326,7 +326,7 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Material: 1747195712432, "Material::lambert1", "" {
+	Material: 1747401309184, "Material::lambert1", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
@@ -341,7 +341,7 @@ Objects:  {
 			P: "Opacity", "double", "Number", "",1
 		}
 	}
-	AnimationStack: 1747186275520, "AnimStack::Take 001", "" {
+	AnimationStack: 1747194711920, "AnimStack::Take 001", "" {
 		Properties70:  {
 			P: "LocalStart", "KTime", "Time", "",1924423250
 			P: "LocalStop", "KTime", "Time", "",577326975000
@@ -349,7 +349,7 @@ Objects:  {
 			P: "ReferenceStop", "KTime", "Time", "",577326975000
 		}
 	}
-	AnimationLayer: 1747463916208, "AnimLayer::BaseLayer", "" {
+	AnimationLayer: 1747468068752, "AnimLayer::BaseLayer", "" {
 	}
 }
 
@@ -358,17 +358,17 @@ Objects:  {
 
 Connections:  {
 	
-	;Model::hanging_door, Model::RootNode
-	C: "OO",1746540750384,0
+	;Model::hanging_door1, Model::RootNode
+	C: "OO",1746540745744,0
 	
 	;AnimLayer::BaseLayer, AnimStack::Take 001
-	C: "OO",1747463916208,1747186275520
+	C: "OO",1747468068752,1747194711920
 	
-	;Geometry::, Model::hanging_door
-	C: "OO",1747392832096,1746540750384
+	;Geometry::, Model::hanging_door1
+	C: "OO",1747183955424,1746540745744
 	
-	;Material::lambert1, Model::hanging_door
-	C: "OO",1747195712432,1746540750384
+	;Material::lambert1, Model::hanging_door1
+	C: "OO",1747401309184,1746540745744
 }
 ;Takes section
 ;----------------------------------------------------
